@@ -1,0 +1,59 @@
+*{
+    box-sizing: border-box;
+}
+
+
+.template-column {
+    float: left;
+    width: 33%;
+    padding: 20px;
+    /* height: 300px; */
+}
+
+.row::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+@media screen and (max-width: 600px) {
+    .template-column {
+        width: 100%;
+    }
+}
+
+.template-box-container {
+    border-radius: 10px; /* Adjust border radius as needed */
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0; /* Change border color and width as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for card effect */
+    padding: 20px;
+    transition: box-shadow 0.3s ease; /* Add transition for hover effect */
+    height: 300px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+  }
+  
+  .template-box-container:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Change box shadow on hover */
+  }
+
+h1.title {
+    font-size: 4vh;
+    text-align: center;
+    padding: 10px;
+}
+
+.for-container {
+    background-color: yellow;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.for-container:hover {
+    background-color: red;
+    color: #e0e0e0;
+}
