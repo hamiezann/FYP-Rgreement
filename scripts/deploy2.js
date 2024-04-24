@@ -6,9 +6,12 @@ async function main() {
   console.log("Deploying RentalContract contract...");
   const updatedrentalContract = await UpdatedRentalContract.deploy();
   // Wait for the contract to be deployed and get deployed instance
- // await rentalContract.deployTransaction.wait();
+  // await rentalContract.deployTransaction.wait();
 
   console.log("UpdatedRentalContract contract address:", updatedrentalContract.target);
+
+    // Export the contract address
+    // module.exports.contractAddress = updatedrentalContract.target;
 }
 
 main()

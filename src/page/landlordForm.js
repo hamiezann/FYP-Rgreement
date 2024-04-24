@@ -3,8 +3,9 @@ import { ethers } from "ethers";
 import "../style/contract.css";
 import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
 
-const contractAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+const contractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
 const contractAbi = HouseRentalContract.abi;
+// const { contractAddress } = require('../../scripts/deploy2.js');
 
 const HouseRentalForm = () => {
     const [landlord, setLandlord] = useState("");
@@ -15,14 +16,17 @@ const HouseRentalForm = () => {
     const [tenantIdNumber, setTenantIdNumber] = useState(""); // State to store tenant identification number
     const [tenantHouseAddress, setTenantHouseAddress] = useState(""); // State to store tenant house address
     //const [tenantSignature, setTenantSignature] = useState(""); // State to store tenant house address
-
+   // const [password, setPassword] = useState("123"); // Set password to "123"
     const [rentAddress, setRentAddress] = useState("");
-   // const [buildingType, setBuildingType] = useState("");
+    const [rentLatitude, setLatitude] = useState("");
+    const [rentLongitude, setLongitude] = useState("");
     const [rentPeriod, setRentPeriod] = useState(0);
+    const [customRentPeriod, setCustomRentPeriod] = useState('');
     const [effectiveDate, setEffectiveDate] = useState("");
-    const [monthlyRent, setMonthlyRent] = useState(0);
+    const [monthlyRent, setMonthlyRent] = useState("");
     const [paymentMethod, setPaymentMethod] = useState("");
     const [maxOverduePeriod, setMaxOverduePeriod] = useState(0);
+    const [customMaxOverduePeriod, setCustomMaxOverduePeriod] = useState('');
     const [deposit, setDeposit] = useState(0);
     const [utilityDeposit, setUtilityDeposit] = useState(0);
     const [advanceRental, setAdvanceRental] = useState(0);
@@ -46,6 +50,24 @@ const HouseRentalForm = () => {
     const handleBuildingTypeChange = (e) => {
         setBuildingType(e.target.value); // Update the building type state
     };
+    const handleRentPeriodChange = (e) => {
+        const selectedValue = e.target.value;
+        if (selectedValue === "other") {
+            // Reset custom rent period if "Other" is selected
+            setCustomRentPeriod('');
+        }
+        setRentPeriod(selectedValue);
+    };
+
+    const handleMaxOverduePeriodChange = (e) => {
+        const selectedValue = e.target.value;
+        if (selectedValue === "other") {
+            // Reset custom max overdue period if "Other" is selected
+            setCustomMaxOverduePeriod('');
+        }
+        setMaxOverduePeriod(selectedValue);
+    };
+
 
         // Function to handle checkbox change
         const handleCheckboxChange = (e) => {
@@ -128,12 +150,10 @@ const HouseRentalForm = () => {
                 maxOverduePeriod: maxOverduePeriod,
                 deposit: deposit,
                 utilityDeposit: utilityDeposit,
-                advanceRental: advanceRental
+                advanceRental: advanceRental,
+                latitude: rentLatitude,
+                longitude: rentLongitude
             };
-           // const  uni_identifier = ethers.encodeBytes32String(landlord)
-            //const  uni_identifier = ethers.encodeBytes32String(landlord)
-            // const encodedLandlord = new TextEncoder().encode(landlord); // Encode string as UTF-8 bytes
-            // console.log(encodedLandlord);
             // Extract or truncate to the first 6 bytes
             const uni_identifier_heh = ethers.randomBytes(6);
 
@@ -141,12 +161,6 @@ const HouseRentalForm = () => {
 const uni_identifier = ethers.hexlify(uni_identifier_heh);
 console.log("Uni Identifier (byte array):", uni_identifier_heh);
 console.log("Uni Identifier (hex string):", uni_identifier);
-
-        
-
-            // const decodedBytes = ethers.toUtf8String(landlord); // Decode bytes to string
-            // const uni_identifier = decodedBytes.slice(0, 6); // Extract the first 6 characters
-
 
             const tx = await contract.createContract(
               //  ethers.utils.id(landlord), // Convert landlord to bytes32
@@ -168,7 +182,8 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                 landlordResponsibilities,
                 agreementBetweenLandlord,
                 landlordSignature,
-                tenantSignature
+                tenantSignature,
+              //  password
             );
 
             await tx.wait();
@@ -176,6 +191,14 @@ console.log("Uni Identifier (hex string):", uni_identifier);
             setSuccessMessage("Contract created successfully!");
 
             alert(`Contract created successfully! Contract Address: ${contractAddress}, uni_identifier: ${uni_identifier}`);
+
+            
+        // Get the created contract details using getContract function
+       // const createdContract = await contract.getContract(uni_identifier, password);
+        const createdContract = await contract.getContract(uni_identifier);
+
+        // Log the contract details to the console
+        console.log("Created Contract Details:", createdContract);
         } catch (error) {
             console.error("Error creating contract:", error);
             setIsLoading(false);
@@ -184,9 +207,16 @@ console.log("Uni Identifier (hex string):", uni_identifier);
     };
 
     return (
+       
         <div className="container">
-            <h2>Rental Contract Form</h2>
+  
+            <div className="title-container">
+            <h2>RENTAL CONTRACT FORM</h2>
+            </div>
+            
             <form onSubmit={handleSubmit}>
+            <div className="form-container">
+            <h2>Landlord Details</h2>
                 <div className="row">
                     <div className="col-25">
                         <label>Landlord Name:</label>
@@ -213,8 +243,19 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                         <input type="text" value={houseAddress} onChange={(e) => setHouseAddress(e.target.value)} required />
                     </div>
                 </div>
-
-                {/* Add checkbox for tenant */}
+                
+                {/* Add Landlord Signature */}
+                <div className="row">
+                    <div className="col-25">
+                        <label>Landlord Signature:</label>
+                    </div>
+                    <div className="col-75">
+                        <input type="text" value={landlordSignature} onChange={(e) => setLandlordSignature(e.target.value)} required />
+                    </div>
+                </div>
+                </div>
+                <div className="form-container">
+                                   {/* Add checkbox for tenant */}
                 <div className="row">
                     <div className="col-25">
                         <label>Is there a tenant?</label>
@@ -253,25 +294,36 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                         </div>
 
                                         {/* Add Tenant Signature */}
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-25">
                         <label>Tenant Signature:</label>
                     </div>
                     <div className="col-75">
                         <input type="text" value={tenantSignature} onChange={(e) => setTenantSignature(e.target.value)} required />
                     </div>
-                </div>
+                </div> */}
                     </>
                 )}
-
-
-                {/* Add Rent Address */}
+                </div>
+                <div className="form-container">
+                    <h3>Rental Details</h3>
+                                   {/* Add Rent Address */}
                 <div className="row">
                     <div className="col-25">
                         <label>Rent Address:</label>
                     </div>
                     <div className="col-75">
                         <input type="text" value={rentAddress} onChange={(e) => setRentAddress(e.target.value)} required />
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-25">
+                        <label>Latitude & Longitude:</label>
+                    </div>
+                    <div className="col-75">
+                        <input type="text" value={rentLatitude} onChange={(e) => setLatitude(e.target.value)} required />
+                        <input type="text" value={rentLongitude} onChange={(e) => setLongitude(e.target.value)} required />
                     </div>
                 </div>
 
@@ -292,13 +344,25 @@ console.log("Uni Identifier (hex string):", uni_identifier);
 
                 {/* Add Rent Period */}
                 <div className="row">
-                    <div className="col-25">
-                        <label>Rent Period (in days):</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="number" value={rentPeriod} onChange={(e) => setRentPeriod(parseInt(e.target.value))} required />
-                    </div>
-                </div>
+    <div className="col-25">
+        <label>Rent Period (in months):</label>
+    </div>
+    <div className="col-75">
+        <select value={rentPeriod} onChange={(e) => handleRentPeriodChange(e)} required>
+            <option value="">Select rent period</option>
+            <option value="1">1 month</option>
+            <option value="2">2 months</option>
+            <option value="3">3 months</option>
+            <option value="6">6 months</option>
+            <option value="12">12 months</option>
+            <option value="other">Other</option>
+        </select>
+        {rentPeriod === "other" && (
+            <input type="number" value={customRentPeriod} onChange={(e) => setCustomRentPeriod(parseInt(e.target.value))} placeholder="Enter custom rent period" />
+        )}
+    </div>
+</div>
+
 
                 {/* Add Effective Date */}
                 <div className="row">
@@ -306,14 +370,14 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                         <label>Effective Date:</label>
                     </div>
                     <div className="col-75">
-                        <input type="date" value={effectiveDate} onChange={(e) => setEffectiveDate(e.target.value)} required />
+                        <input placeholder="DD-MM-YYYY" type="date" value={effectiveDate} onChange={(e) => setEffectiveDate(e.target.value)} required />
                     </div>
                 </div>
 
                 {/* Add Monthly Rent */}
                 <div className="row">
                     <div className="col-25">
-                        <label>Monthly Rent:</label>
+                        <label>Monthly Rent (RM):</label>
                     </div>
                     <div className="col-75">
                         <input type="number" value={monthlyRent} onChange={(e) => setMonthlyRent(parseInt(e.target.value))} required />
@@ -338,13 +402,28 @@ console.log("Uni Identifier (hex string):", uni_identifier);
 
                 {/* Add Max Overdue Period */}
                 <div className="row">
-                    <div className="col-25">
-                        <label>Max Overdue Period (in days):</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="number" value={maxOverduePeriod} onChange={(e) => setMaxOverduePeriod(parseInt(e.target.value))} required />
-                    </div>
+                <div className="col-25">
+                    <label>Max Overdue Period (in days):</label>
                 </div>
+                <div className="col-75">
+                    <select value={maxOverduePeriod} onChange={(e) => handleMaxOverduePeriodChange(e)} required>
+                        <option value="">Select max overdue period</option>
+                        <option value="1">1 day</option>
+                        <option value="7">7 days</option>
+                        <option value="14">14 days</option>
+                        <option value="30">30 days</option>
+                        <option value="other">Other</option>
+                    </select>
+                    {maxOverduePeriod === "other" && (
+                        <input 
+                            type="number" 
+                            value={customMaxOverduePeriod} 
+                            onChange={(e) => setCustomMaxOverduePeriod(parseInt(e.target.value))} 
+                            placeholder="Enter custom max overdue period" 
+                        />
+                    )}
+                </div>
+            </div>
 
                 {/* Add Deposit */}
                 <div className="row">
@@ -375,7 +454,11 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                         <input type="number" value={advanceRental} onChange={(e) => setAdvanceRental(parseInt(e.target.value))} required />
                     </div>
                 </div>
+                </div>
 
+                <div className="form-container">
+                    <h3>Contract Terms</h3>
+                    
                 {/* Add Agreement Details */}
                 <div className="row">
                     <div className="col-25">
@@ -445,16 +528,8 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                         <button type="button" onClick={handleAddAgreementBetweenLandlord}>Add Agreement Between Landlord</button>
                     </div>
                 </div>
-
-                {/* Add Landlord Signature */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Landlord Signature:</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="text" value={landlordSignature} onChange={(e) => setLandlordSignature(e.target.value)} required />
-                    </div>
                 </div>
+               
 
 
 
@@ -464,15 +539,20 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                         <p>Loading...</p>
                     </div>
                 ) : (
-                    <div className="row">
+                    <div className="button-container">
                         <input type="submit" value="Create Contract" />
                     </div>
                 )}
 
                 {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
                 {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+                {/* </div> */}
             </form>
+
         </div>
+
+
+   
     );
     
 };

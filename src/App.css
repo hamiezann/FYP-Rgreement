@@ -4,10 +4,10 @@
   align-items: center;
 } */
 
-.App-logo {
+/* .App-logo {
   height: 40vmin;
   pointer-events: none;
-}
+} */
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -46,6 +46,6 @@
 }
 
 .content {
-  flex: 1; /* Allow the content area to grow to fill available space */
-  padding-bottom: 100px; /* Adjust this value based on the height of your footer */
+  /* flex: 1; 
+  padding-bottom: 100px;  */
 }
