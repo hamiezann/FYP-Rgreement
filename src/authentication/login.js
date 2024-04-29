@@ -5,7 +5,7 @@ import '../style/authentication.css'; // Import your CSS file
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+ // const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,9 +22,14 @@ const LoginForm = () => {
       // Parse the response JSON to extract the access_token
       const data = await response.json();
       const accessToken = data.access_token;
+      const role = data.role;
+      const userId = data.userId;
   
       // Store the access_token in local storage
       localStorage.setItem('access_token', accessToken);
+      localStorage.setItem('role', role);
+      localStorage.setItem('userId', userId);
+
       // Reload the page to trigger rendering of authenticated content
       window.location.reload();
     } else {

@@ -28,8 +28,8 @@ function App() {
         <div className='template-column'>
           <div className='template-box-container'>
             <h2>My Contract</h2>
-            <p>See the list of your landlord.</p>
-            <Link to="#" className='for-container'>View</Link>
+            <p>See the list of your house.</p>
+            <Link to="/yourhouse-list" className='for-container'>View</Link>
           </div>
         </div>
       </div>

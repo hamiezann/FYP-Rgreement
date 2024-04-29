@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
 import '../style/contract.css';
 
-const contractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
+const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 // const contractAddress = updatedrentalContract.target;
 
 function ContractDetails() {
@@ -26,15 +26,16 @@ function ContractDetails() {
       //   return;
       // }
       console.log("Contract instance:", contract);
+      
       // Fetch contract details for the provided contract ID
       const details = await contract.getContract(contractId);
       setContractDetails(details);
 
-      const trails = await contract.getContractAuditTrail(contractId);
-      setAuditTrails(trails);
+      // const trails = await contract.getContractAuditTrail(contractId);
+      // setAuditTrails(trails);
 
     } catch (error) {
-      console.error('Error fetching contract details:', error);
+      console.error('Error fetching contract details:', error.message);
       alert('An error occurred while fetching contract details. Please try again.');
     }
   };
@@ -120,7 +121,7 @@ function ContractDetails() {
     <p>Landlord Signature: {contractDetails.landlordSignature}</p>
     <p>Tenant Signature: {contractDetails.tenantSignature}</p>
 
-    <h3>Audit Trails</h3>
+    {/* <h3>Audit Trails</h3>
           <ul>
             {auditTrails.map((trail, index) => (
               <li key={index}>
@@ -128,7 +129,7 @@ function ContractDetails() {
                 <p>Action: {trail.action}</p>
               </li>
             ))}
-          </ul>
+          </ul> */}
   </div>
 )}
 

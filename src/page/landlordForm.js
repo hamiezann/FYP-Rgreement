@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import "../style/contract.css";
 import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
+import axios from "axios";
 
-const contractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
+const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAbi = HouseRentalContract.abi;
-// const { contractAddress } = require('../../scripts/deploy2.js');
 
 const HouseRentalForm = () => {
     const [landlord, setLandlord] = useState("");
@@ -39,12 +39,15 @@ const HouseRentalForm = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-
+    const [buildingType, setBuildingType] = useState(""); // State to store selected building type
+    const [preferredOccupants, setPreferredOccupants] = useState(""); 
+    const [numberOfRooms, setnumberOfRooms] = useState(""); 
+    const [description, setDescription] = useState(""); 
+    
     // Function to handle payment method selection
     const handlePaymentMethodChange = (e) => {
         setPaymentMethod(e.target.value); // Update the payment method state
     };
-    const [buildingType, setBuildingType] = useState(""); // State to store selected building type
 
     // Function to handle building type selection
     const handleBuildingTypeChange = (e) => {
@@ -68,9 +71,8 @@ const HouseRentalForm = () => {
         setMaxOverduePeriod(selectedValue);
     };
 
-
         // Function to handle checkbox change
-        const handleCheckboxChange = (e) => {
+    const handleCheckboxChange = (e) => {
             setHasTenant(e.target.checked); // Update the hasTenant state based on checkbox status
             // If the checkbox is unchecked, reset tenant details
             if (!e.target.checked) {
@@ -129,17 +131,50 @@ const HouseRentalForm = () => {
         setAgreementBetweenLandlord(updatedAgreements);
     };
 
+    const [userId, setUserId] = useState('');
+
+    useEffect(() => {
+      // Retrieve userId from localStorage when the component mounts
+      const userIdFromStorage = localStorage.getItem('userId');
+      setUserId(userIdFromStorage);
+    }, []);
+ 
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setIsLoading(true);
         setSuccessMessage("");
         setErrorMessage("");
+            // Extract or truncate to the first 6 bytes
+            const uni_identifier_heh = ethers.randomBytes(6);
+
+            // Optional: Convert byte array to hex string for display
+            const uni_identifier = ethers.hexlify(uni_identifier_heh);
+            console.log("Uni Identifier (byte array):", uni_identifier_heh);
+            console.log("Uni Identifier (hex string):", uni_identifier);
+
+        
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            user_id: userId, // Replace with actual user ID
+            latitude: rentLatitude,
+            longitude: rentLongitude,
+            uni_identifier: uni_identifier,
+            prefered_occupants: preferredOccupants,
+            type_of_house: buildingType,
+            description: description, // Assuming this is the description from the form
+            rent_fee: monthlyRent,
+            number_of_rooms: numberOfRooms // Assuming this is the number of rooms from the form
+            // Add other form fields as needed
+        })
+    };
 
         try {
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
             const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-
             const houseDetails = {
                 rent_address: rentAddress,
                 buildingType: buildingType,
@@ -154,18 +189,11 @@ const HouseRentalForm = () => {
                 latitude: rentLatitude,
                 longitude: rentLongitude
             };
-            // Extract or truncate to the first 6 bytes
-            const uni_identifier_heh = ethers.randomBytes(6);
 
-// Optional: Convert byte array to hex string for display
-const uni_identifier = ethers.hexlify(uni_identifier_heh);
-console.log("Uni Identifier (byte array):", uni_identifier_heh);
-console.log("Uni Identifier (hex string):", uni_identifier);
 
             const tx = await contract.createContract(
               //  ethers.utils.id(landlord), // Convert landlord to bytes32
                uni_identifier,
-
                 {
                     name: landlord,
                     identificationNumber: identificationNumber,
@@ -191,16 +219,37 @@ console.log("Uni Identifier (hex string):", uni_identifier);
             setSuccessMessage("Contract created successfully!");
 
             alert(`Contract created successfully! Contract Address: ${contractAddress}, uni_identifier: ${uni_identifier}`);
-
-            
-        // Get the created contract details using getContract function
-       // const createdContract = await contract.getContract(uni_identifier, password);
-        const createdContract = await contract.getContract(uni_identifier);
+      
+            // Get the created contract details using getContract function
+            const createdContract = await contract.getContract(uni_identifier);
+               
+                    // const response = await axios.post("http://127.0.0.1:8000/api/house-details", {
+                    //     user_id: userId, // Replace with actual user ID
+                    //     latitude: rentLatitude,
+                    //     longitude: rentLongitude,
+                    //     uni_identifier: uni_identifier,
+                    //     preferred_occupants: preferredOccupants,
+                    //     type_of_house: buildingType,
+                    //     description: description, // Assuming this is the description from the form
+                    //     rent_fee: monthlyRent,
+                    //     number_of_rooms: numberOfRooms, // Assuming this is the number of rooms from the form
+                    //     // Add other form fields as needed
+                    // });
 
         // Log the contract details to the console
         console.log("Created Contract Details:", createdContract);
+        const response = await fetch("http://127.0.0.1:8000/api/house-details", requestOptions);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        console.log(data); // Log the response data
+
         } catch (error) {
             console.error("Error creating contract:", error);
+         //   alert('There was a problem with the fetch operation. Please try again.');
+        
             setIsLoading(false);
             setErrorMessage("An error occurred while creating the contract. Please try again.");
         }
@@ -215,7 +264,8 @@ console.log("Uni Identifier (hex string):", uni_identifier);
             </div>
             
             <form onSubmit={handleSubmit}>
-            <div className="form-container">
+            {/* Landlord Details */}
+                <div className="form-container">
             <h2>Landlord Details</h2>
                 <div className="row">
                     <div className="col-25">
@@ -254,6 +304,7 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                     </div>
                 </div>
                 </div>
+            {/* Is there a tenant */}
                 <div className="form-container">
                                    {/* Add checkbox for tenant */}
                 <div className="row">
@@ -261,7 +312,9 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                         <label>Is there a tenant?</label>
                     </div>
                     <div className="col-75">
-                        <input type="checkbox" checked={hasTenant} onChange={handleCheckboxChange} />
+                        {/* <input type="checkbox" checked={hasTenant} onChange={handleCheckboxChange} /> */}
+                        <input type="checkbox" checked={hasTenant} onChange={(e) => handleCheckboxChange(e, setHasTenant, setTenantName, setTenantIdNumber, setTenantHouseAddress, setTenantSignature)} />
+
                     </div>
                 </div>
 
@@ -305,6 +358,7 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                     </>
                 )}
                 </div>
+            {/* Rental Details */}
                 <div className="form-container">
                     <h3>Rental Details</h3>
                                    {/* Add Rent Address */}
@@ -455,7 +509,7 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                     </div>
                 </div>
                 </div>
-
+            {/* Contract Terms */}
                 <div className="form-container">
                     <h3>Contract Terms</h3>
                     
@@ -479,7 +533,8 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                             <div key={index}>
                                 <textarea
                                     value={agreement}
-                                    onChange={e => handleTenantAgreementChange(index, e.target.value)}
+                                   onChange={e => handleTenantAgreementChange(index, e.target.value)}
+                                    
                                     required
                                 />
                                 <button type="button" onClick={() => handleRemoveTenantAgreement(index)}>Remove</button>
@@ -519,7 +574,8 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                             <div key={index}>
                                 <textarea
                                     value={agreement}
-                                    onChange={e => handleAgreementBetweenLandlordChange(index, e.target.value)}
+                                 onChange={e => handleAgreementBetweenLandlordChange(index, e.target.value)}
+                                 
                                     required
                                 />
                                 <button type="button" onClick={() => handleRemoveAgreementBetweenLandlord(index)}>Remove</button>
@@ -529,9 +585,44 @@ console.log("Uni Identifier (hex string):", uni_identifier);
                     </div>
                 </div>
                 </div>
-               
-
-
+            {/* Add to database */}
+                <div className="form-container">
+                <div className="row">
+        <div className="col-25">
+            <label>Preferred Occupants:</label>
+        </div>
+        <div className="col-75">
+            <select value={preferredOccupants} onChange={(e) => setPreferredOccupants(e.target.value)}>
+                <option value="">Select Preferred Occupants</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label>Number of Rooms</label>
+                    </div>
+                    <div className="col-75">
+                        <select value={numberOfRooms} onChange={(e) => setnumberOfRooms(e.target.value)}>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label>House Description</label>
+                    </div>
+                    <div className="col-75">
+                    <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required />
+                    </div>
+                </div>
+                </div>
 
                 {/* Add Loading and Success/Error Messages */}
                 {isLoading ? (
