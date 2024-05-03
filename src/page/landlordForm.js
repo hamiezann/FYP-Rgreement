@@ -2,136 +2,93 @@ import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import "../style/contract.css";
 import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
-import axios from "axios";
+import { useGlobalContractState } from "./globally_use_variable.js/variable";
 
-const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const contractAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
 const contractAbi = HouseRentalContract.abi;
 
 const HouseRentalForm = () => {
-    const [landlord, setLandlord] = useState("");
-    const [identificationNumber, setIdentificationNumber] = useState("");
-    const [houseAddress, setHouseAddress] = useState("");
-    const [hasTenant, setHasTenant] = useState(false); // State to track whether there is a tenant
-    const [tenantName, setTenantName] = useState(""); // State to store tenant name
-    const [tenantIdNumber, setTenantIdNumber] = useState(""); // State to store tenant identification number
-    const [tenantHouseAddress, setTenantHouseAddress] = useState(""); // State to store tenant house address
-    //const [tenantSignature, setTenantSignature] = useState(""); // State to store tenant house address
-   // const [password, setPassword] = useState("123"); // Set password to "123"
-    const [rentAddress, setRentAddress] = useState("");
-    const [rentLatitude, setLatitude] = useState("");
-    const [rentLongitude, setLongitude] = useState("");
-    const [rentPeriod, setRentPeriod] = useState(0);
-    const [customRentPeriod, setCustomRentPeriod] = useState('');
-    const [effectiveDate, setEffectiveDate] = useState("");
-    const [monthlyRent, setMonthlyRent] = useState("");
-    const [paymentMethod, setPaymentMethod] = useState("");
-    const [maxOverduePeriod, setMaxOverduePeriod] = useState(0);
-    const [customMaxOverduePeriod, setCustomMaxOverduePeriod] = useState('');
-    const [deposit, setDeposit] = useState(0);
-    const [utilityDeposit, setUtilityDeposit] = useState(0);
-    const [advanceRental, setAdvanceRental] = useState(0);
-    const [agreementDetails, setAgreementDetails] = useState("");
-    const [tenantAgreement, setTenantAgreement] = useState([""]);
-    const [landlordResponsibilities, setLandlordResponsibilities] = useState([""]);
-    const [agreementBetweenLandlord, setAgreementBetweenLandlord] = useState([""]);
-    const [landlordSignature, setLandlordSignature] = useState("");
-    const [tenantSignature, setTenantSignature] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [successMessage, setSuccessMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-    const [buildingType, setBuildingType] = useState(""); // State to store selected building type
-    const [preferredOccupants, setPreferredOccupants] = useState(""); 
+
+const {
+    landlord,setLandlord,
+    identificationNumber,setIdentificationNumber,
+    houseAddress,setHouseAddress,
+    hasTenant,setHasTenant,
+    tenantName, setTenantName,
+    tenantIdNumber, setTenantIdNumber,
+    tenantHouseAddress,setTenantHouseAddress,
+
+    rentAddress,
+    setRentAddress,
+    rentLatitude,
+    setLatitude,
+    rentLongitude,
+    setLongitude,
+    rentPeriod,
+    setRentPeriod,
+    customRentPeriod,
+    setCustomRentPeriod,
+    effectiveDate,
+    setEffectiveDate,
+    monthlyRent,
+    setMonthlyRent,
+    paymentMethod,
+    setPaymentMethod,
+    maxOverduePeriod,
+    setMaxOverduePeriod,
+    customMaxOverduePeriod,
+    setCustomMaxOverduePeriod,
+    deposit,
+    setDeposit,
+    utilityDeposit,
+    setUtilityDeposit,
+    advanceRental,
+    setAdvanceRental,
+    agreementDetails,
+    setAgreementDetails,
+    tenantAgreement,
+    setTenantAgreement,
+    landlordResponsibilities,
+    setLandlordResponsibilities,
+    agreementBetweenLandlord,
+    setAgreementBetweenLandlord,
+    landlordSignature,
+    setLandlordSignature,
+    tenantSignature,
+    setTenantSignature,
+    isLoading,
+    setIsLoading,
+    successMessage,
+    setSuccessMessage,
+    errorMessage,
+    setErrorMessage,
+    buildingType,
+    setBuildingType,
+    preferredOccupants,
+    setPreferredOccupants,
+    // numberOfRooms,
+    // setNumberOfRooms,
+    description,
+    setDescription,
+
+    handlePaymentMethodChange,
+    handleBuildingTypeChange,
+    handleRentPeriodChange,
+    handleMaxOverduePeriodChange,
+    handleCheckboxChange,
+    handleAddTenantAgreement,
+    handleRemoveTenantAgreement,
+    handleTenantAgreementChange,
+    handleAddLandlordResponsibility,
+    handleRemoveLandlordResponsibility,
+    handleLandlordResponsibilityChange,
+    handleAddAgreementBetweenLandlord,
+    handleRemoveAgreementBetweenLandlord,
+    handleAgreementBetweenLandlordChange,
+    userId, setUserId,
+} = useGlobalContractState();
+    const fixedPassword = "123456";
     const [numberOfRooms, setnumberOfRooms] = useState(""); 
-    const [description, setDescription] = useState(""); 
-    
-    // Function to handle payment method selection
-    const handlePaymentMethodChange = (e) => {
-        setPaymentMethod(e.target.value); // Update the payment method state
-    };
-
-    // Function to handle building type selection
-    const handleBuildingTypeChange = (e) => {
-        setBuildingType(e.target.value); // Update the building type state
-    };
-    const handleRentPeriodChange = (e) => {
-        const selectedValue = e.target.value;
-        if (selectedValue === "other") {
-            // Reset custom rent period if "Other" is selected
-            setCustomRentPeriod('');
-        }
-        setRentPeriod(selectedValue);
-    };
-
-    const handleMaxOverduePeriodChange = (e) => {
-        const selectedValue = e.target.value;
-        if (selectedValue === "other") {
-            // Reset custom max overdue period if "Other" is selected
-            setCustomMaxOverduePeriod('');
-        }
-        setMaxOverduePeriod(selectedValue);
-    };
-
-        // Function to handle checkbox change
-    const handleCheckboxChange = (e) => {
-            setHasTenant(e.target.checked); // Update the hasTenant state based on checkbox status
-            // If the checkbox is unchecked, reset tenant details
-            if (!e.target.checked) {
-                setTenantName("");
-                setTenantIdNumber("");
-                setTenantHouseAddress("");
-                setTenantSignature("");
-            }
-        };
-    
-    const handleAddTenantAgreement = () => {
-        setTenantAgreement(prevAgreement => [...prevAgreement, ""]);
-    };
-
-    const handleRemoveTenantAgreement = index => {
-        const updatedAgreements = [...tenantAgreement];
-        updatedAgreements.splice(index, 1);
-        setTenantAgreement(updatedAgreements);
-    };
-
-    const handleTenantAgreementChange = (index, value) => {
-        const updatedAgreements = [...tenantAgreement];
-        updatedAgreements[index] = value;
-        setTenantAgreement(updatedAgreements);
-    };
-
-    const handleAddLandlordResponsibility = () => {
-        setLandlordResponsibilities(prevResponsibilities => [...prevResponsibilities, ""]);
-    };
-
-    const handleRemoveLandlordResponsibility = index => {
-        const updatedResponsibilities = [...landlordResponsibilities];
-        updatedResponsibilities.splice(index, 1);
-        setLandlordResponsibilities(updatedResponsibilities);
-    };
-
-    const handleLandlordResponsibilityChange = (index, value) => {
-        const updatedResponsibilities = [...landlordResponsibilities];
-        updatedResponsibilities[index] = value;
-        setLandlordResponsibilities(updatedResponsibilities);
-    };
-
-    const handleAddAgreementBetweenLandlord = () => {
-        setAgreementBetweenLandlord(prevAgreements => [...prevAgreements, ""]);
-    };
-
-    const handleRemoveAgreementBetweenLandlord = index => {
-        const updatedAgreements = [...agreementBetweenLandlord];
-        updatedAgreements.splice(index, 1);
-        setAgreementBetweenLandlord(updatedAgreements);
-    };
-
-    const handleAgreementBetweenLandlordChange = (index, value) => {
-        const updatedAgreements = [...agreementBetweenLandlord];
-        updatedAgreements[index] = value;
-        setAgreementBetweenLandlord(updatedAgreements);
-    };
-
-    const [userId, setUserId] = useState('');
 
     useEffect(() => {
       // Retrieve userId from localStorage when the component mounts
@@ -192,7 +149,7 @@ const HouseRentalForm = () => {
 
 
             const tx = await contract.createContract(
-              //  ethers.utils.id(landlord), // Convert landlord to bytes32
+            
                uni_identifier,
                 {
                     name: landlord,
@@ -211,7 +168,7 @@ const HouseRentalForm = () => {
                 agreementBetweenLandlord,
                 landlordSignature,
                 tenantSignature,
-              //  password
+                fixedPassword
             );
 
             await tx.wait();
@@ -221,7 +178,8 @@ const HouseRentalForm = () => {
             alert(`Contract created successfully! Contract Address: ${contractAddress}, uni_identifier: ${uni_identifier}`);
       
             // Get the created contract details using getContract function
-            const createdContract = await contract.getContract(uni_identifier);
+            //const createdContract = await contract.getContract(uni_identifier);
+            const createdContract = await contract.getContract(uni_identifier, fixedPassword);
                
                     // const response = await axios.post("http://127.0.0.1:8000/api/house-details", {
                     //     user_id: userId, // Replace with actual user ID

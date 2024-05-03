@@ -35,7 +35,7 @@ contract HouseRentalContract {
         string[] agreementsBetweenLandlord;
         string landlordSignature;
         string tenantSignature;
-        // string password;
+        string password;
     }
 
     // struct AuditTrail {
@@ -78,8 +78,8 @@ modifier onlyTenant(bytes6 contractId) {
         string[] memory _landlordResponsibilities,
         string[] memory _agreementsBetweenLandlord,
         string memory _landlordSignature,
-        string memory _tenantSignature
-       // string memory _password
+        string memory _tenantSignature,
+        string memory _password
 
     ) public {
         require(contractOwners[_uniqueIdentifier] == address(0), "Contract with given identifier already exists");
@@ -94,8 +94,8 @@ modifier onlyTenant(bytes6 contractId) {
             _landlordResponsibilities,
             _agreementsBetweenLandlord,
             _landlordSignature,
-            _tenantSignature
-           // _password
+            _tenantSignature,
+             _password
         );
 
         contracts[_uniqueIdentifier] = newContract;
@@ -103,16 +103,18 @@ modifier onlyTenant(bytes6 contractId) {
         // _recordAuditTrail(_uniqueIdentifier, "Contract created");
     }
 
-   // function getContract(bytes6 contractId, string memory _password) public view returns (ContractTerms memory) {
-    function getContract(bytes6 contractId) public view returns (ContractTerms memory) {
-               // Check if the password matches
-        //require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked(_password)), "Incorrect password");
+     function getContract(bytes6 contractId, string memory _password) public view returns (ContractTerms memory) {
+        // function getContract(bytes6 contractId) public view returns (ContractTerms memory) {
+        // Check if the password matches
+       require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked(_password)), "Incorrect password");
+       // require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked("123456")), "Incorrect password");
         return contracts[contractId];
     }
 
     function updateContract(
         bytes6 contractId,
        // string memory action,
+        string memory _password,
         string memory _agreementDetails,
         string[] memory _tenantAgreements,
         string[] memory _landlordResponsibilities,
@@ -121,6 +123,7 @@ modifier onlyTenant(bytes6 contractId) {
         string memory _tenantSignature
     ) public onlyLandlord(contractId) {
     //) public onlyLandlord(contractId) recordAuditTrail(contractId, "Contract updated") {
+         require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked(_password)), "Incorrect password");
         ContractTerms storage contractToUpdate = contracts[contractId];
         contractToUpdate.agreementDetails = _agreementDetails;
         contractToUpdate.tenantAgreements = _tenantAgreements;
@@ -131,16 +134,6 @@ modifier onlyTenant(bytes6 contractId) {
         // _recordAuditTrail(contractId, "Contract updated");
     
     }
-
-    //     function _recordAuditTrail(bytes6 contractId, string memory action) internal {
-    //     contractAuditTrails[contractId].push(AuditTrail(block.timestamp, action, msg.sender));
-    //     emit ContractUpdated(contractId, action);
-    // }
-    
-    // // Function to get the audit trail for a contract
-    // function getContractAuditTrail(bytes6 contractId) public view returns (AuditTrail[] memory) {
-    //     return contractAuditTrails[contractId];
-    // }
 
 
 function signContract(bytes6 contractId, string memory _tenantSignature) public onlyTenant(contractId) {

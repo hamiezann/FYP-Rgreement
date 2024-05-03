@@ -37,25 +37,7 @@ const RentHouseList = () => {
     }
   };
 
-//   const handleUpdate = async (houseId, updatedData) => {
-//     try {
-//         // Make an HTTP PUT request to update the rent house
-//         await axios.put(`http://127.0.0.1:8000/api/rent-house/${houseId}`, updatedData);
-        
-//         // Update the rent houses state after successful update
-//         setRentHouses(rentHouses.map((house) => {
-//             if (house.id === houseId) {
-//                 // Merge updatedData with the existing house data
-//                 return { ...house, ...updatedData };
-//             }
-//             return house;
-//         }));
-        
-//         console.log(`Rent house with ID ${houseId} updated successfully.`);
-//     } catch (error) {
-//         console.error("Error updating rent house:", error);
-//     }
-// };
+
 
 const handleUpdate = (houseId) => {
     console.log("House ID:", houseId); // Log the house ID
@@ -89,7 +71,7 @@ const handleUpdate = (houseId) => {
                 <div>Latitude and Longitude: {house.latitude},{house.longitude}</div>
                 <div>Description: {house.description}</div>
                 <div>Rent Fee: {house.rent_fee}</div>
-                <div>Preferred Occupants: {house.preferred_occupants}</div>
+                <div>Preferred Occupants: {house.prefered_occupants}</div>
                 <div>Type of House: {house.type_of_house}</div>
                 <div>Number of Rooms: {house.number_of_rooms}</div>
               </div>

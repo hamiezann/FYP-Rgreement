@@ -2,41 +2,93 @@ import React, { useState } from "react";
 import { ethers } from "ethers";
 import "../style/contract.css";
 import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
+import { useGlobalContractState } from "./globally_use_variable.js/variable";
 
-const contractAddress = "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9";
+const contractAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
 const contractAbi = HouseRentalContract.abi;
-
+const fixedPassword = "123456";
 const UpdateContractForm = () => {
+
     const [contractId, setContractId] = useState("");
-    const [agreementDetails, setAgreementDetails] = useState("");
-    const [tenantAgreements, setTenantAgreements] = useState([]);
-    const [landlordResponsibilities, setLandlordResponsibilities] = useState([]);
-    const [agreementsBetweenLandlord, setAgreementsBetweenLandlord] = useState([]);
-    const [landlordSignature, setLandlordSignature] = useState("");
-    const [tenantSignature, setTenantSignature] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-    const [successMessage, setSuccessMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+    const {
+        landlord,setLandlord,
+        identificationNumber,setIdentificationNumber,
+        houseAddress,setHouseAddress,
+        hasTenant,setHasTenant,
+        tenantName, setTenantName,
+        tenantIdNumber, setTenantIdNumber,
+        tenantHouseAddress,setTenantHouseAddress,
 
-    const [rentAddress, setRentAddress] = useState("");
-    const [rentLatitude, setLatitude] = useState("");
-    const [rentLongitude, setLongitude] = useState("");
-    const [rentPeriod, setRentPeriod] = useState(0);
-    const [customRentPeriod, setCustomRentPeriod] = useState('');
-    const [buildingType, setBuildingType] = useState(""); // State to store selected building type
+        rentAddress,
+        setRentAddress,
+        rentLatitude,
+        setLatitude,
+        rentLongitude,
+        setLongitude,
+        rentPeriod,
+        setRentPeriod,
+        customRentPeriod,
+        setCustomRentPeriod,
+        effectiveDate,
+        setEffectiveDate,
+        monthlyRent,
+        setMonthlyRent,
+        paymentMethod,
+        setPaymentMethod,
+        maxOverduePeriod,
+        setMaxOverduePeriod,
+        customMaxOverduePeriod,
+        setCustomMaxOverduePeriod,
+        deposit,
+        setDeposit,
+        utilityDeposit,
+        setUtilityDeposit,
+        advanceRental,
+        setAdvanceRental,
+        agreementDetails,
+        setAgreementDetails,
+        tenantAgreement,
+        setTenantAgreement,
+        landlordResponsibilities,
+        setLandlordResponsibilities,
+        agreementBetweenLandlord,
+        setAgreementBetweenLandlord,
+        landlordSignature,
+        setLandlordSignature,
+        tenantSignature,
+        setTenantSignature,
+        isLoading,
+        setIsLoading,
+        successMessage,
+        setSuccessMessage,
+        errorMessage,
+        setErrorMessage,
+        buildingType,
+        setBuildingType,
+        preferredOccupants,
+        setPreferredOccupants,
+        numberOfRooms,
+        setNumberOfRooms,
+        description,
+        setDescription,
 
-    // Function to handle building type selection
-    const handleBuildingTypeChange = (e) => {
-        setBuildingType(e.target.value); // Update the building type state
-    };
-    const handleRentPeriodChange = (e) => {
-        const selectedValue = e.target.value;
-        if (selectedValue === "other") {
-            // Reset custom rent period if "Other" is selected
-            setCustomRentPeriod('');
-        }
-        setRentPeriod(selectedValue);
-    };
+        handlePaymentMethodChange,
+        handleBuildingTypeChange,
+        handleRentPeriodChange,
+        handleMaxOverduePeriodChange,
+        handleCheckboxChange,
+        handleAddTenantAgreement,
+        handleRemoveTenantAgreement,
+        handleTenantAgreementChange,
+        handleAddLandlordResponsibility,
+        handleRemoveLandlordResponsibility,
+        handleLandlordResponsibilityChange,
+        handleAddAgreementBetweenLandlord,
+        handleRemoveAgreementBetweenLandlord,
+        handleAgreementBetweenLandlordChange,
+        userId, setUserId,
+    } = useGlobalContractState();
+
 
 
     const handleSubmit = async (event) => {
@@ -52,12 +104,14 @@ const UpdateContractForm = () => {
 
             const tx = await contract.updateContract(
                 contractId,
+                fixedPassword,
                 agreementDetails,
-                tenantAgreements,
+                tenantAgreement,
                 landlordResponsibilities,
-                agreementsBetweenLandlord,
+                agreementBetweenLandlord,
                 landlordSignature,
                 tenantSignature
+               
             );
 
             await tx.wait();
@@ -88,44 +142,87 @@ const UpdateContractForm = () => {
                     {/* Add other fields for updating contract details */}
                     <div className="row">
                     <div className="col-25">
-                        <label>Rent Address:</label>
+                        <label>Agreement Details:</label>
                     </div>
                     <div className="col-75">
-                        <input type="text" value={rentAddress} onChange={(e) => setRentAddress(e.target.value)} required />
+                        <textarea value={agreementDetails} onChange={(e) => setAgreementDetails(e.target.value)} required />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-25">
-                        <label>Building Type:</label>
+                        <label>Tenant Agreements:</label>
                     </div>
                     <div className="col-75">
-                        <select value={buildingType} onChange={handleBuildingTypeChange} required>
-                            <option value="">Select Building Type</option>
-                            <option value="Flat">Flat</option>
-                            <option value="Lot House">Lot House</option>
-                            <option value="Apartment">Apartment</option>
-                        </select>
+                        {tenantAgreement.map((agreement, index) => (
+                            <div key={index}>
+                                <textarea
+                                    value={agreement}
+                                   onChange={e => handleTenantAgreementChange(index, e.target.value)}
+                                    
+                                    required
+                                />
+                                <button type="button" onClick={() => handleRemoveTenantAgreement(index)}>Remove</button>
+                            </div>
+                        ))}
+                        <button type="button" onClick={handleAddTenantAgreement}>Add Tenant Agreement</button>
                     </div>
                 </div>
                 <div className="row">
-    <div className="col-25">
-        <label>Rent Period (in months):</label>
-    </div>
-    <div className="col-75">
-        <select value={rentPeriod} onChange={(e) => handleRentPeriodChange(e)} required>
-            <option value="">Select rent period</option>
-            <option value="1">1 month</option>
-            <option value="2">2 months</option>
-            <option value="3">3 months</option>
-            <option value="6">6 months</option>
-            <option value="12">12 months</option>
-            <option value="other">Other</option>
-        </select>
-        {rentPeriod === "other" && (
-            <input type="number" value={customRentPeriod} onChange={(e) => setCustomRentPeriod(parseInt(e.target.value))} placeholder="Enter custom rent period" />
-        )}
-    </div>
-</div>
+                    <div className="col-25">
+                        <label>Landlord Responsibilities:</label>
+                    </div>
+                    <div className="col-75">
+                        {landlordResponsibilities.map((responsibility, index) => (
+                            <div key={index}>
+                                <textarea
+                                    value={responsibility}
+                                    onChange={e => handleLandlordResponsibilityChange(index, e.target.value)}
+                                    required
+                                />
+                                <button type="button" onClick={() => handleRemoveLandlordResponsibility(index)}>Remove</button>
+                            </div>
+                        ))}
+                        <button type="button" onClick={handleAddLandlordResponsibility}>Add Landlord Responsibility</button>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label>Agreements Between Landlord:</label>
+                    </div>
+                    <div className="col-75">
+                        {agreementBetweenLandlord.map((agreement, index) => (
+                            <div key={index}>
+                                <textarea
+                                    value={agreement}
+                                 onChange={e => handleAgreementBetweenLandlordChange(index, e.target.value)}
+                                 
+                                    required
+                                />
+                                <button type="button" onClick={() => handleRemoveAgreementBetweenLandlord(index)}>Remove</button>
+                            </div>
+                        ))}
+                        <button type="button" onClick={handleAddAgreementBetweenLandlord}>Add Agreement Between Landlord</button>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label>Landlord Signature:</label>
+                    </div>
+                    <div className="col-75">
+                        <input type="text" value={landlordSignature} onChange={(e) => setLandlordSignature(e.target.value)} required />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-25">
+                        <label>Tenant Signature:</label>
+                    </div>
+                    <div className="col-75">
+                        <input type="text" value={tenantSignature} onChange={(e) => setTenantSignature(e.target.value)} required />
+                    </div>
+                </div>
+
+
+             
 
 
                 </div>
