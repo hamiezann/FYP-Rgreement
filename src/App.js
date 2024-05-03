@@ -12,6 +12,8 @@ import LoginForm from './authentication/login';
 import { AuthContext} from './authentication/AuthContext';
 import RentHouseList from './page/landlord/landlord_house_list';
 import UpdateRentHouse from './page/landlord/update_housedb';
+import HouseContractDetails from './page/landlord/house_contract_details';
+import UpdateHouseContractForm from './page/landlord/update_contract_details';
 
 const App = () => {
    const { isAuthenticated } = useContext(AuthContext);
@@ -39,7 +41,8 @@ const App = () => {
                 <Route path="/list" element={<CreatedView />} />
                 <Route path="/yourhouse-list" element={<RentHouseList />} />
                 <Route path="/update-rent-house/:houseId" element={<UpdateRentHouse  />} />
-                {/* <Route path="/update-rent-house/:houseId" element={<UpdateRentHouse />} /> */}
+                <Route path="/house-contract-details" element={<HouseContractDetails />} />
+                <Route path="/rental-contract-update" element={<UpdateHouseContractForm />} />
                 <Route path="/update_contract" element={<ContractUpdateForm />} />
               </>
             ) : (

@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import {  useLocation, useNavigate } from "react-router-dom";
 import { ethers } from "ethers";
-import "../style/contract.css";
-import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
-import { useGlobalContractState } from "./globally_use_variable.js/variable";
+import "../../style/contract.css"
+import HouseRentalContract from "../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
+import { useGlobalContractState } from "../globally_use_variable.js/variable";
 
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAbi = HouseRentalContract.abi;
 const fixedPassword = "123456";
-const UpdateContractForm = () => {
+const UpdateHouseContractForm = () => {
 
-    const [contractId, setContractId] = useState("");
+    //const [contractId, setContractId] = useState("");
+    
     const {
         landlord,setLandlord,
         identificationNumber,setIdentificationNumber,
@@ -89,6 +91,9 @@ const UpdateContractForm = () => {
         userId, setUserId,
     } = useGlobalContractState();
 
+    const location = useLocation();
+    const uniIdentifier = location.state.uniIdentifier;
+    const contractId = uniIdentifier;
     const generateLandlordSignature = async () => {
         // Implement signature generation logic here
         // This could involve cryptographic libraries or Ethereum wallet integration
@@ -99,7 +104,7 @@ const UpdateContractForm = () => {
         const signature = await signer.signMessage("You are signing this as a sign you agree with all the terms in the contract.");
         setLandlordSignature(signature);
     };
-
+     console.log('Uni Identifier:', uniIdentifier);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -141,14 +146,14 @@ const UpdateContractForm = () => {
             </div>
             <form onSubmit={handleSubmit}>
                 <div className="form-container">
-                    <div className="row">
+                    {/* <div className="row">
                         <div className="col-25">
                             <label>Contract ID:</label>
                         </div>
                         <div className="col-75">
                             <input type="text" value={contractId} onChange={(e) => setContractId(e.target.value)} required />
                         </div>
-                    </div>
+                    </div> */}
                     {/* Add other fields for updating contract details */}
                     <div className="row">
                     <div className="col-25">
@@ -250,4 +255,4 @@ const UpdateContractForm = () => {
     );
 };
 
-export default UpdateContractForm;
+export default UpdateHouseContractForm;

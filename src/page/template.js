@@ -20,14 +20,14 @@ function App() {
         </div>
         <div className='template-column'>
           <div className='template-box-container'>
-            <h2>View & Sign</h2>
-            <p>View and sign the rental contract.</p>
+            <h2>My Tenant</h2>
+            <p>See the list of your tenant.</p>
             <Link to="#" className='for-container'>Proceed</Link>
           </div>
         </div>
         <div className='template-column'>
           <div className='template-box-container'>
-            <h2>My Contract</h2>
+            <h2>My Property</h2>
             <p>See the list of your house.</p>
             <Link to="/yourhouse-list" className='for-container'>View</Link>
           </div>

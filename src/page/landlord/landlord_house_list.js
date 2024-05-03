@@ -9,6 +9,11 @@ const RentHouseList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate(); // Initialize useHistory
+
+  const handleContractDetails = (uniIdentifier) => {
+    navigate(`/house-contract-details`, { state: { uniIdentifier } });
+  };
+
   useEffect(() => {
     const userId = localStorage.getItem("userId");
 
@@ -40,7 +45,7 @@ const RentHouseList = () => {
 
 
 const handleUpdate = (houseId) => {
-    console.log("House ID:", houseId); // Log the house ID
+   // console.log("House ID:", houseId); // Log the house ID
     // Construct the URL for the update page
     const updateUrl = `/update-rent-house/${houseId}`;
     // Navigate to the update page
@@ -79,7 +84,7 @@ const handleUpdate = (houseId) => {
         
                 <button className="delete-button" onClick={() => handleDelete(house.id)}>Delete</button>
                 <button className="update-button" onClick={() => handleUpdate(house.id)}>Update</button>
-
+                <button className="contract-details-button" onClick={() => handleContractDetails(house.uni_identifier)}>Contract Details</button>
                 {/* Add update button here */}
               </div>
             </li>

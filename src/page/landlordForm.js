@@ -4,12 +4,12 @@ import "../style/contract.css";
 import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
 import { useGlobalContractState } from "./globally_use_variable.js/variable";
 
-const contractAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
+const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAbi = HouseRentalContract.abi;
 
 const HouseRentalForm = () => {
 
-const {
+    const {
     landlord,setLandlord,
     identificationNumber,setIdentificationNumber,
     houseAddress,setHouseAddress,
@@ -86,7 +86,8 @@ const {
     handleRemoveAgreementBetweenLandlord,
     handleAgreementBetweenLandlordChange,
     userId, setUserId,
-} = useGlobalContractState();
+    } = useGlobalContractState();
+
     const fixedPassword = "123456";
     const [numberOfRooms, setnumberOfRooms] = useState(""); 
 
@@ -96,6 +97,11 @@ const {
       setUserId(userIdFromStorage);
     }, []);
  
+    // const generateAgreementDetails = () => {
+    //     return `This agreement was made on ${contractCreated}, between ${landlord} (from now on referred to as 'Landlord') and ${tenantName} (from now on referred to as 'Tenant').
+    //     WHEREAS the Landlord is the registered owner of the house located at ${rentAddress} (from now on referred to as the "Said House").
+    //     AND WHEREAS the Landlord now agrees to lease, and the Tenant agrees to rent the Said House for ${rentDuration}, from ${effectiveStartDate} to ${effectiveEndDate}, subject to the terms and conditions contained herein.`;
+    //   };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -181,18 +187,6 @@ const {
             //const createdContract = await contract.getContract(uni_identifier);
             const createdContract = await contract.getContract(uni_identifier, fixedPassword);
                
-                    // const response = await axios.post("http://127.0.0.1:8000/api/house-details", {
-                    //     user_id: userId, // Replace with actual user ID
-                    //     latitude: rentLatitude,
-                    //     longitude: rentLongitude,
-                    //     uni_identifier: uni_identifier,
-                    //     preferred_occupants: preferredOccupants,
-                    //     type_of_house: buildingType,
-                    //     description: description, // Assuming this is the description from the form
-                    //     rent_fee: monthlyRent,
-                    //     number_of_rooms: numberOfRooms, // Assuming this is the number of rooms from the form
-                    //     // Add other form fields as needed
-                    // });
 
         // Log the contract details to the console
         console.log("Created Contract Details:", createdContract);
@@ -253,14 +247,15 @@ const {
                 </div>
                 
                 {/* Add Landlord Signature */}
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-25">
                         <label>Landlord Signature:</label>
                     </div>
                     <div className="col-75">
                         <input type="text" value={landlordSignature} onChange={(e) => setLandlordSignature(e.target.value)} required />
                     </div>
-                </div>
+                </div> */}
+
                 </div>
             {/* Is there a tenant */}
                 <div className="form-container">
@@ -478,6 +473,7 @@ const {
                     </div>
                     <div className="col-75">
                         <textarea value={agreementDetails} onChange={(e) => setAgreementDetails(e.target.value)} required />
+                        {/* <textarea value={generateAgreementDetails()} readOnly /> */}
                     </div>
                 </div>
 
