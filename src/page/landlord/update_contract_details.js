@@ -20,7 +20,7 @@ const UpdateHouseContractForm = () => {
         tenantName, setTenantName,
         tenantIdNumber, setTenantIdNumber,
         tenantHouseAddress,setTenantHouseAddress,
-
+    
         rentAddress,
         setRentAddress,
         rentLatitude,
@@ -51,10 +51,16 @@ const UpdateHouseContractForm = () => {
         setAgreementDetails,
         tenantAgreement,
         setTenantAgreement,
+        newTenantAgreement,
+        setNewTenantAgreement,
         landlordResponsibilities,
         setLandlordResponsibilities,
+        newLandlordResponsibilites,
+        setNewLandlordResponsibilities,
         agreementBetweenLandlord,
         setAgreementBetweenLandlord,
+        newAgreementBetweenLandlord,
+        setNewAgreementBetweenLandlord,
         landlordSignature,
         setLandlordSignature,
         tenantSignature,
@@ -69,11 +75,12 @@ const UpdateHouseContractForm = () => {
         setBuildingType,
         preferredOccupants,
         setPreferredOccupants,
-        numberOfRooms,
-        setNumberOfRooms,
+        // numberOfRooms,
+        // setNumberOfRooms,
         description,
         setDescription,
-
+        
+    
         handlePaymentMethodChange,
         handleBuildingTypeChange,
         handleRentPeriodChange,
@@ -89,7 +96,11 @@ const UpdateHouseContractForm = () => {
         handleRemoveAgreementBetweenLandlord,
         handleAgreementBetweenLandlordChange,
         userId, setUserId,
-    } = useGlobalContractState();
+        } = useGlobalContractState();
+
+    const tenantAgreementOptions = ['Option 1', 'Option 2', 'Option 3']; 
+    const landlordAgreementOptions = ['Option 1', 'Option 2', 'Option 3']; 
+    const agreementBetweenLandlordOptions = ['Option 1', 'Option 2', 'Option 3'];
 
     const location = useLocation();
     const uniIdentifier = location.state.uniIdentifier;
@@ -163,25 +174,37 @@ const UpdateHouseContractForm = () => {
                         <textarea value={agreementDetails} onChange={(e) => setAgreementDetails(e.target.value)} required />
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-25">
-                        <label>Tenant Agreements:</label>
-                    </div>
-                    <div className="col-75">
-                        {tenantAgreement.map((agreement, index) => (
-                            <div key={index}>
-                                <textarea
-                                    value={agreement}
-                                   onChange={e => handleTenantAgreementChange(index, e.target.value)}
-                                    
-                                    required
-                                />
-                                <button type="button" onClick={() => handleRemoveTenantAgreement(index)}>Remove</button>
-                            </div>
-                        ))}
-                        <button type="button" onClick={handleAddTenantAgreement}>Add Tenant Agreement</button>
-                    </div>
-                </div>
+     <div className="row">
+        <div className="col-25">
+          <label>Tenant Agreements:</label>
+        </div>
+        <div className="col-75">
+          {tenantAgreement.map((agreement, index) => (
+            <div key={index}>
+              {/* <textarea
+                value={agreement}
+                onChange={(e) => handleTenantAgreementChange(index, e.target.value)}
+                required
+              /> */}
+              {agreement}
+              {agreement && (
+              <button type="button" onClick={() => handleRemoveTenantAgreement(index)}>Remove</button>
+              )}
+              </div>
+          ))}
+          <div>
+            <select value={newTenantAgreement} onChange={(e) => setNewTenantAgreement(e.target.value)}>
+              <option value="">Select an option...</option>
+              {tenantAgreementOptions.map((option, index) => (
+                <option key={index} value={option}>{option}</option>
+              ))}
+            </select>
+            <button type="button" onClick={handleAddTenantAgreement}>Add Tenant Agreement</button>
+          </div>
+        </div>
+      </div>
+
+                {/* Add Landlord Responsibilities */}
                 <div className="row">
                     <div className="col-25">
                         <label>Landlord Responsibilities:</label>
@@ -189,17 +212,31 @@ const UpdateHouseContractForm = () => {
                     <div className="col-75">
                         {landlordResponsibilities.map((responsibility, index) => (
                             <div key={index}>
-                                <textarea
+                                {/* <textarea
                                     value={responsibility}
                                     onChange={e => handleLandlordResponsibilityChange(index, e.target.value)}
                                     required
-                                />
+                                /> */}
+                                {responsibility}
+                                {responsibility && (
                                 <button type="button" onClick={() => handleRemoveLandlordResponsibility(index)}>Remove</button>
+                                )}
                             </div>
                         ))}
-                        <button type="button" onClick={handleAddLandlordResponsibility}>Add Landlord Responsibility</button>
+                        <div>
+                            <select value={newLandlordResponsibilites} onChange={(e) => setNewLandlordResponsibilities(e.target.value)}>
+                                <option value="">Select an option...</option>
+                                {landlordAgreementOptions.map((option, index) =>(
+                                    <option key={index} value={option}>{option}</option>
+                                ))}
+                            </select>
+                            <button type="button" onClick={handleAddLandlordResponsibility}>Add Landlord Responsibility</button>
+
+                        </div>
                     </div>
                 </div>
+
+                {/* Add Agreements Between Landlord */}
                 <div className="row">
                     <div className="col-25">
                         <label>Agreements Between Landlord:</label>
@@ -207,16 +244,29 @@ const UpdateHouseContractForm = () => {
                     <div className="col-75">
                         {agreementBetweenLandlord.map((agreement, index) => (
                             <div key={index}>
-                                <textarea
+                                {/* <textarea
                                     value={agreement}
                                  onChange={e => handleAgreementBetweenLandlordChange(index, e.target.value)}
                                  
                                     required
-                                />
+                                /> */}
+                                {agreement}
+                                {agreement && (
                                 <button type="button" onClick={() => handleRemoveAgreementBetweenLandlord(index)}>Remove</button>
+
+                                )}
                             </div>
                         ))}
-                        <button type="button" onClick={handleAddAgreementBetweenLandlord}>Add Agreement Between Landlord</button>
+                        <div>
+                            <select value={newAgreementBetweenLandlord} onChange={(e) =>setNewAgreementBetweenLandlord(e.target.value)}>
+                                <option value="">Select an option...</option>
+                                {agreementBetweenLandlordOptions.map((option, index) => (
+                                    <option key={index} value={option}>{option}</option>
+                                ))}
+                            </select>
+                            <button type="button" onClick={handleAddAgreementBetweenLandlord}>Add Agreement Between Landlord</button>
+
+                        </div>
                     </div>
                 </div>
                 <div className="row">

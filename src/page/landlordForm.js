@@ -3,6 +3,8 @@ import { ethers } from "ethers";
 import "../style/contract.css";
 import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
 import { useGlobalContractState } from "./globally_use_variable.js/variable";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAbi = HouseRentalContract.abi;
@@ -48,10 +50,16 @@ const HouseRentalForm = () => {
     setAgreementDetails,
     tenantAgreement,
     setTenantAgreement,
+    newTenantAgreement,
+    setNewTenantAgreement,
     landlordResponsibilities,
     setLandlordResponsibilities,
+    newLandlordResponsibilites,
+    setNewLandlordResponsibilities,
     agreementBetweenLandlord,
     setAgreementBetweenLandlord,
+    newAgreementBetweenLandlord,
+    setNewAgreementBetweenLandlord,
     landlordSignature,
     setLandlordSignature,
     tenantSignature,
@@ -70,6 +78,7 @@ const HouseRentalForm = () => {
     // setNumberOfRooms,
     description,
     setDescription,
+    
 
     handlePaymentMethodChange,
     handleBuildingTypeChange,
@@ -89,7 +98,8 @@ const HouseRentalForm = () => {
     } = useGlobalContractState();
 
     const fixedPassword = "123456";
-    const [numberOfRooms, setnumberOfRooms] = useState(""); 
+    const [numberOfRooms, setnumberOfRooms] = useState(''); 
+    // const [numberOfRooms, setnumberOfRooms] = useState(0); 
 
     useEffect(() => {
       // Retrieve userId from localStorage when the component mounts
@@ -116,7 +126,7 @@ const HouseRentalForm = () => {
             console.log("Uni Identifier (byte array):", uni_identifier_heh);
             console.log("Uni Identifier (hex string):", uni_identifier);
 
-        
+
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -133,6 +143,10 @@ const HouseRentalForm = () => {
             // Add other form fields as needed
         })
     };
+    const latitudeInt = Math.round(rentLatitude * 1e6); // Convert to integer with 6 decimal places
+    const longitudeInt = Math.round(rentLongitude * 1e6); // Convert to integer with 6 decimal places
+
+
 
         try {
             const provider = new ethers.BrowserProvider(window.ethereum);
@@ -149,8 +163,10 @@ const HouseRentalForm = () => {
                 deposit: deposit,
                 utilityDeposit: utilityDeposit,
                 advanceRental: advanceRental,
-                latitude: rentLatitude,
-                longitude: rentLongitude
+                // latitude: rentLatitude,
+                // longitude: rentLongitude
+                latitude: latitudeInt,
+                longitude: longitudeInt
             };
 
 
@@ -205,8 +221,39 @@ const HouseRentalForm = () => {
             setIsLoading(false);
             setErrorMessage("An error occurred while creating the contract. Please try again.");
         }
+
     };
 
+  const tenantAgreementOptions = ['Option 1', 'Option 2', 'Option 3']; 
+  const landlordAgreementOptions = ['Option 1', 'Option 2', 'Option 3']; 
+  const agreementBetweenLandlordOptions = ['Option 1', 'Option 2', 'Option 3']; 
+
+//   const [selectedLocation, setSelectedLocation] = useState('');
+//   const handleClick = (event) => {
+//     const {lat, lng} = event.latlng;
+//     setSelectedLocation({lat,lng});
+//     setLatitude(lat);
+//     setLongitude(lng);
+//   }
+// const [selectedLocation, setSelectedLocation] = useState("");
+
+const [selectedLocation, setSelectedLocation] = useState({lat: 4.2105, lng: 101.9758 });
+
+
+const handleClick = (event) => {
+    setSelectedLocation(event.latlng);
+  };
+  
+  const handleConfirmLocation = () => {
+    if (selectedLocation) {
+      setLatitude(parseFloat(selectedLocation.lat.toFixed(6)));
+      setLongitude(parseFloat(selectedLocation.lng.toFixed(6)));
+    }
+  };
+  
+
+  
+  
     return (
        
         <div className="container">
@@ -214,6 +261,7 @@ const HouseRentalForm = () => {
             <div className="title-container">
             <h2>RENTAL CONTRACT FORM</h2>
             </div>
+
             
             <form onSubmit={handleSubmit}>
             {/* Landlord Details */}
@@ -324,7 +372,7 @@ const HouseRentalForm = () => {
                     </div>
                 </div>
 
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-25">
                         <label>Latitude & Longitude:</label>
                     </div>
@@ -332,7 +380,65 @@ const HouseRentalForm = () => {
                         <input type="text" value={rentLatitude} onChange={(e) => setLatitude(e.target.value)} required />
                         <input type="text" value={rentLongitude} onChange={(e) => setLongitude(e.target.value)} required />
                     </div>
-                </div>
+                </div> */}
+<div className="row">
+  <div className="col-75">
+    <div className="map-container">
+      <MapContainer
+        center={[4.2105, 101.9758]}
+        zoom={12}
+        scrollWheelZoom={true}
+        style={{
+          border: "2px solid #6A67CE",
+          borderRadius: "10px",
+          height: "60vw",
+          width: "90%",
+          maxWidth: "800px",
+          maxHeight: "400px",
+          margin: "10px 10.5%",
+        }}
+        onClick={handleClick}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {selectedLocation && (
+          <Marker
+            position={selectedLocation}
+            draggable={true}
+            eventHandlers={{
+                dragend: (e) => {
+                    const lat = e.target.getLatLng().lat.toFixed(6);
+                    const lng = e.target.getLatLng().lng.toFixed(6);
+                    setSelectedLocation(e.target.getLatLng());
+                    setLatitude(lat);
+                    setLongitude(lng);
+                  }
+            }}
+          >
+            <Popup>
+              You clicked here:<br />
+              Latitude: {selectedLocation.lat.toFixed(4)}<br />
+              Longitude: {selectedLocation.lng.toFixed(4)}
+            </Popup>
+          </Marker>
+        )}
+      </MapContainer>
+    </div>
+  </div>
+  <div className="col-25">
+    <label>Latitude:</label>
+    <input type="text" value={rentLatitude || ""} readOnly />
+    <input type="text" value={rentLongitude || ""} readOnly />
+
+    <button type="button" onClick={handleConfirmLocation}>
+      Confirm Location
+    </button>
+  </div>
+</div>
+
+
 
                 {/* Add Building Type */}
                 <div className="row">
@@ -468,7 +574,7 @@ const HouseRentalForm = () => {
                     
                 {/* Add Agreement Details */}
                 <div className="row">
-                    <div className="col-25">
+                    <div className="col-25"> 
                         <label>Agreement Details:</label>
                     </div>
                     <div className="col-75">
@@ -478,7 +584,7 @@ const HouseRentalForm = () => {
                 </div>
 
                 {/* Add Tenant Agreements */}
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-25">
                         <label>Tenant Agreements:</label>
                     </div>
@@ -496,7 +602,36 @@ const HouseRentalForm = () => {
                         ))}
                         <button type="button" onClick={handleAddTenantAgreement}>Add Tenant Agreement</button>
                     </div>
-                </div>
+                </div> */}
+     <div className="row">
+        <div className="col-25">
+          <label>Tenant Agreements:</label>
+        </div>
+        <div className="col-75">
+          {tenantAgreement.map((agreement, index) => (
+            <div key={index}>
+              {/* <textarea
+                value={agreement}
+                onChange={(e) => handleTenantAgreementChange(index, e.target.value)}
+                required
+              /> */}
+              {agreement}
+              {agreement && (
+              <button type="button" onClick={() => handleRemoveTenantAgreement(index)}>Remove</button>
+              )}
+              </div>
+          ))}
+          <div>
+            <select value={newTenantAgreement} onChange={(e) => setNewTenantAgreement(e.target.value)}>
+              <option value="">Select an option...</option>
+              {tenantAgreementOptions.map((option, index) => (
+                <option key={index} value={option}>{option}</option>
+              ))}
+            </select>
+            <button type="button" onClick={handleAddTenantAgreement}>Add Tenant Agreement</button>
+          </div>
+        </div>
+      </div>
 
                 {/* Add Landlord Responsibilities */}
                 <div className="row">
@@ -506,15 +641,27 @@ const HouseRentalForm = () => {
                     <div className="col-75">
                         {landlordResponsibilities.map((responsibility, index) => (
                             <div key={index}>
-                                <textarea
+                                {/* <textarea
                                     value={responsibility}
                                     onChange={e => handleLandlordResponsibilityChange(index, e.target.value)}
                                     required
-                                />
+                                /> */}
+                                {responsibility}
+                                {responsibility && (
                                 <button type="button" onClick={() => handleRemoveLandlordResponsibility(index)}>Remove</button>
+                                )}
                             </div>
                         ))}
-                        <button type="button" onClick={handleAddLandlordResponsibility}>Add Landlord Responsibility</button>
+                        <div>
+                            <select value={newLandlordResponsibilites} onChange={(e) => setNewLandlordResponsibilities(e.target.value)}>
+                                <option value="">Select an option...</option>
+                                {landlordAgreementOptions.map((option, index) =>(
+                                    <option key={index} value={option}>{option}</option>
+                                ))}
+                            </select>
+                            <button type="button" onClick={handleAddLandlordResponsibility}>Add Landlord Responsibility</button>
+
+                        </div>
                     </div>
                 </div>
 
@@ -526,20 +673,34 @@ const HouseRentalForm = () => {
                     <div className="col-75">
                         {agreementBetweenLandlord.map((agreement, index) => (
                             <div key={index}>
-                                <textarea
+                                {/* <textarea
                                     value={agreement}
                                  onChange={e => handleAgreementBetweenLandlordChange(index, e.target.value)}
                                  
                                     required
-                                />
+                                /> */}
+                                {agreement}
+                                {agreement && (
                                 <button type="button" onClick={() => handleRemoveAgreementBetweenLandlord(index)}>Remove</button>
+
+                                )}
                             </div>
                         ))}
-                        <button type="button" onClick={handleAddAgreementBetweenLandlord}>Add Agreement Between Landlord</button>
+                        <div>
+                            <select value={newAgreementBetweenLandlord} onChange={(e) =>setNewAgreementBetweenLandlord(e.target.value)}>
+                                <option value="">Select an option...</option>
+                                {agreementBetweenLandlordOptions.map((option, index) => (
+                                    <option key={index} value={option}>{option}</option>
+                                ))}
+                            </select>
+                            <button type="button" onClick={handleAddAgreementBetweenLandlord}>Add Agreement Between Landlord</button>
+
+                        </div>
                     </div>
                 </div>
+
                 </div>
-            {/* Add to database */}
+            {/* database data*/}
                 <div className="form-container">
                 <div className="row">
         <div className="col-25">
@@ -553,12 +714,14 @@ const HouseRentalForm = () => {
             </select>
         </div>
                 </div>
+                {/* number of rooms */}
                 <div className="row">
                     <div className="col-25">
                         <label>Number of Rooms</label>
                     </div>
                     <div className="col-75">
                         <select value={numberOfRooms} onChange={(e) => setnumberOfRooms(e.target.value)}>
+                        <option value="">Select Number of Rooms</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -568,6 +731,7 @@ const HouseRentalForm = () => {
                         </select>
                     </div>
                 </div>
+                {/* house descriiption */}
                 <div className="row">
                     <div className="col-25">
                         <label>House Description</label>
@@ -585,7 +749,8 @@ const HouseRentalForm = () => {
                     </div>
                 ) : (
                     <div className="button-container">
-                        <input type="submit" value="Create Contract" />
+                        {/* <input type="submit" value="Create Contract" /> */}
+                        <button onClick={handleSubmit}>Create Contract</button>
                     </div>
                 )}
 
@@ -599,6 +764,7 @@ const HouseRentalForm = () => {
 
    
     );
+    
     
 };
 

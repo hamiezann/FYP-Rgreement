@@ -10,8 +10,9 @@ export const useGlobalContractState = () => {
     const [tenantHouseAddress, setTenantHouseAddress] = useState(""); 
 
     const [rentAddress, setRentAddress] = useState('');
-    const [rentLatitude, setLatitude] = useState('');
-    const [rentLongitude, setLongitude] = useState('');
+    const [rentLatitude, setLatitude] = useState(null);
+    const [rentLongitude, setLongitude] = useState(null);
+    
     const [rentPeriod, setRentPeriod] = useState(0);
     const [customRentPeriod, setCustomRentPeriod] = useState('');
     const [effectiveDate, setEffectiveDate] = useState('');
@@ -24,8 +25,11 @@ export const useGlobalContractState = () => {
     const [advanceRental, setAdvanceRental] = useState(0);
     const [agreementDetails, setAgreementDetails] = useState('');
     const [tenantAgreement, setTenantAgreement] = useState(['']);
+    const [newTenantAgreement, setNewTenantAgreement] = useState('');
     const [landlordResponsibilities, setLandlordResponsibilities] = useState(['']);
+    const [newLandlordResponsibilites, setNewLandlordResponsibilities] = useState('');
     const [agreementBetweenLandlord, setAgreementBetweenLandlord] = useState(['']);
+    const [newAgreementBetweenLandlord, setNewAgreementBetweenLandlord] = useState('');
     const [landlordSignature, setLandlordSignature] = useState('');
     const [tenantSignature, setTenantSignature] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +39,7 @@ export const useGlobalContractState = () => {
     const [preferredOccupants, setPreferredOccupants] = useState(''); 
     //const [numberOfRooms, setNumberOfRooms] = useState(''); 
     const [description, setDescription] = useState(''); 
+    
 
 
     const handlePaymentMethodChange = (e) => {
@@ -63,7 +68,7 @@ export const useGlobalContractState = () => {
         setMaxOverduePeriod(selectedValue);
     };
 
-        // Function to handle checkbox change
+        // Function to handle checkbox change for tenant
     const handleCheckboxChange = (e) => {
             setHasTenant(e.target.checked); // Update the hasTenant state based on checkbox status
             // If the checkbox is unchecked, reset tenant details
@@ -75,9 +80,14 @@ export const useGlobalContractState = () => {
             }
         };
     
+    // const handleAddTenantAgreement = () => {
+    //     setTenantAgreement(prevAgreement => [...prevAgreement, ""]);
+    // };
+
     const handleAddTenantAgreement = () => {
-        setTenantAgreement(prevAgreement => [...prevAgreement, ""]);
-    };
+        setTenantAgreement([...tenantAgreement, newTenantAgreement]);
+        setNewTenantAgreement('');
+      };
 
     const handleRemoveTenantAgreement = index => {
         const updatedAgreements = [...tenantAgreement];
@@ -91,8 +101,13 @@ export const useGlobalContractState = () => {
         setTenantAgreement(updatedAgreements);
     };
 
+    // Landlord Logic
+    // const handleAddLandlordResponsibility = () => {
+    //     setLandlordResponsibilities(prevResponsibilities => [...prevResponsibilities, ""]);
+    // };
     const handleAddLandlordResponsibility = () => {
-        setLandlordResponsibilities(prevResponsibilities => [...prevResponsibilities, ""]);
+        setLandlordResponsibilities([...landlordResponsibilities, newLandlordResponsibilites ]);
+        setNewLandlordResponsibilities('');
     };
 
     const handleRemoveLandlordResponsibility = index => {
@@ -107,8 +122,13 @@ export const useGlobalContractState = () => {
         setLandlordResponsibilities(updatedResponsibilities);
     };
 
+    // Agreement Between Landlord Logic
+    // const handleAddAgreementBetweenLandlord = () => {
+    //     setAgreementBetweenLandlord(prevAgreements => [...prevAgreements, ""]);
+    // };
     const handleAddAgreementBetweenLandlord = () => {
-        setAgreementBetweenLandlord(prevAgreements => [...prevAgreements, ""]);
+        setAgreementBetweenLandlord([...agreementBetweenLandlord, newAgreementBetweenLandlord]);
+        setNewAgreementBetweenLandlord('');
     };
 
     const handleRemoveAgreementBetweenLandlord = index => {
@@ -164,10 +184,16 @@ export const useGlobalContractState = () => {
         setAgreementDetails,
         tenantAgreement,
         setTenantAgreement,
+        newTenantAgreement,
+        setNewTenantAgreement,
         landlordResponsibilities,
         setLandlordResponsibilities,
+        newLandlordResponsibilites,
+        setNewLandlordResponsibilities,
         agreementBetweenLandlord,
         setAgreementBetweenLandlord,
+        newAgreementBetweenLandlord,
+        setNewAgreementBetweenLandlord,
         landlordSignature,
         setLandlordSignature,
         tenantSignature,
@@ -186,6 +212,7 @@ export const useGlobalContractState = () => {
        // setNumberOfRooms,
         description,
         setDescription,
+        
 
         handlePaymentMethodChange,
         handleBuildingTypeChange,
