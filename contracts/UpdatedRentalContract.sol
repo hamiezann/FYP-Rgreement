@@ -12,7 +12,8 @@ contract HouseRentalContract {
         string rent_address;
         string buildingType;
         uint rentPeriod;
-        uint effectiveDate;
+        uint effectiveStartDate;
+        uint effectiveEndDate;
         uint monthlyRent;
         string paymentMethod;
         uint maxOverduePeriod;

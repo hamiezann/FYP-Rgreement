@@ -72,7 +72,8 @@ const HouseContractDetails = () => {
     <p>Rent Address: {contractDetails.houseDetails.rent_address}</p>
     <p>Building Type: {contractDetails.houseDetails.buildingType}</p>
     <p>Rent Period: {Number(contractDetails.houseDetails.rentPeriod)}</p>
-    <p>Effective Date: {new Date(Number(contractDetails.houseDetails.effectiveDate) * 1000).toLocaleDateString()}</p>
+    <p>Effective StartDate: {new Date(Number(contractDetails.houseDetails.effectiveStartDate) * 1000).toLocaleDateString()}</p>
+    <p>Effective End Date: {new Date(Number(contractDetails.houseDetails.effectiveEndDate) * 1000).toLocaleDateString()}</p>
     <p>Monthly Rent: {Number(contractDetails.houseDetails.monthlyRent)}</p>
     <p>Payment Method: {contractDetails.houseDetails.paymentMethod}</p>
     <p>Max Overdue Period: {Number(contractDetails.houseDetails.maxOverduePeriod)}</p>

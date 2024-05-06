@@ -1,0 +1,88 @@
+.message-main-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.chat-header {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.chat-body {
+    flex: 1;
+    overflow-y: auto; /* Enable scrolling */
+    height: calc(90vh - 200px); /* Adjust the height according to your design */
+}
+
+.chat-footer {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+/* message component */
+.message-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    /* display: flex; */
+}
+
+.message-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.message-list li {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 70%;
+}
+.message-list .sender {
+    text-align: right;
+    background-color: #def;
+    align-self: flex-end; 
+    margin-left: auto;
+}
+
+.message-list .recipient {
+    text-align: left;
+    background-color: #dfd;
+    align-self: flex-start;
+} 
+
+/* 
+.sender {
+    background-color: #DCF8C6; 
+    align-self: flex-end; 
+  
+}
+
+.recipient {
+    background-color: #44fb2c; 
+    align-self: flex-start;
+   
+} */
+
+/*  */
+
+/* .message-list li {
+    width: fit-content;
+    padding: 8px;
+    margin-bottom: 8px;
+}
+
+.sender {
+    background-color: lightblue;
+    align-self: flex-end; 
+    margin-left: auto;
+}
+
+.recipient {
+    background-color: lightgreen;
+    align-self: flex-start; 
+} */
+

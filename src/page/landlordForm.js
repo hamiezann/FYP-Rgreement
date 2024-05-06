@@ -30,8 +30,10 @@ const HouseRentalForm = () => {
     setRentPeriod,
     customRentPeriod,
     setCustomRentPeriod,
-    effectiveDate,
-    setEffectiveDate,
+    effectiveStartDate,
+    setEffectiveStartDate,
+    effectiveEndDate,
+    setEffectiveEndDate,
     monthlyRent,
     setMonthlyRent,
     paymentMethod,
@@ -156,7 +158,8 @@ const HouseRentalForm = () => {
                 rent_address: rentAddress,
                 buildingType: buildingType,
                 rentPeriod: rentPeriod,
-                effectiveDate: new Date(effectiveDate).getTime() / 1000, // Convert date to Unix timestamp
+                effectiveStartDate: new Date(effectiveStartDate).getTime() / 1000, // Convert date to Unix timestamp
+                effectiveEndDate: new Date(effectiveEndDate).getTime() / 1000, // Convert date to Unix timestamp
                 monthlyRent: monthlyRent,
                 paymentMethod: paymentMethod,
                 maxOverduePeriod: maxOverduePeriod,
@@ -427,7 +430,10 @@ const handleClick = (event) => {
       </MapContainer>
     </div>
   </div>
-  <div className="col-25">
+
+</div>
+<div className="row">
+<div className="col-75">
     <label>Latitude:</label>
     <input type="text" value={rentLatitude || ""} readOnly />
     <input type="text" value={rentLongitude || ""} readOnly />
@@ -477,13 +483,22 @@ const handleClick = (event) => {
 </div>
 
 
-                {/* Add Effective Date */}
+                {/* Add Effective Start Date */}
                 <div className="row">
                     <div className="col-25">
-                        <label>Effective Date:</label>
+                        <label>Effective Start Date:</label>
                     </div>
                     <div className="col-75">
-                        <input placeholder="DD-MM-YYYY" type="date" value={effectiveDate} onChange={(e) => setEffectiveDate(e.target.value)} required />
+                        <input placeholder="DD-MM-YYYY" type="date" value={effectiveStartDate} onChange={(e) => setEffectiveStartDate(e.target.value)} required />
+                    </div>
+                </div>
+                {/* Add Effective End Date */}
+                <div className="row">
+                    <div className="col-25">
+                        <label>Effective End Date:</label>
+                    </div>
+                    <div className="col-75">
+                        <input placeholder="DD-MM-YYYY" type="date" value={effectiveEndDate} onChange={(e) => setEffectiveEndDate(e.target.value)} required />
                     </div>
                 </div>
 

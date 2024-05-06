@@ -8,6 +8,7 @@ function Navbar() {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
   const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
+  const role = localStorage.getItem('role');
 
   const toggleActiveClass = () => {
     setIsActive(!isActive);
@@ -24,6 +25,7 @@ function Navbar() {
   };
 
   console.log('Is Authenticated:', isAuthenticated); // Check if isAuthenticated is correctly set
+  console.log('User role:',role );
 
   return (
     <header className="App-header">
@@ -35,8 +37,11 @@ function Navbar() {
           <li onClick={removeActive}>
             <Link to="/home" className={`${styles.navLink}`}>Home</Link>
           </li>
+          <li onClick={removeActive}>
+            <Link to="/nearby-rent" className={`${styles.navLink}`}>RentBy</Link>
+          </li>
 
-          {isAuthenticated ? (
+          {isAuthenticated && role == 'landlord' && (
             <>
           <li onClick={removeActive}>
           <Link to="/contract" className={`${styles.navLink}`}>Template</Link>
@@ -48,8 +53,16 @@ function Navbar() {
           <Link to="/list" className={`${styles.navLink}`}>Find Contract</Link>
         </li>
         </>
-
-          ) : (
+          )}
+          {isAuthenticated && role === 'renter' && (
+            <>
+          <li onClick={removeActive}>
+                <Link to="/profile" className={`${styles.navLink}`}>My Profile</Link>
+          </li>
+            </>
+          )}
+        
+        {!isAuthenticated && (
             <li onClick={removeActive}>
             <Link to="/about" className={`${styles.navLink}`}>About</Link>
           </li>
