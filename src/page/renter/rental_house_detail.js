@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "../../style/renter/rental_house_detail.css";
 
 const HouseDetailPage = () => {
@@ -8,7 +8,7 @@ const HouseDetailPage = () => {
   const [houseDetails, setHouseDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
 //   useEffect(() => {
 //     console.log("Current houseId:", houseId);
 //   }, [houseId]);
@@ -44,6 +44,11 @@ const HouseDetailPage = () => {
 
   console.log("houseDetails:", houseDetails);
 
+  const handleApplyNow = (houseId) => {
+   
+      navigate(`/apply-house/${houseId}`);
+  };
+
   return (
     <div className="product-page">
       <div className="product-image-container">
@@ -57,6 +62,8 @@ const HouseDetailPage = () => {
       <div>Rent Fee: {houseDetails[0].rent_fee}</div>
       <div>Number of Rooms: {houseDetails[0].number_of_rooms}</div>
         <button>Chat Now</button>
+        <button onClick={() =>handleApplyNow(houseId)}>Apply</button>
+
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from '../navbar.module.css';
 import { AuthContext } from '../authentication/AuthContext';
+import DropdownMenu from './navbar/dropdownmenu';
 
 function Navbar() {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
@@ -24,6 +25,16 @@ function Navbar() {
     navigate('/login');
   };
 
+  const [menuOpen,setMenuOpen] = useState(false);
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const handleItemClick = () => {
+    toggleMenu();
+  }
+
+
   console.log('Is Authenticated:', isAuthenticated); // Check if isAuthenticated is correctly set
   console.log('User role:',role );
 
@@ -44,20 +55,20 @@ function Navbar() {
           {isAuthenticated && role == 'landlord' && (
             <>
           <li onClick={removeActive}>
-          <Link to="/contract" className={`${styles.navLink}`}>Template</Link>
+          <Link to="/contract" className={`${styles.navLink}`}>Menu</Link>
         </li>
-        <li onClick={removeActive}>
+        {/* <li onClick={removeActive}>
           <Link to="/update_contract" className={`${styles.navLink}`}>Update Contract</Link>
         </li>
         <li onClick={removeActive}>
           <Link to="/list" className={`${styles.navLink}`}>Find Contract</Link>
-        </li>
+        </li> */}
         </>
           )}
           {isAuthenticated && role === 'renter' && (
             <>
           <li onClick={removeActive}>
-                <Link to="/profile" className={`${styles.navLink}`}>My Profile</Link>
+                <Link to="/find-house" className={`${styles.navLink}`}>Find Houses</Link>
           </li>
             </>
           )}
@@ -71,7 +82,8 @@ function Navbar() {
 
           {isAuthenticated ? (
             <li onClick={removeActive}>
-              <button className={`${styles.navLink}`} onClick={handleLogout}>Logout</button>
+                <DropdownMenu handleLogout={handleLogout} />
+              {/* <button className={`${styles.navLink}`} onClick={handleLogout}>Logout</button> */}
             </li>
           ) : (
             <li onClick={removeActive}>

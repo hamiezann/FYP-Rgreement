@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 
 
-const MessageForm = ({ownerId, senderId, onSubmitMessage}) => {
+const RenterForm = ({ownerId, senderId, onSubmitMessage}) => {
     const [content, setContent] = useState('');
     const recipient_id = ownerId;
     const sender_id = senderId;
@@ -48,4 +48,4 @@ const MessageForm = ({ownerId, senderId, onSubmitMessage}) => {
     );
 };
 
-export default MessageForm;
+export default RenterForm;

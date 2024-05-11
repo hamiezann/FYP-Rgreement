@@ -3,6 +3,7 @@ import MessageComponent from './MessageComponent';
 import MessageForm from './MessageForm';
 import { useLocation, useParams } from 'react-router-dom';
 import './message.css'; // Import CSS file for styling
+import axios from 'axios';
 
 const MessageMain = () => {
     const sender_id = localStorage.getItem('userId');
@@ -10,7 +11,17 @@ const MessageMain = () => {
     const { houseId } = useParams();
     const { state } = useLocation();
     const ownerId = state?.ownerId;
-
+    const handleSubmitMessage = async (content) => {
+        try {
+            await axios.post(`http://127.0.0.1:8000/api/messages`, {
+                sender_id: sender_id,
+                recipient_id: ownerId,
+                content: content
+            });
+        } catch (error) {
+            console.error('Error sending message:', error);
+        }
+    };
     return (
         <div className="message-main-container">
             <div className="chat-header">
@@ -23,7 +34,7 @@ const MessageMain = () => {
             </div>
             <div className="chat-footer">
                 {/* <MessageForm ownerId={ownerId} senderId={sender_id} /> */}
-                <MessageForm ownerId={ownerId} senderId={sender_id} />
+                <MessageForm ownerId={ownerId} senderId={sender_id} onSubmitMessage={handleSubmitMessage} />
             </div>
         </div>
     );

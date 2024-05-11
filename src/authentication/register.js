@@ -11,7 +11,10 @@ const RegistrationForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    // console.log("Name:", name);
+    // console.log("Email:", email);
+    // console.log("Password:", password);
+    // console.log("Role:", role);
     // Send registration data to your backend API for user creation
     const response = await fetch('http://127.0.0.1:8000/api/register', {
       method: 'POST',
@@ -21,7 +24,10 @@ const RegistrationForm = () => {
 
     if (response.ok) {
       // Handle successful registration (e.g., redirect to login page)
-      navigate('/login');
+      const data = await response.json();
+      alert(data.message);
+     navigate('/login');
+
     } else {
       // Handle registration errors (e.g., display error message)
       alert('Registration Unsuccessful. Please try again.');

@@ -17,6 +17,11 @@ import UpdateHouseContractForm from './page/landlord/update_contract_details';
 import RentNearby from './page/renter/rentby_list';
 import HouseDetailPage from './page/renter/rental_house_detail';
 import MessageMain from './page/messaging/MessageMain';
+import ConversationsPage from './page/messaging/ConversationList';
+import ConversationPage from './page/messaging/ConversationShow';
+import FindHouse from './page/renter/find_house';
+import DisplaySearchHouse from './page/renter/display_search_house';
+import ApplyHouseForm from './page/renter/apply_house';
 
 const App = () => {
    const { isAuthenticated } = useContext(AuthContext);
@@ -41,6 +46,7 @@ const App = () => {
               <>
                 <Route path="*" element={<Navigate to="/home" />} />
                 <Route path="/home" element={<Home />} />
+                <Route path="/nearby-rent" element={<RentNearby />} />
                 <Route path="/contract" element={<Contract />} />
                 <Route path="/landlord_form" element={<LandlordForm />} />
                 <Route path="/list" element={<CreatedView />} />
@@ -50,6 +56,8 @@ const App = () => {
                 <Route path="/rental-contract-update" element={<UpdateHouseContractForm />} />
                 <Route path="/update_contract" element={<ContractUpdateForm />} />
                 <Route path="/chat/:houseId" element={<MessageMain />} />
+                <Route path="/conversations" element={<ConversationsPage />} />
+                <Route path="/conversations/:senderId/:recipientId" element={<ConversationPage />} />
               </>
             ) : (
               <>
@@ -57,7 +65,10 @@ const App = () => {
                 <Route path="/home" element={<Home />} />
                 <Route path="/nearby-rent" element={<RentNearby />} />
                 <Route path="/house-details/:houseId" element={<HouseDetailPage />} />
+                <Route path="/find-house/:houseId" element={<DisplaySearchHouse />} />
                 <Route path="/chat/:houseId" element={<MessageMain />} />
+                <Route path='/find-house' element={<FindHouse />} />
+                <Route path='/apply-house/:houseId' element={<ApplyHouseForm />} />
                 {/* Add UI components specific to renters here */}
               </>
             )}

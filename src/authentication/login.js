@@ -32,6 +32,7 @@ const LoginForm = () => {
 
       // Reload the page to trigger rendering of authenticated content
       window.location.reload();
+      window.location.href = '/home';
     } else {
       // Handle login errors (e.g., display error message)
       alert('Login Unsuccessful. Please check your email and password.');

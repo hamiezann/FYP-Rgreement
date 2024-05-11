@@ -54,35 +54,67 @@
     align-self: flex-start;
 } 
 
-/* 
-.sender {
-    background-color: #DCF8C6; 
-    align-self: flex-end; 
-  
+/* ConversationsPage.css */
+
+.conversation-list-container {
+    padding: 20px;
 }
 
-.recipient {
-    background-color: #44fb2c; 
-    align-self: flex-start;
-   
-} */
-
-/*  */
-
-/* .message-list li {
-    width: fit-content;
-    padding: 8px;
-    margin-bottom: 8px;
+.conversation-list {
+    list-style: none;
+    padding: 0;
 }
 
-.sender {
-    background-color: lightblue;
-    align-self: flex-end; 
-    margin-left: auto;
+.conversation-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border: 1px solid #ddd; /* Border color */
+    border-radius: 5px;
+    background-color: #fff; /* Background color */
+    padding: 10px;
 }
 
-.recipient {
-    background-color: lightgreen;
-    align-self: flex-start; 
-} */
+.conversation-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ccc; /* Placeholder color */
+    margin-right: 15px;
+}
+
+.conversation-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.conversation-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.conversation-header p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.conversation-header small {
+    color: #888;
+}
+
+.conversation-message {
+    color: #888;
+}
+
+.conversation-unread {
+    font-weight: bold;
+    color: #000;
+}
+
+/* Hover effect */
+.conversation-item:hover .conversation-info {
+    background-color: #f2f2f2;
+}
 

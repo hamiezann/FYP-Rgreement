@@ -7,7 +7,7 @@ const MessageComponent = ({ ownerId,user_id }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     
-    useEffect(() => {
+  
         const fetchMessages = async () => {
             try {
                 const response = await axios.get(`http://127.0.0.1:8000/api/messages`,
@@ -19,15 +19,22 @@ const MessageComponent = ({ ownerId,user_id }) => {
                     }
                 );
                 // setMessages(response.data);
-// Sort messages by timestamp and then by their order in the array
-const sortedMessages = response.data.sort((a, b) => {
-    const timestampComparison = new Date(a.timestamp) - new Date(b.timestamp);
-    if (timestampComparison !== 0) {
-      return timestampComparison;
-    } else {
-      return a.sequenceNumber - b.sequenceNumber; // Sort by sequence number if timestamps are equal
-    }
-  });
+            // Sort messages by timestamp and then by their order in the array
+                const sortedMessages = response.data.sort((a,b) => {
+                    const dateA = new Date(a.created_at);
+                    const dateB = new Date(b.created_at);
+
+                    if(dateA < dateB) {
+                        return - 1;
+                    }
+
+                    if (dateA > dateB) {
+                        return 1;
+                    }
+
+                    // return a.sequenceNumber - b.sequenceNumber;
+                    return 0;
+                });
   
 
                 setMessages(sortedMessages);
@@ -38,12 +45,27 @@ const sortedMessages = response.data.sort((a, b) => {
                 setIsLoading(false);
             }
         };
-
+        useEffect(()=> {
         fetchMessages();
     }, [ownerId, user_id]);
-   // console.log("Response:", messages);
+  // console.log("Response:", messages);
     // console.log("House Owner:", ownerId);
     // console.log("My data:", messages[0].sender_id);
+    
+    const handleSubmitMessage = async (content) => {
+        try {
+            await axios.post(`http://127.0.0.1:8000/api/messages`, {
+                sender_id: user_id,
+                recipient_id: ownerId,
+                content: content
+            });
+            // Fetch messages again after sending a message
+            fetchMessages();
+        } catch (error) {
+            console.error('Error sending message:', error);
+        }
+    };
+
     if (isLoading) {
         return <p>Loading...</p>;
     }
