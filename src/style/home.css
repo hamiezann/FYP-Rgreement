@@ -1,5 +1,5 @@
 /* Home.css */
-.content {
+/* .content {
     text-align: center;
     margin-top: 50px;
   }
@@ -13,4 +13,43 @@
     font-size: 1.2em;
     color: #666;
   }
+   */
+
+   /* home.css */
+/* home.css */
+
+/* Style for the content container */
+.content {
+  padding: 20px;
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Style for the video section */
+.embed-responsive {
+  margin-bottom: 30px;
+}
+
+/* Style for the comment reviews section */
+.comment-section {
+  max-height: 300px; /* Adjust the height as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Style for individual comment cards */
+.card {
+  margin-bottom: 10px;
+  border-radius: 20px; /* Rounded corners */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  /* Adjust styles for smaller screens */
+  .embed-responsive {
+    margin-bottom: 15px;
+  }
   
+  .comment-section {
+    max-height: 200px; /* Adjust height for smaller screens */
+  }
+}

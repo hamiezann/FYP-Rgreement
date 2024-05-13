@@ -1,39 +1,41 @@
-// import React from 'react';
-// import '../style/footer.css'; // Import your CSS file for styling
+import React from "react";
 
-// const Footer = () => {
-//   return (
-//     <footer className="footer">
-//       <div className="left">
-//         <ul className="footer-nav">
-//           <li className="nav-item">Home</li>
-//           <li className="nav-item">Template</li>
-//           <li className="nav-item">RentBy</li>
-//         </ul>
-//       </div>
-//       <div className="copyright">
-//           <p>© 2024 Xann Limited.Co</p>
-//         </div>
-//       <div className="right">
-//         <div className="address">
-//           <p>UiTM Melaka, Kampus Jasin</p>
-//         </div>
-//         <div className="social-media">
-//           <ul className="social-icons">
-//             <li className="social-icon">Whatsapp</li>
-//             <li className="social-icon">Twitter</li>
-//             <li className="social-icon">Instagram</li>
-//           </ul>
-//         </div>
-//         <div className="logo">
-//           <img src="logo.png" alt="Company Logo" />
-//         </div>
+const Footer = () => {
+  return (
+    <footer className="bg-dark text-light py-4">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6">
+            <h5>Contact Us</h5>
+            <ul className="list-unstyled">
+              <li>Address: 123 Street Name, City, Country</li>
+              <li>Email: info@example.com</li>
+              <li>Phone: +123 456 7890</li>
+            </ul>
+          </div>
+          <div className="col-md-6">
+            <h5>Follow Us</h5>
+            <ul className="list-unstyled">
+              <li>
+                <a href="#!">Facebook</a>
+              </li>
+              <li>
+                <a href="#!">Twitter</a>
+              </li>
+              <li>
+                <a href="#!">Instagram</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="row mt-4">
+          <div className="col">
+            <p className="text-center">&copy; {new Date().getFullYear()} Your Company Name. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
 
-//       </div>
-
-//     </footer>
-//   );
-// };
-
-
-// export default Footer;
+export default Footer;

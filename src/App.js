@@ -22,6 +22,9 @@ import ConversationPage from './page/messaging/ConversationShow';
 import FindHouse from './page/renter/find_house';
 import DisplaySearchHouse from './page/renter/display_search_house';
 import ApplyHouseForm from './page/renter/apply_house';
+import TenantListPage from './page/landlord/tenant_list';
+import RenterDashboard from './page/renter/my_property';
+import RentContractPage from './page/renter/sign_now';
 
 const App = () => {
    const { isAuthenticated } = useContext(AuthContext);
@@ -58,6 +61,9 @@ const App = () => {
                 <Route path="/chat/:houseId" element={<MessageMain />} />
                 <Route path="/conversations" element={<ConversationsPage />} />
                 <Route path="/conversations/:senderId/:recipientId" element={<ConversationPage />} />
+                <Route path="/yourtenant-list" element={<TenantListPage />} />
+                <Route path="/house-details/:houseId" element={<HouseDetailPage />} />
+
               </>
             ) : (
               <>
@@ -69,13 +75,17 @@ const App = () => {
                 <Route path="/chat/:houseId" element={<MessageMain />} />
                 <Route path='/find-house' element={<FindHouse />} />
                 <Route path='/apply-house/:houseId' element={<ApplyHouseForm />} />
+                <Route path='/my-property' element={<RenterDashboard/>} />
+                <Route path='/sign-now' element={<RentContractPage />} />
                 {/* Add UI components specific to renters here */}
               </>
             )}
           </Routes>
         </div>
       </div>
+      <Footer />
     </Router>
+   
   );
 }
 
