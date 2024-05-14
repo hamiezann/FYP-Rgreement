@@ -1,32 +1,26 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../../style/rentby.css";
-
-// import { lazy, Suspense } from "react";
-// import NearestHouse from "./nearest_house";
+import "../../style/rentby.css"; // Custom styles
 
 const RentNearby = () => {
   const [rentHouses, setRentHouses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
   const [nearestHouse, setNearestHouse] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [showNearest, setShowNearest] = useState(false);
   const [showFarthest, setShowFarthest] = useState(false);
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRentHouses = async () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/nearby-house-list`);
         setRentHouses(response.data);
-        // setIsLoading(false);
       } catch (error) {
         console.error("Error fetching rent houses:", error);
         setError(error);
-        // setIsLoading(false);
       }
     };
 
@@ -34,7 +28,6 @@ const RentNearby = () => {
   }, []);
 
   useEffect(() => {
-   // if (navigator.geolocation && (showNearest || showFarthest)) {
     if (navigator.geolocation && (showNearest || showFarthest)) {
       navigator.geolocation.getCurrentPosition(
         position => {
@@ -87,7 +80,6 @@ const RentNearby = () => {
     // Arrange based on nearest or farthest
     if (showNearest || showFarthest) {
       filteredRentHouses.sort((a, b) => {
-        // Check if userLocation is not null before accessing its properties
         if (userLocation) {
           const userLat = userLocation.latitude;
           const userLng = userLocation.longitude;
@@ -105,12 +97,10 @@ const RentNearby = () => {
           );
           return showNearest ? distanceA - distanceB : distanceB - distanceA;
         }
-        // Return 0 if userLocation is null
         return 0;
       });
     }
   
-    // Calculate nearest house only if "Show Nearest" is checked
     if (showNearest && userLocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const userLat = position.coords.latitude;
@@ -139,7 +129,6 @@ const RentNearby = () => {
     setRentHouses(filteredRentHouses);
   };
   
-  
   const handleClearFilters = () => {
     setFilterOptions(initialFilterOptions);
     setShowNearest(false);
@@ -147,9 +136,8 @@ const RentNearby = () => {
   };
 
   const handleChatOwner = (houseId, ownerId) => {
-  //  const ownerName = houseData.find((house) => house.id === houseId)?.owner?.name;
     navigate(`/chat/${houseId}`, { state: { ownerId: ownerId } });
-};
+  };
 
   const handleHouseDetails = (houseId) => {    
     const updateUrl = `/house-details/${houseId}`;
@@ -173,14 +161,6 @@ const RentNearby = () => {
     return deg * (Math.PI / 180);
   };
 
-  const sortByDistance = (a, b) => {
-    const userLat = userLocation.latitude;
-    const userLng = userLocation.longitude;
-    const distanceA = calculateDistance(userLat, userLng, a.latitude, a.longitude);
-    const distanceB = calculateDistance(userLat, userLng, b.latitude, b.longitude);
-    return distanceA - distanceB;
-  };
-
   const handleShowNearestChange = () => {
     setShowNearest(true);
     setShowFarthest(false);
@@ -191,129 +171,103 @@ const RentNearby = () => {
     setShowFarthest(true);
   };
   
-
-  // if (isLoading) {
-  //   return <p>Loading...</p>;
-  // }
-
-  // if (error) {
-  //   return <p>Error: {error.message}</p>;
-  // }
-
   return (
-    <div>
-      {/* Filter Section */}
-      <div className="filter-container">
+    <div className="container mt-5">
+      <div className="filter-container mb-4">
         <h2>Rent Nearby</h2>
-        {/* {userLocation && (
-        <p>Your location: Latitude {userLocation.latitude}, Longitude {userLocation.longitude}</p>
-      )} */}
-
-        <div className="filter-inputs">
-          <label htmlFor="sortBy">Sort By:</label>
-          <select
-            id="sortBy"
-            name="sortBy"
-            value={filterOptions.sortBy}
-            onChange={handleFilterChange}
-          >
-            <option value="">Select</option>
-            <option value="cheapest">Cheapest</option>
-            <option value="expensive">Most Expensive</option>
-          </select>
-          <label htmlFor="houseType">House Type:</label>
-          <select
-            id="houseType"
-            name="houseType"
-            value={filterOptions.houseType}
-            onChange={handleFilterChange}
-          >
-            <option value="">Select</option>
-            <option value="Flat">Flat</option>
-            <option value="Lot House">Lot House</option>
-            <option value="Apartment">Apartment</option>
-            {/* Add more options as needed */}
-          </select>
-          <div>
-            <label htmlFor="showNearest">Show Nearest:</label>
-            <input
-              type="checkbox"
-              id="showNearest"
-              name="showNearest"
-              checked={showNearest}
-              // onChange={() => setShowNearest(!showNearest)}
-              onChange={handleShowNearestChange}
-            />
+        <div className="row g-3">
+          <div className="col-md-3">
+            <label htmlFor="sortBy" className="form-label">Sort By:</label>
+            <select
+              id="sortBy"
+              name="sortBy"
+              value={filterOptions.sortBy}
+              onChange={handleFilterChange}
+              className="form-select"
+            >
+              <option value="">Select</option>
+              <option value="cheapest">Cheapest</option>
+              <option value="expensive">Most Expensive</option>
+            </select>
           </div>
-          <div>
-            <label htmlFor="showFarthest">Show Farthest:</label>
-            <input
-              type="checkbox"
-              id="showFarthest"
-              name="showFarthest"
-              checked={showFarthest}
-              // onChange={() => setShowFarthest(!showFarthest)}
-              onChange={handleShowFarthestChange}
-            />
+          <div className="col-md-3">
+            <label htmlFor="houseType" className="form-label">House Type:</label>
+            <select
+              id="houseType"
+              name="houseType"
+              value={filterOptions.houseType}
+              onChange={handleFilterChange}
+              className="form-select"
+            >
+              <option value="">Select</option>
+              <option value="Flat">Flat</option>
+              <option value="Lot House">Lot House</option>
+              <option value="Apartment">Apartment</option>
+            </select>
+          </div>
+          <div className="col-md-3">
+            <div className="form-check mt-4">
+              <input
+                type="checkbox"
+                id="showNearest"
+                name="showNearest"
+                checked={showNearest}
+                onChange={handleShowNearestChange}
+                className="form-check-input"
+              />
+              <label htmlFor="showNearest" className="form-check-label">Show Nearest</label>
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div className="form-check mt-4">
+              <input
+                type="checkbox"
+                id="showFarthest"
+                name="showFarthest"
+                checked={showFarthest}
+                onChange={handleShowFarthestChange}
+                className="form-check-input"
+              />
+              <label htmlFor="showFarthest" className="form-check-label">Show Farthest</label>
+            </div>
           </div>
         </div>
-        <button onClick={handleApplyFilters}>Apply Filters</button>
-        <button onClick={handleClearFilters}>Clear Filters</button>
+        <div className="mt-3">
+          <button onClick={handleApplyFilters} className="btn btn-primary me-2">Apply Filters</button>
+          <button onClick={handleClearFilters} className="btn btn-secondary">Clear Filters</button>
+        </div>
       </div>
-
-
-      {/* {nearestHouse && (
-            <div className="nearest-house">
-            Nearest House:
-            <div>No: {nearestHouse.id}</div>
-            <div>Latitude and Longitude: {nearestHouse.latitude},{nearestHouse.longitude}</div>
-            <div>Description: {nearestHouse.description}</div>
-            <div>Rent Fee: {nearestHouse.rent_fee}</div>
-            <div>Preferred Occupants: {nearestHouse.prefered_occupants}</div>
-            <div>Type of House: {nearestHouse.type_of_house}</div>
-            <div>Number of Rooms: {nearestHouse.number_of_rooms}</div>
-          </div>
-
-      )} */}
-
 
       {rentHouses.length === 0 ? (
         <p>No rent houses found nearby.</p>
       ) : (
-        <ul>
+        <div className="row row-cols-1 row-cols-md-3 g-4">
           {rentHouses.map((house) => (
-            <li key={house.id} className="property-item">
-           
-              <div className="image-container">
-                {/* <img src={house.image} alt="Property" /> */}
-                <img src="/dummy.png" alt="Property" />
-              </div>
-              <div className="details-container">
-                <div>No: {house.id}</div>
-                <div>Owner ID: {house.user_id}</div>
-                <div>Latitude and Longitude: {house.latitude},{house.longitude}</div>
-                <div>Description: {house.description}</div>
-                <div>Rent Fee: {house.rent_fee}</div>
-                <div>Preferred Occupants: {house.prefered_occupants}</div>
-                <div>Type of House: {house.type_of_house}</div>
-                <div>Number of Rooms: {house.number_of_rooms}</div>
-
-                {userLocation && (
-                <div>Distance from your location: {calculateDistance(userLocation.latitude, userLocation.longitude, house.latitude, house.longitude)} km</div>
-                )}
-              <div>
-                  {/* <button onClick={() => handleDelete(house.id)}>Delete</button> */}
-                  {/* <button onClick={() => handleUpdate(house.id)}>Update</button> */}
-                  <button onClick={() => handleHouseDetails(house.id)}>See Details</button>
-                  <button onClick={() => handleChatOwner(house.id, house.user_id)}>Chat Owner</button>
-
+            <div key={house.id} className="col">
+              <div className="card h-100">
+                <img src="/dummy.png" className="card-img-top" alt="Property" />
+                <div className="card-body">
+                  <h5 className="card-title">House No: {house.id}</h5>
+                  <p className="card-text">Owner ID: {house.user_id}</p>
+                  <p className="card-text">Latitude: {house.latitude}, Longitude: {house.longitude}</p>
+                  <p className="card-text">Description: {house.description}</p>
+                  <p className="card-text">Rent Fee: {house.rent_fee}</p>
+                  <p className="card-text">Preferred Occupants: {house.prefered_occupants}</p>
+                  <p className="card-text">Type of House: {house.type_of_house}</p>
+                  <p className="card-text">Number of Rooms: {house.number_of_rooms}</p>
+                  {userLocation && (
+                    <p className="card-text">
+                      Distance from your location: {calculateDistance(userLocation.latitude, userLocation.longitude, house.latitude, house.longitude)} km
+                    </p>
+                  )}
+                  <button onClick={() => handleHouseDetails(house.id)} className="btn btn-info me-2">See Details</button>
+                  <button onClick={() => handleChatOwner(house.id, house.user_id)} className="btn btn-success">Chat Owner</button>
                 </div>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
-
     </div>
   );
 };

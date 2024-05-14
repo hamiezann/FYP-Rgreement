@@ -48,10 +48,22 @@ const RenterDashboard = () => {
     }
   };
   
-  const handleSignNow = (houseId) => {
-    navigate(`/sign-now`, {state: {houseId}})
+  const handleSignNow = async (houseId) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
+      const uniqueIdentifier = response.data.uni_identifier;
+      navigate(`/sign-now`, { state: { uniqueIdentifier } });
+    } catch (error) {
+      console.error("Error fetching house unique identifier:", error);
+      if (error.response) {
+        console.error(`Server responded with status: ${error.response.status}`);
+        console.error(`Response data: ${JSON.stringify(error.response.data)}`);
+      } else {
+        console.error(`Error message: ${error.message}`);
+      }
+    }
   }
-
+  
   return (
     <div className="container mt-5">
       <h2 className="text-center">Renter Dashboard</h2>
@@ -121,14 +133,15 @@ const RenterDashboard = () => {
              
                   </tr>
                 ))} */}
+
                 {
          appliedHouses.map(house => (
             <tr key={house.id}>
                  <td>{house.house_id}</td>
                 <td>{house.tenant_status}</td>
              <td>
-                {house.tenant_status === 'approved' ? (
-                <button className='btn btn-success' onClick={() => handleSignNow(house.id)} >Sign Now</button>
+                {house.tenant_status === 'Approved' ? (
+                <button className='btn btn-success' onClick={() => handleSignNow(house.house_id)} >Sign Now</button>
         ) : (
                 <button className='btn btn-danger' onClick={() => handleCancel(house.id)}>Cancel Application</button>
         )}

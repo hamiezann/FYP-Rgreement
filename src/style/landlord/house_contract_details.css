@@ -1,0 +1,39 @@
+/* HouseContractDetails.css */
+.document {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .section {
+    margin-bottom: 20px;
+  }
+  
+  .section h4 {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+  }
+  
+  @media (max-width: 768px) {
+    .document {
+      padding: 15px;
+    }
+  
+    .section h4 {
+      font-size: 1.2rem;
+    }
+  
+    .section p,
+    .section ul li {
+      font-size: 0.9rem;
+    }
+  
+    .btn {
+      font-size: 0.9rem;
+      padding: 8px 12px;
+    }
+  }
+  

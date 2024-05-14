@@ -4,7 +4,7 @@ import "../style/contract.css";
 import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
 import { useGlobalContractState } from "./globally_use_variable.js/variable";
 
-const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 const contractAbi = HouseRentalContract.abi;
 const fixedPassword = "123456";
 const UpdateContractForm = () => {
@@ -110,7 +110,7 @@ const UpdateContractForm = () => {
     const tenantAgreementOptions = ['Option 1', 'Option 2', 'Option 3']; 
     const landlordAgreementOptions = ['Option 1', 'Option 2', 'Option 3']; 
     const agreementBetweenLandlordOptions = ['Option 1', 'Option 2', 'Option 3'];
-
+    const [tenantAddress, setTenantAddress] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -131,7 +131,8 @@ const UpdateContractForm = () => {
                 landlordResponsibilities,
                 agreementBetweenLandlord,
                 landlordSignature,
-                tenantSignature
+                tenantSignature,
+                tenantAddress
                
             );
 
@@ -158,6 +159,14 @@ const UpdateContractForm = () => {
                         </div>
                         <div className="col-75">
                             <input type="text" value={contractId} onChange={(e) => setContractId(e.target.value)} required />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-25">
+                            <label>Tenant Crypto Address:</label>
+                        </div>
+                        <div className="col-75">
+                            <input type="text" value={tenantAddress} onChange={(e) => setTenantAddress(e.target.value)} required />
                         </div>
                     </div>
                     {/* Add other fields for updating contract details */}

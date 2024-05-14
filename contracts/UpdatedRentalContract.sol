@@ -22,7 +22,6 @@ contract HouseRentalContract {
         uint advanceRental;
         int256 latitude;
         int256 longitude;
-
     }
 
     struct ContractTerms {
@@ -37,37 +36,26 @@ contract HouseRentalContract {
         string landlordSignature;
         string tenantSignature;
         string password;
+        address tenantAddress;
     }
-
-    // struct AuditTrail {
-    //     uint timestamp;
-    //     string action;
-    //     address actor;
-    // }
 
     mapping(bytes6 => ContractTerms) public contracts;
     mapping(bytes6 => address) public contractOwners;
-    // mapping(bytes6 => AuditTrail[]) public contractAuditTrails;
 
     modifier onlyLandlord(bytes6 contractId) {
         require(contractOwners[contractId] == msg.sender, "Only landlord can perform this action");
         _;
     }
 
-modifier onlyTenant(bytes6 contractId) {
-    require(msg.sender == address(bytes20(bytes(contracts[contractId].tenant.house_address))), "Only the tenant can perform this action");
-    _;
-}
-
-    // Event to emit when a contract is updated
-    // event ContractUpdated(bytes6 indexed contractId, string action);
-
-        // Modifier to record actions in the audit trail
-    // modifier recordAuditTrail(bytes6 contractId, string memory action) {
+    // modifier onlyTenant(bytes6 contractId) {
+    //     require(msg.sender == address(bytes20(bytes(contracts[contractId].tenant.house_address))), "Only the tenant can perform this action");
     //     _;
-    //     contractAuditTrails[contractId].push(AuditTrail(block.timestamp, action, msg.sender));
-    //     emit ContractUpdated(contractId, action);
     // }
+    
+    modifier onlyTenant(bytes6 contractId) {
+        require(contracts[contractId].tenantAddress == msg.sender, "Only the tenant can perform this action");
+        _;
+    }
 
     function createContract(
         bytes6 _uniqueIdentifier,
@@ -81,7 +69,6 @@ modifier onlyTenant(bytes6 contractId) {
         string memory _landlordSignature,
         string memory _tenantSignature,
         string memory _password
-
     ) public {
         require(contractOwners[_uniqueIdentifier] == address(0), "Contract with given identifier already exists");
 
@@ -96,35 +83,31 @@ modifier onlyTenant(bytes6 contractId) {
             _agreementsBetweenLandlord,
             _landlordSignature,
             _tenantSignature,
-             _password
+            _password,
+            address(0)
         );
 
         contracts[_uniqueIdentifier] = newContract;
         contractOwners[_uniqueIdentifier] = msg.sender;
-        // _recordAuditTrail(_uniqueIdentifier, "Contract created");
     }
 
-     function getContract(bytes6 contractId, string memory _password) public view returns (ContractTerms memory) {
-        // function getContract(bytes6 contractId) public view returns (ContractTerms memory) {
-        // Check if the password matches
-       require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked(_password)), "Incorrect password");
-       // require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked("123456")), "Incorrect password");
+    function getContract(bytes6 contractId, string memory _password) public view returns (ContractTerms memory) {
+        require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked(_password)), "Incorrect password");
         return contracts[contractId];
     }
 
     function updateContract(
         bytes6 contractId,
-       // string memory action,
         string memory _password,
         string memory _agreementDetails,
         string[] memory _tenantAgreements,
         string[] memory _landlordResponsibilities,
         string[] memory _agreementsBetweenLandlord,
         string memory _landlordSignature,
-        string memory _tenantSignature
+        string memory _tenantSignature,
+        address _tenantAddress
     ) public onlyLandlord(contractId) {
-    //) public onlyLandlord(contractId) recordAuditTrail(contractId, "Contract updated") {
-         require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked(_password)), "Incorrect password");
+        require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked(_password)), "Incorrect password");
         ContractTerms storage contractToUpdate = contracts[contractId];
         contractToUpdate.agreementDetails = _agreementDetails;
         contractToUpdate.tenantAgreements = _tenantAgreements;
@@ -132,14 +115,22 @@ modifier onlyTenant(bytes6 contractId) {
         contractToUpdate.agreementsBetweenLandlord = _agreementsBetweenLandlord;
         contractToUpdate.landlordSignature = _landlordSignature;
         contractToUpdate.tenantSignature = _tenantSignature;
-        // _recordAuditTrail(contractId, "Contract updated");
-    
+        contractToUpdate.tenantAddress = _tenantAddress;
     }
 
-
-function signContract(bytes6 contractId, string memory _tenantSignature) public onlyTenant(contractId) {
-    // Update the tenant's signature
-    ContractTerms storage contractToUpdate = contracts[contractId];
-    contractToUpdate.tenantSignature = _tenantSignature;
-}
+    function signContract(
+        bytes6 contractId,
+        string memory _password,
+        string memory _name,
+        string memory _identificationNumber,
+        string memory _houseAddress,
+        string memory _tenantSignature
+    ) public onlyTenant(contractId) {
+        require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked(_password)), "Incorrect password");
+        ContractTerms storage contractToUpdate = contracts[contractId];
+        contractToUpdate.tenant.name = _name;
+        contractToUpdate.tenant.identificationNumber = _identificationNumber;
+        contractToUpdate.tenant.house_address = _houseAddress;
+        contractToUpdate.tenantSignature = _tenantSignature;
+    }
 }

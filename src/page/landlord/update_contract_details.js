@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import "../../style/contract.css"
 import HouseRentalContract from "../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
 import { useGlobalContractState } from "../globally_use_variable.js/variable";
+import { computeAddress } from 'ethers';
 
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAbi = HouseRentalContract.abi;
@@ -101,6 +102,7 @@ const UpdateHouseContractForm = () => {
     const tenantAgreementOptions = ['Option 1', 'Option 2', 'Option 3']; 
     const landlordAgreementOptions = ['Option 1', 'Option 2', 'Option 3']; 
     const agreementBetweenLandlordOptions = ['Option 1', 'Option 2', 'Option 3'];
+    const [checktenantAddress, setTenantAddress] = useState("");
 
     const location = useLocation();
     const uniIdentifier = location.state.uniIdentifier;
@@ -116,6 +118,18 @@ const UpdateHouseContractForm = () => {
         setLandlordSignature(signature);
     };
      console.log('Uni Identifier:', uniIdentifier);
+    //  const getChecksummedAddress = (address) => {
+    //     if (!address) {
+    //         throw new Error("Ethereum address cannot be empty");
+    //     }
+    //     try {
+    //         // return ethers.getAddress(address);
+    //         return ethers.computeAddress(address);
+    //     } catch (e) {
+    //         throw new Error("Invalid Ethereum address");
+    //     }
+    // };
+  
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -127,7 +141,8 @@ const UpdateHouseContractForm = () => {
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
             const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-
+           // const tenantAddress = getChecksummedAddress(checktenantAddress);
+            const tenantAddress = checktenantAddress;
             const tx = await contract.updateContract(
                 contractId,
                 fixedPassword,
@@ -136,7 +151,8 @@ const UpdateHouseContractForm = () => {
                 landlordResponsibilities,
                 agreementBetweenLandlord,
                 landlordSignature,
-                tenantSignature
+                tenantSignature,
+                tenantAddress
                
             );
 
@@ -166,6 +182,14 @@ const UpdateHouseContractForm = () => {
                         </div>
                     </div> */}
                     {/* Add other fields for updating contract details */}
+                    <div className="row">
+                        <div className="col-25">
+                            <label>Tenant Crypto Address:</label>
+                        </div>
+                        <div className="col-75">
+                            <input type="text" value={checktenantAddress} onChange={(e) => setTenantAddress(e.target.value)} required />
+                        </div>
+                    </div>
                     <div className="row">
                     <div className="col-25">
                         <label>Agreement Details:</label>

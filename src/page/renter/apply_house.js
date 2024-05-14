@@ -61,9 +61,9 @@ const ConfirmationPage = ({ onSubmit }) => {
   };
 
 // console.log("Ismatch:", isConfirmed);
- console.log("UserId:", userId);
-console.log("Uni Id:", uniIdentifier);
-  console.log("House Id:", houseId);
+//  console.log("UserId:", userId);
+// console.log("Uni Id:", uniIdentifier);
+//   console.log("House Id:", houseId);
   return (
     <div className="form-container mt-3">
       <h2>Confirm Rental Applicant</h2>
