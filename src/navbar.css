@@ -1,0 +1,107 @@
+/* navbar.css */
+.navbar-custom {
+  background-color: #A3D8FF !important;
+  position: fixed !important;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand-custom {
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.navbar-brand-custom img {
+  margin-left: 100px;
+  width: 140px;
+  height: 70px;
+  transition: all 0.3s ease;
+}
+
+.navbar-toggler-custom {
+  border: none;
+}
+
+.navbar-nav-custom {
+  justify-content: center !important;
+  display: flex;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.nav-link-custom {
+  color: black !important; /* Bootstrap often uses !important, so use it here to override */
+  transition: all 0.3s ease;
+}
+
+.nav-link-custom:hover {
+  color: grey !important;
+}
+
+/* Additional styles for smaller navbar on scroll */
+.navbar-small {
+  padding: 0.5rem 1rem;
+}
+
+.navbar-small .navbar-brand-custom img {
+  width: 90px;
+  height: 50px;
+}
+
+.navbar-small .nav-link-custom {
+  font-size: 0.9rem;
+}
+
+/* Add this to account for the navbar height */
+body {
+  padding-top: 90px; /* Adjust this value based on your navbar's height */
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 100px; /* Adjust this value for smaller screens if needed */
+  }
+}
+
+/* Profile link styles */
+.profile-link {
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  position: relative;
+  border-radius: 20px;
+}
+
+.profile-icon {
+  font-size: 1.5rem;
+  /* border-radius: 50px; */
+  transition: color 0.3s ease;
+}
+
+.profile-text {
+  margin-left: 0.5rem;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease, margin-left 0.3s ease;
+  white-space: nowrap;
+}
+
+.profile-link:hover .profile-icon {
+  color: white; /* Change this to the color you want on hover */
+}
+
+.profile-link:hover {
+  border-radius: 20px;
+  background-color: #C40C0C;
+  padding-right: 10px;
+}
+
+/* Show text on hover */
+.profile-link:hover .profile-text {
+  opacity: 1;
+  transform: translateX(0);
+  color: white;
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../style/rentby.css"; // Custom styles
+import useDocumentTitle from '../../utils/useDocumentTitles';
 
 const RentNearby = () => {
   const [rentHouses, setRentHouses] = useState([]);
@@ -12,7 +13,7 @@ const RentNearby = () => {
   const [showNearest, setShowNearest] = useState(false);
   const [showFarthest, setShowFarthest] = useState(false);
   const navigate = useNavigate();
-
+  useDocumentTitle('Rentby - Rgreement');
   useEffect(() => {
     const fetchRentHouses = async () => {
       try {

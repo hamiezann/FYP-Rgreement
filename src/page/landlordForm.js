@@ -208,7 +208,7 @@ const HouseRentalForm = () => {
                
 
         // Log the contract details to the console
-        console.log("Created Contract Details:", createdContract);
+       console.log("Created Contract Details:", createdContract);
         const response = await fetch("http://127.0.0.1:8000/api/house-details", requestOptions);
         if (!response.ok) {
             throw new Error('Network response was not ok');

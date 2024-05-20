@@ -1,0 +1,49 @@
+/* about.css */
+.about-container {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .card {
+    background: linear-gradient(135deg, #f8f9fa 50%, #e9ecef 50%);
+  }
+  
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #333;
+  }
+  
+  .card-subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.75rem;
+    color: #007bff;
+  }
+  
+  .card-text {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: #555;
+  }
+  
+  .list-group-item {
+    background-color: transparent;
+    border: none;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .custom-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .custom-btn:hover {
+    background-color: #0056b3;
+  }
+  

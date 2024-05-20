@@ -1,56 +1,108 @@
-.rent-house-list {
-    list-style-type: none;
-    padding: 20px;
-  }
-  
-  .rent-house-list li {
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .house-details {
-    flex-grow: 1;
-  }
-  
-  .button-group {
-    display: flex;
-    align-items: center;
-  }
-  
-  .button-group button {
-    /* margin-left: 10px; */
-    margin-right: 30px;
-  }
-  
-  /* Add this CSS to your stylesheet */
-.delete-button {
-    background-color: #ff4d4f; /* Red color */
-    color: #fff; /* White text color */
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .delete-button:hover {
-    background-color: #ff7875; /* Darker red on hover */
-  }
+/* landlord_house_list.css */
 
-  /* Add this CSS to your stylesheet */
+/* Main container styling */
+.main-container {
+  padding: 20px;
+  background-color: #f8f9fa; /* Light background color */
+  min-height: 100vh;
+}
+
+/* Title styling */
+.page-title {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Rent house list styling */
+.rent-house-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.rent-house-list li {
+  border: 1px solid #dee2e6;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.house-details {
+  flex-grow: 1;
+  margin-bottom: 10px;
+}
+
+.house-details div {
+  margin-bottom: 5px;
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.button-group button {
+  margin-left: 10px;
+}
+
+/* Custom button styles */
+.delete-button {
+  background-color: #ff4d4f;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #ff7875;
+}
+
 .update-button {
-    background-color: #1890ff; /* Blue color */
-    color: #fff; /* White text color */
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .update-button:hover {
-    background-color: #40a9ff; /* Darker blue on hover */
-  }
-  
+  background-color: #1890ff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.update-button:hover {
+  background-color: #40a9ff;
+}
+
+.contract-details-button {
+  background-color: #52c41a;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.contract-details-button:hover {
+  background-color: #73d13d;
+}
+
+.back-button {
+  display: block;
+  background-color: #6c757d;
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 40px auto 0; /* Center the button and add top margin */
+  font-size: 1.2rem;
+}
+
+.back-button:hover {
+  background-color: #5a6268;
+}

@@ -25,7 +25,7 @@ const TenantListPage = () => {
     if (window.confirm('Are you sure you want to approve this application?')) {
       try {
         // Send HTTP request to update tenant status to 'approved'
-        await axios.put(`http://127.0.0.1:8000/api/tenants/${tenantId}`, { tenant_status: 'approved' });
+        await axios.put(`http://127.0.0.1:8000/api/tenants/${tenantId}`, { tenant_status: 'Approved' });
         
         // Fetch updated tenant data after approval
         const response = await axios.get('http://127.0.0.1:8000/api/tenants');
@@ -43,7 +43,7 @@ const TenantListPage = () => {
     if (window.confirm('Are you sure you want to reject this application?')) {
       try {
         // Send HTTP request to update tenant status to 'rejected'
-        await axios.put(`http://127.0.0.1:8000/api/tenants/${tenantId}`, { tenant_status: 'rejected' });
+        await axios.put(`http://127.0.0.1:8000/api/tenants/${tenantId}`, { tenant_status: 'Rejected' });
   
         // Fetch updated tenant data after rejection
         const response = await axios.get('http://127.0.0.1:8000/api/tenants');

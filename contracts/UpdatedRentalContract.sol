@@ -37,6 +37,11 @@ contract HouseRentalContract {
         string tenantSignature;
         string password;
         address tenantAddress;
+
+        // uint256 depositPaid;
+        // uint256 rentPaid;
+        // bool depositReleased;
+        // bool contractActive;
     }
 
     mapping(bytes6 => ContractTerms) public contracts;
@@ -132,5 +137,49 @@ contract HouseRentalContract {
         contractToUpdate.tenant.identificationNumber = _identificationNumber;
         contractToUpdate.tenant.house_address = _houseAddress;
         contractToUpdate.tenantSignature = _tenantSignature;
+    }
+
+//tak sure nk tambah or not
+        function payDeposit(bytes6 contractId) public payable onlyTenant(contractId) {
+        require(!contracts[contractId].contractActive, "Contract is already active");
+        require(msg.value == contracts[contractId].houseDetails.deposit, "Incorrect deposit amount");
+        
+        contracts[contractId].depositPaid = msg.value;
+        contracts[contractId].contractActive = true;
+    }
+
+    function payRent(bytes6 contractId) public payable onlyTenant(contractId) {
+        require(contracts[contractId].contractActive, "Contract is not active");
+        require(msg.value == contracts[contractId].houseDetails.monthlyRent, "Incorrect rent amount");
+        
+        contracts[contractId].rentPaid += msg.value;
+    }
+
+    function releaseDeposit(bytes6 contractId) public onlyLandlord(contractId) {
+        require(contracts[contractId].contractActive, "Contract is not active");
+        require(!contracts[contractId].depositReleased, "Deposit already released");
+        
+        uint256 depositAmount = contracts[contractId].depositPaid;
+        contracts[contractId].depositReleased = true;
+        
+        payable(contracts[contractId].tenantAddress).transfer(depositAmount);
+    }
+
+    function deductFromDeposit(bytes6 contractId, uint256 amount) public onlyLandlord(contractId) {
+        require(contracts[contractId].contractActive, "Contract is not active");
+        require(!contracts[contractId].depositReleased, "Deposit already released");
+        require(amount <= contracts[contractId].depositPaid, "Amount exceeds deposit");
+
+        uint256 remainingDeposit = contracts[contractId].depositPaid - amount;
+        contracts[contractId].depositPaid = remainingDeposit;
+        
+        payable(contractOwners[contractId]).transfer(amount);
+    }
+
+    function endContract(bytes6 contractId) public onlyLandlord(contractId) {
+        require(contracts[contractId].contractActive, "Contract is not active");
+        
+        releaseDeposit(contractId);
+        contracts[contractId].contractActive = false;
     }
 }

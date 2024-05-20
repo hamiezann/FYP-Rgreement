@@ -23,19 +23,25 @@ const ConversationsPage = () => {
 
     return (
         <div className="container mt-5">
-            <h1 className="mb-4 text-center">All Conversations</h1>
-            <div className="list-group">
+            <h1 className="mb-4 text-center text-primary">All Conversations</h1>
+            <div className="list-group conversation-list-container">
                 {conversations.map(conversation => (
-                    <Link to={`/conversations/${userId}/${conversation.id}`} className="list-group-item list-group-item-action d-flex align-items-center" key={conversation.id}>
-                        <div className="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-3" style={{ width: '50px', height: '50px' }}>
-                            <span className="h5 mb-0">{conversation.name.charAt(0)}</span> {/* Display first letter of the name */}
+                    <Link 
+                        to={`/conversations/${userId}/${conversation.id}`} 
+                        className="list-group-item list-group-item-action conversation-item" 
+                        key={conversation.id}
+                    >
+                        <div className="conversation-icon">
+                            <span>{conversation.name.charAt(0)}</span> {/* Display first letter of the name */}
                         </div>
-                        <div className="flex-grow-1">
-                            <div className="d-flex justify-content-between">
-                                <h5 className="mb-1">{conversation.name}</h5>
-                                {/* Add timestamp here if available */}
+                        <div className="conversation-info">
+                            <div className="conversation-header">
+                                <p>{conversation.name}</p>
+                                {conversation.timestamp && (
+                                    <small className="timestamp">{conversation.timestamp}</small>
+                                )}
                             </div>
-                            <p className="mb-1">{conversation.latest_message}</p>
+                            <p className="conversation-message">{conversation.latest_message}</p>
                         </div>
                     </Link>
                 ))}

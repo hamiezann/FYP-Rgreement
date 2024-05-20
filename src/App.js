@@ -25,6 +25,7 @@ import ApplyHouseForm from './page/renter/apply_house';
 import TenantListPage from './page/landlord/tenant_list';
 import RenterDashboard from './page/renter/my_property';
 import RentContractPage from './page/renter/sign_now';
+import AboutPage from './page/about_page';
 
 const App = () => {
    const { isAuthenticated } = useContext(AuthContext);
@@ -43,6 +44,7 @@ const App = () => {
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/nearby-rent" element={<RentNearby />} />
+                <Route path="/about-us" element={<AboutPage />} />
                 <Route path="house-details" element={<HouseDetailPage />} />
               </>
             ) : role === 'landlord' ? (
@@ -63,7 +65,7 @@ const App = () => {
                 <Route path="/conversations/:senderId/:recipientId" element={<ConversationPage />} />
                 <Route path="/yourtenant-list" element={<TenantListPage />} />
                 <Route path="/house-details/:houseId" element={<HouseDetailPage />} />
-
+                <Route path="/about-us" element={<AboutPage />} />
               </>
             ) : (
               <>
@@ -77,6 +79,7 @@ const App = () => {
                 <Route path='/apply-house/:houseId' element={<ApplyHouseForm />} />
                 <Route path='/my-property' element={<RenterDashboard/>} />
                 <Route path='/sign-now' element={<RentContractPage />} />
+                <Route path="/about-us" element={<AboutPage />} />
                 {/* Add UI components specific to renters here */}
               </>
             )}

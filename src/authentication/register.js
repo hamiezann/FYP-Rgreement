@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../style/authentication.css'; // Import your CSS file
+import { Link, useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap is imported
+import '../style/authentication.css'; // Import your custom CSS file
+import useDocumentTitle from '../utils/useDocumentTitles';
 
 const RegistrationForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('renter'); // Default to 'renter'
   const navigate = useNavigate();
+  useDocumentTitle('Auth - Register');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log("Name:", name);
-    // console.log("Email:", email);
-    // console.log("Password:", password);
-    // console.log("Role:", role);
-    // Send registration data to your backend API for user creation
+
     const response = await fetch('http://127.0.0.1:8000/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -23,58 +22,78 @@ const RegistrationForm = () => {
     });
 
     if (response.ok) {
-      // Handle successful registration (e.g., redirect to login page)
       const data = await response.json();
       alert(data.message);
-     navigate('/login');
-
+      navigate('/login');
     } else {
-      // Handle registration errors (e.g., display error message)
       alert('Registration Unsuccessful. Please try again.');
     }
   };
 
   return (
-    <div className="registration-container">
-      <h2>Register</h2>
-      <form className="registration-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor='name'>Name:</label>
-          <input
-            type='text'
-            id='name'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card shadow">
+            <div className="card-body">
+              <h2 className="card-title text-center">Register</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label htmlFor="name">Name:</label>
+                  <input
+                    type="text"
+                    id="name"
+                    className="form-control"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email">Email:</label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="form-control"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password">Password:</label>
+                  <input
+                    type="password"
+                    id="password"
+                    className="form-control"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="role">Role:</label>
+                  <select
+                    id="role"
+                    className="form-control"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                  >
+                    <option value="renter">Renter</option>
+                    <option value="landlord">Landlord</option>
+                  </select>
+                </div>
+                <div className="d-grid mt-3">
+                  <button type="submit" className="btn custom-btn w-100">Register</button>
+                </div>
+              </form>
+              <p className="text-center mt-3">
+                Already have an account? <Link to="/login">Login</Link>
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="form-group">
-          <label htmlFor='email'>Email:</label>
-          <input
-            type='email'
-            id='email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor='password'>Password:</label>
-          <input
-            type='password'
-            id='password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-      {/* Dropdown menu for selecting role */}
-      <label htmlFor='role'>Role:</label>
-      <select id='role' value={role} onChange={(e) => setRole(e.target.value)}>
-        <option value='renter'>Renter</option>
-        <option value='landlord'>Landlord</option>
-      </select>
-        </div>
-        <button type="submit" className="btn-register">Register</button>
-      </form>
+      </div>
     </div>
   );
 };
