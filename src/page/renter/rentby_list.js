@@ -246,16 +246,22 @@ const RentNearby = () => {
           {rentHouses.map((house) => (
             <div key={house.id} className="col">
               <div className="card h-100">
-                <img src="/dummy.png" className="card-img-top" alt="Property" />
+                {/* <img src="/dummy.png" className="card-img-top" alt="Property" /> */}
+                {house.images && house.images.length > 0 ? (
+             <img src={house.images[0].url} className="card-img-top" alt="Property" />
+          ) : (
+            <img src="/dummy.png" className="card-img-top" alt="Property" />
+          )}
                 <div className="card-body">
                   <h5 className="card-title">House No: {house.id}</h5>
-                  <p className="card-text">Owner ID: {house.user_id}</p>
-                  <p className="card-text">Latitude: {house.latitude}, Longitude: {house.longitude}</p>
+                  {/* <p className="card-text">Owner ID: {house.user_id}</p> */}
+                  <p className="card-text">Rent Address: {house.rent_address}</p>
+                  {/* <p className="card-text">Latitude: {house.latitude}, Longitude: {house.longitude}</p> */}
                   <p className="card-text">Description: {house.description}</p>
                   <p className="card-text">Rent Fee: {house.rent_fee}</p>
-                  <p className="card-text">Preferred Occupants: {house.prefered_occupants}</p>
+                  {/* <p className="card-text">Preferred Occupants: {house.prefered_occupants}</p> */}
                   <p className="card-text">Type of House: {house.type_of_house}</p>
-                  <p className="card-text">Number of Rooms: {house.number_of_rooms}</p>
+                  {/* <p className="card-text">Number of Rooms: {house.number_of_rooms}</p> */}
                   {userLocation && (
                     <p className="card-text">
                       Distance from your location: {calculateDistance(userLocation.latitude, userLocation.longitude, house.latitude, house.longitude)} km

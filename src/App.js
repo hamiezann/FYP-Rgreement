@@ -75,6 +75,8 @@ const App = () => {
                 <Route path="/house-details/:houseId" element={<HouseDetailPage />} />
                 <Route path="/find-house/:houseId" element={<DisplaySearchHouse />} />
                 <Route path="/chat/:houseId" element={<MessageMain />} />
+                <Route path="/conversations" element={<ConversationsPage />} />
+                <Route path="/conversations/:senderId/:recipientId" element={<ConversationPage />} />
                 <Route path='/find-house' element={<FindHouse />} />
                 <Route path='/apply-house/:houseId' element={<ApplyHouseForm />} />
                 <Route path='/my-property' element={<RenterDashboard/>} />

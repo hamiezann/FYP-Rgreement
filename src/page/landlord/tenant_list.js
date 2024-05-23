@@ -21,11 +21,15 @@ const TenantListPage = () => {
       });
   }, []);
 
-  const handleApprove = async (tenantId) => {
+  const handleApprove = async (tenantId, houseId) => {
     if (window.confirm('Are you sure you want to approve this application?')) {
       try {
         // Send HTTP request to update tenant status to 'approved'
         await axios.put(`http://127.0.0.1:8000/api/tenants/${tenantId}`, { tenant_status: 'Approved' });
+
+    
+        await axios.put(`http://127.0.0.1:8000/api/update-rent-house/${houseId}`, { available: false });
+     
         
         // Fetch updated tenant data after approval
         const response = await axios.get('http://127.0.0.1:8000/api/tenants');
@@ -81,7 +85,8 @@ const TenantListPage = () => {
                     <td>{tenant.user.email}</td>
                     <td>{tenant.user.phone}</td>
                     <td>
-                      <button className="btn btn-success mr-2" onClick={() => handleApprove(tenant.id)}>Approve</button>
+                    <button className="btn btn-success mr-2" onClick={() => handleApprove(tenant.id, tenant.house_id)}>Approve</button>
+
                       <button className="btn btn-danger" onClick={() => handleReject(tenant.id)}>Reject</button>
                     </td>
                   </tr>

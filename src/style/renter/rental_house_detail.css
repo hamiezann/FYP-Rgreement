@@ -1,84 +1,194 @@
-.product-page {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px;
+/* .product-page {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
+}
+
+.product-image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.product-image-container img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.product-details {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-details-box {
+  padding: 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.product-details h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.product-details p {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.product-details label {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.product-details select {
+  font-size: 18px;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+.product-details button {
+  font-size: 18px;
+  padding: 10px 20px;
+  background-color: lightblue;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.product-details button:hover {
+  background-color: deepskyblue;
+} */
+
+/* For screens below 768 pixels */
+/* 
+@media (max-width: 767px) {
+  .product-page {
+    flex-direction: column;
   }
-  
-  .product-image-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-  }
-  
-  .product-image-container img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    margin-right: 20px;
-  }
-  
+
+  .product-image-container,
   .product-details {
-    width: 50%;
+    width: 100%;
   }
-  
-  .product-details h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .product-details p {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  
-  .product-details label {
-    font-size: 18px;
-    margin-right: 10px;
-  }
-  
-  .product-details select {
-    font-size: 18px;
-    padding: 5px;
+
+  .product-image-container {
     margin-bottom: 20px;
   }
-  
+
+  .product-image-container img {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
   .product-details button {
-    font-size: 18px;
-    padding: 10px 20px;
-    background-color: lightblue;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    width: 100%;
   }
-  
-  .product-details button:hover {
-    background-color: deepskyblue;
-  }
+} */
 
-  /* For screens below 768 pixels */
+.house-detail-container {
+  display: flex;
+  flex-wrap: wrap; /* Ensures elements wrap to the next line on smaller screens */
+  gap: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+}
 
+/* .image-section {
+  flex: 1;
+} */
+.image-section {
+  flex: 1;
+  background: linear-gradient(to bottom right, #e0c3fc, #8ec5fc);
+  border-radius: 10px;
+  overflow: hidden; /* Ensure the gradient is contained within the border-radius */
+}
+
+.house-image {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.details-section {
+  flex: 2;
+}
+
+.badge {
+  display: inline-block;
+  background-color: #ff6347;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.category {
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.features {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.features li {
+  background-color: #e0e0e0;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically on smaller screens */
+  gap: 10px;
+}
+
+.chat-now-button, .apply-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%; /* Make buttons fill the width on smaller screens */
+}
+
+.chat-now-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.apply-button {
+  background-color: #28a745;
+  color: white;
+}
+
+/* Media query for screens below 768 pixels */
 @media (max-width: 767px) {
-    .product-page {
-      flex-direction: column;
-    }
-  
-    .product-image-container,
-    .product-details {
-      width: 100%;
-    }
-  
-    .product-image-container {
-      margin-bottom: 20px;
-    }
-  
-    .product-image-container img {
-      margin-right: 0;
-      margin-bottom: 10px;
-    }
-  
-    .product-details button {
-      width: 100%;
-    }
+  .house-detail-container {
+    flex-direction: column; /* Stack image and details sections vertically */
   }
+
+  .image-section,
+  .details-section {
+    width: 100%; /* Full width for both sections on smaller screens */
+  }
+
+  .house-image {
+    margin-bottom: 20px; /* Add space below image on smaller screens */
+  }
+}

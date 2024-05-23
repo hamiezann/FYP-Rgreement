@@ -53,21 +53,33 @@
   }
 
   .form-container {
-    background-color: #f2f2f2;
+    background: linear-gradient(to bottom, #a6d8ff, #c1e1ff); /* Light blue gradient */
     padding: 20px;
     margin: 10px;
     border-radius: 10px;
-    margin-left: 30px;
-    margin-right: 30px;
-  }
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+}
 
-  .title-container {
-    font-size: 24px;
-    font-weight: bold; /* You can uncomment this line if you want bold text */
-    color: #333; /* You can adjust the color to your preference */
-    margin-bottom: 10px; /* Add some spacing below the title */
-    text-align: center;
-  }
+
+.title-container {
+  font-size: 24px;
+  font-weight: bold; /* You can uncomment this line if you want bold text */
+  color: #333; /* You can adjust the color to your preference */
+  margin-bottom: 10px; /* Add some spacing below the title */
+  margin-top: 10px;
+  text-align: center;
+  background-color: #f0f0f0; /* Light gray background color */
+  padding: 10px; /* Add padding for better spacing */
+  border-radius: 5px; /* Add border-radius for rounded corners */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+  cursor: pointer; /* Add pointer cursor to indicate interactivity */
+  font-family: 'Roboto', sans-serif; /* Specify the font family */
+}
+
+.title-container:hover {
+  background-color: #e0e0e0; /* Darker gray background color on hover */
+}
+
   
   
   .button-container {

@@ -20,6 +20,10 @@ const HouseContractDetails = () => {
     navigate(`/rental-contract-update`, { state: { uniIdentifier } });
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   useEffect(() => {
     const fetchContractDetails = async () => {
       try {
@@ -124,7 +128,7 @@ const HouseContractDetails = () => {
 
         <div className="text-center mt-4">
           {contractDetails.tenantSignature ? (
-            <button className="btn btn-primary">Print</button>
+            <button className="btn btn-primary" onClick={handlePrint}>Print</button>
           ) : (
             <button className="btn btn-secondary" onClick={() => handleUpdate(uniIdentifier)}>Update</button>
           )}

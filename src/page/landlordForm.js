@@ -99,9 +99,23 @@ const HouseRentalForm = () => {
     userId, setUserId,
     } = useGlobalContractState();
 
+    const [amenities, setAmenities] = useState('');
+    const [numBedrooms, setNumBedrooms] = useState(0);
+    const [numToilets, setNumToilets] = useState(0);
+    const [images, setImages] = useState([]);
+
+const handleImageUpload = (event) => {
+    // const files = event.target.files;
+    // setImages([...files]);
+    const files = Array.from(event.target.files);
+    setImages(files);
+};
+
     const fixedPassword = "123456";
+    const available = true;
     const [numberOfRooms, setnumberOfRooms] = useState(''); 
-    // const [numberOfRooms, setnumberOfRooms] = useState(0); 
+   
+ 
 
     useEffect(() => {
       // Retrieve userId from localStorage when the component mounts
@@ -120,31 +134,54 @@ const HouseRentalForm = () => {
         setIsLoading(true);
         setSuccessMessage("");
         setErrorMessage("");
-            // Extract or truncate to the first 6 bytes
-            const uni_identifier_heh = ethers.randomBytes(6);
 
+            // const uni_identifier_heh = ethers.randomBytes(6);
             // Optional: Convert byte array to hex string for display
+            // const uni_identifier = ethers.hexlify(uni_identifier_heh);
+            // console.log("Uni Identifier (byte array):", uni_identifier_heh);
+            // console.log("Uni Identifier (hex string):", uni_identifier);
+            const uni_identifier_heh = ethers.randomBytes(6);
             const uni_identifier = ethers.hexlify(uni_identifier_heh);
-            console.log("Uni Identifier (byte array):", uni_identifier_heh);
-            console.log("Uni Identifier (hex string):", uni_identifier);
 
+            const formData = new FormData();
+            formData.append('user_id', userId);
+            formData.append('rent_address', rentAddress);
+            formData.append('latitude', rentLatitude);
+            formData.append('longitude', rentLongitude);
+            formData.append('uni_identifier', uni_identifier);
+            formData.append('prefered_occupants', preferredOccupants);
+            formData.append('type_of_house', buildingType);
+            formData.append('description', description);
+            formData.append('rent_fee', monthlyRent);
+            formData.append('number_of_rooms', numberOfRooms);
+            formData.append('amenities', amenities);
+            formData.append('num_bedrooms', numBedrooms);
+            formData.append('num_toilets', numToilets);
+            formData.append('available', available);
+    
+            for (let i = 0; i < images.length; i++) {
+                formData.append('images[]', images[i]);
+            }
 
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            user_id: userId, // Replace with actual user ID
-            latitude: rentLatitude,
-            longitude: rentLongitude,
-            uni_identifier: uni_identifier,
-            prefered_occupants: preferredOccupants,
-            type_of_house: buildingType,
-            description: description, // Assuming this is the description from the form
-            rent_fee: monthlyRent,
-            number_of_rooms: numberOfRooms // Assuming this is the number of rooms from the form
-            // Add other form fields as needed
-        })
-    };
+    // const requestOptions = {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({
+    //         user_id: userId, // Replace with actual user ID
+    //         latitude: rentLatitude,
+    //         longitude: rentLongitude,
+    //         uni_identifier: uni_identifier,
+    //         prefered_occupants: preferredOccupants,
+    //         type_of_house: buildingType,
+    //         description: description, // Assuming this is the description from the form
+    //         rent_fee: monthlyRent,
+    //         number_of_rooms: numberOfRooms, // Assuming this is the number of rooms from the form
+    //         image,
+    //         amenities: amenities,
+    //         num_bedrooms: numBedrooms,
+    //         num_toilets: numToilets,
+    //     })
+    // };
     const latitudeInt = Math.round(rentLatitude * 1e6); // Convert to integer with 6 decimal places
     const longitudeInt = Math.round(rentLongitude * 1e6); // Convert to integer with 6 decimal places
 
@@ -209,13 +246,18 @@ const HouseRentalForm = () => {
 
         // Log the contract details to the console
        console.log("Created Contract Details:", createdContract);
-        const response = await fetch("http://127.0.0.1:8000/api/house-details", requestOptions);
+        const response = await fetch("http://127.0.0.1:8000/api/house-details",
+        //  requestOptions
+        {
+            method: 'POST',
+            body: formData,
+        }
+        );
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-
         const data = await response.json();
-        console.log(data); // Log the response data
+      //  console.log(data); // Log the response data
 
         } catch (error) {
             console.error("Error creating contract:", error);
@@ -227,18 +269,65 @@ const HouseRentalForm = () => {
 
     };
 
-  const tenantAgreementOptions = ['Option 1', 'Option 2', 'Option 3']; 
-  const landlordAgreementOptions = ['Option 1', 'Option 2', 'Option 3']; 
-  const agreementBetweenLandlordOptions = ['Option 1', 'Option 2', 'Option 3']; 
+    // const tenantAgreementOptions = [
+    //     'The Tenant agrees to pay the Landlord the agreed-upon rent amount. The details of the rent, including the amount and payment schedule, will be specified separately in the rental agreement document.',
+    //     'Not to use and/or allow the Said House and/or any part thereof to be used for illegal, unlawful, or immoral activities, whether business or trade, gambling, or protecting criminals in any form whatsoever.',
+    //     'The Tenant shall not rent or hand over either wholly or partially any part of the Said House, including parking, to any other person without the prior written consent of the Landlord. If the Tenant violates the intention of this paragraph, the Landlord has the right to collect all rental payments made by other parties and/or take any action as stipulated in this agreement.',
+    //     'The Tenant shall not allow and/or carry out any changes or additions to the exterior or interior of the Said House in any way whatsoever without the Landlord\'s prior written consent. If any amendments or additions are allowed, the Tenant will make them at their own expense without the right to demand any contribution or assistance from the Landlord. The Tenant is also not entitled to claim any compensation after the end or termination of this agreement.',
+    //     'The Tenant shall not keep and/or breed any animals within the premises of the Said House or anywhere within the compound of the Said House.',
+    //     'The Tenant shall not bring or store any weapon, explosive material, poisonous or hazardous material that is easily flammable or combustible into the Said House unless after complying with the legal requirements and obtaining the consent of the relevant authorities and the Landlord.',
+    //     'Maintain the cleanliness of the entire interior and exterior of the Said House, including the corridor, staircase, and the surroundings of the Said House, as determined by the Landlord or his/her authorized officers or representatives.',
+    //     'Maintain and ensure that the condition of the Said House throughout the rental period is always in a good and habitable condition (normal wear and tear excepted).',
+    //     'Obtain permission from the Landlord before hanging picture frames or furniture. After obtaining consent and before ending the lease, the Tenant must remove the frames or furniture, and patch the wall back to its original condition, including repainting.',
+    //     'The Tenant is only allowed to install additional locks with the Landlord\'s written consent. The Landlord will be given a duplicate of all keys installed at the Tenant\'s expense before installation.',
+    //     'Not to allow or permit any matter that violates the law, house rules, government regulations, or any other authority involving the Said House or which may render the insurance policy that protects it from loss or destruction due to fire invalid or cause its premium to increase.',
+    //     'The Tenant shall not engage in or allow anyone to engage in any immoral or unlawful act in the Said House that may disturb the peace or tranquility or cause discomfort to the residents in the area.',
+    //     'The Tenant shall settle any disputes with neighbors peacefully and responsibly.',
+    //     'Allow the Landlord or his/her authorized representative or employees to enter the Said House at any time to inspect or repair the house the Landlord deems necessary. For this inspection, the Landlord shall give the Tenant 48 hours\' notice or notice before entering the House or any part thereof.',
+    //     'The Tenant is responsible for repairing any damage caused by the Tenant\'s use or negligence or by the Tenant\'s hired workers or visitors.',
+    //     'Responsible for timely electricity, water, and sewerage bill payments.',
+    //     'The Tenant agrees to rent the Said House in its current condition. The Tenant also agrees to return the Said House in the same condition to the Landlord and bear the cost of cleaning/repairing/restoring if the Landlord hires someone to perform as such when the rental agreement period ends or is terminated. The Tenant is also responsible for settling all outstanding utility bills, if any.'
+    //   ];
+    const tenantAgreementOptions = [
+        'Agree to pay the rent amount as specified in the rental agreement document.',
+        'Do not engage in illegal, unlawful, or immoral activities on the premises.',
+        'Do not sublet any part of the house without written consent from the landlord.',
+        'Obtain written consent before making any changes to the house.',
+        'Do not keep pets on the premises.',
+        'Do not store hazardous materials without proper authorization.',
+        'Keep the house clean inside and out.',
+        'Maintain the house in good condition.',
+        'Get permission before hanging anything on the walls and restore them before leaving.',
+        'Install additional locks only with written consent and provide duplicates to the landlord.',
+        'Comply with all laws, regulations, and insurance requirements.',
+        'Respect the peace and comfort of neighbors.',
+        'Resolve disputes with neighbors peacefully.',
+        'Allow landlord entry for inspections or repairs with 48 hours notice.',
+        'Take responsibility for any damages caused during the tenancy.',
+        'Pay utility bills on time.',
+        'Return the house in the same condition it was rented, covering cleaning and repairs if needed.'
+      ];
+      
+      const landlordAgreementOptions = [
+        'Repair any significant damage to the house caused by factors beyond the tenant\'s control.',
+        'Return the deposit within 21 days after the tenancy ends, deducting any outstanding rent or utility bills, repair costs for damage caused by the tenant, charges according to the agreement terms, and restoration expenses.',
+        'Ensure safety measures are in place before the tenant moves in, such as functional door knobs, window locks, and safe wiring and water supply.'
+      ];
+      
+      const agreementBetweenLandlordOptions = [
+        'The landlord will hand over the house keys to the tenant upon receiving the deposit, unless otherwise agreed.',
+        'If the agreement ends, the tenant must promptly return the house keys and access card to the landlord.',
+        'In case of non-payment of rent, the landlord may use the deposit to cover arrears and terminate the agreement, with the option to grant additional time for payment.',
+        'To renew the rental period, the tenant must notify the landlord in writing at least two months before the end of the current period.',
+        'The landlord reserves the right not to renew the rental period.',
+        'The landlord can terminate the agreement immediately for violations or when reclaiming the house for any purpose, with a written notice of at least two months in advance.',
+        'The tenant can terminate the rental by giving a written notice of at least two months; otherwise, the deposit will not be refunded.',
+        'During the notice period, the tenant must continue paying rent as usual without using the deposit.',
+        'Termination by the tenant does not exempt them from paying outstanding amounts owed to the landlord.',
+        'Any disputes between the landlord and tenant shall be resolved through peaceful arbitration if an amicable resolution cannot be reached.'
+      ];
+      
 
-//   const [selectedLocation, setSelectedLocation] = useState('');
-//   const handleClick = (event) => {
-//     const {lat, lng} = event.latlng;
-//     setSelectedLocation({lat,lng});
-//     setLatitude(lat);
-//     setLongitude(lng);
-//   }
-// const [selectedLocation, setSelectedLocation] = useState("");
 
 const [selectedLocation, setSelectedLocation] = useState({lat: 4.2105, lng: 101.9758 });
 
@@ -254,6 +343,23 @@ const handleClick = (event) => {
     }
   };
   
+  const handleGetCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setSelectedLocation({ lat: latitude, lng: longitude });
+          setLatitude(latitude.toFixed(6));
+          setLongitude(longitude.toFixed(6));
+        },
+        (error) => {
+          console.error('Error getting current location:', error);
+        }
+      );
+    } else {
+      alert('Geolocation is not supported by this browser.');
+    }
+  };
 
   
   
@@ -265,496 +371,365 @@ const handleClick = (event) => {
             <h2>RENTAL CONTRACT FORM</h2>
             </div>
 
-            
-            <form onSubmit={handleSubmit}>
-            {/* Landlord Details */}
-                <div className="form-container">
-            <h2>Landlord Details</h2>
-                <div className="row">
-                    <div className="col-25">
-                        <label>Landlord Name:</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="text" value={landlord} onChange={(e) => setLandlord(e.target.value)} required />
-                    </div>
-                </div>
-
-                <div className="row">
-                    <div className="col-25">
-                        <label>Landlord Identification Number:</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="text" value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} required />
-                    </div>
-                </div>
-
-                <div className="row">
-                    <div className="col-25">
-                        <label>Landlord House Address:</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="text" value={houseAddress} onChange={(e) => setHouseAddress(e.target.value)} required />
-                    </div>
-                </div>
-                
-                {/* Add Landlord Signature */}
-                {/* <div className="row">
-                    <div className="col-25">
-                        <label>Landlord Signature:</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="text" value={landlordSignature} onChange={(e) => setLandlordSignature(e.target.value)} required />
-                    </div>
-                </div> */}
-
-                </div>
-            {/* Is there a tenant */}
-                <div className="form-container">
-                                   {/* Add checkbox for tenant */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Is there a tenant?</label>
-                    </div>
-                    <div className="col-75">
-                        {/* <input type="checkbox" checked={hasTenant} onChange={handleCheckboxChange} /> */}
-                        <input type="checkbox" checked={hasTenant} onChange={(e) => handleCheckboxChange(e, setHasTenant, setTenantName, setTenantIdNumber, setTenantHouseAddress, setTenantSignature)} />
-
-                    </div>
-                </div>
-
-                {/* Tenant details (conditionally rendered based on checkbox status) */}
-                {hasTenant && (
-                    <>
-                        <div className="row">
-                            <div className="col-25">
-                                <label>Tenant Name:</label>
-                            </div>
-                            <div className="col-75">
-                                <input type="text" value={tenantName} onChange={(e) => setTenantName(e.target.value)} required />
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-25">
-                                <label>Tenant Identification Number:</label>
-                            </div>
-                            <div className="col-75">
-                                <input type="text" value={tenantIdNumber} onChange={(e) => setTenantIdNumber(e.target.value)} required />
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-25">
-                                <label>Tenant House Address:</label>
-                            </div>
-                            <div className="col-75">
-                                <input type="text" value={tenantHouseAddress} onChange={(e) => setTenantHouseAddress(e.target.value)} required />
-                            </div>
-                        </div>
-
-                                        {/* Add Tenant Signature */}
-                {/* <div className="row">
-                    <div className="col-25">
-                        <label>Tenant Signature:</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="text" value={tenantSignature} onChange={(e) => setTenantSignature(e.target.value)} required />
-                    </div>
-                </div> */}
-                    </>
-                )}
-                </div>
-            {/* Rental Details */}
-                <div className="form-container">
-                    <h3>Rental Details</h3>
-                                   {/* Add Rent Address */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Rent Address:</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="text" value={rentAddress} onChange={(e) => setRentAddress(e.target.value)} required />
-                    </div>
-                </div>
-
-                {/* <div className="row">
-                    <div className="col-25">
-                        <label>Latitude & Longitude:</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="text" value={rentLatitude} onChange={(e) => setLatitude(e.target.value)} required />
-                        <input type="text" value={rentLongitude} onChange={(e) => setLongitude(e.target.value)} required />
-                    </div>
-                </div> */}
-<div className="row">
-  <div className="col-75">
-    <div className="map-container">
-      <MapContainer
-        center={[4.2105, 101.9758]}
-        zoom={12}
-        scrollWheelZoom={true}
-        style={{
-          border: "2px solid #6A67CE",
-          borderRadius: "10px",
-          height: "60vw",
-          width: "90%",
-          maxWidth: "800px",
-          maxHeight: "400px",
-          margin: "10px 10.5%",
-        }}
-        onClick={handleClick}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {selectedLocation && (
-          <Marker
-            position={selectedLocation}
-            draggable={true}
-            eventHandlers={{
-                dragend: (e) => {
-                    const lat = e.target.getLatLng().lat.toFixed(6);
-                    const lng = e.target.getLatLng().lng.toFixed(6);
-                    setSelectedLocation(e.target.getLatLng());
-                    setLatitude(lat);
-                    setLongitude(lng);
-                  }
-            }}
-          >
-            <Popup>
-              You clicked here:<br />
-              Latitude: {selectedLocation.lat.toFixed(4)}<br />
-              Longitude: {selectedLocation.lng.toFixed(4)}
-            </Popup>
-          </Marker>
-        )}
-      </MapContainer>
+<form onSubmit={handleSubmit} className="container mt-4">
+    {/* Landlord Details */}
+    <div className="form-container">
+        <h2 className="mb-3">Landlord Details</h2>
+        <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Landlord Name:</label>
+            <div className="col-sm-9">
+                <input type="text" className="form-control" value={landlord} onChange={(e) => setLandlord(e.target.value)} required />
+            </div>
+        </div>
+        <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Landlord Identification Number:</label>
+            <div className="col-sm-9">
+                <input type="text" className="form-control" value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} required />
+            </div>
+        </div>
+        <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Landlord House Address:</label>
+            <div className="col-sm-9">
+                <input type="text" className="form-control" value={houseAddress} onChange={(e) => setHouseAddress(e.target.value)} required />
+            </div>
+        </div>
     </div>
-  </div>
 
-</div>
-<div className="row">
-<div className="col-75">
-    <label>Latitude:</label>
-    <input type="text" value={rentLatitude || ""} readOnly />
-    <input type="text" value={rentLongitude || ""} readOnly />
-
-    <button type="button" onClick={handleConfirmLocation}>
-      Confirm Location
-    </button>
-  </div>
-</div>
-
-
-
-                {/* Add Building Type */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Building Type:</label>
-                    </div>
-                    <div className="col-75">
-                        <select value={buildingType} onChange={handleBuildingTypeChange} required>
-                            <option value="">Select Building Type</option>
-                            <option value="Flat">Flat</option>
-                            <option value="Lot House">Lot House</option>
-                            <option value="Apartment">Apartment</option>
-                        </select>
+    {/* Is there a tenant */}
+    <div className="form-container mt-4">
+        <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Is there a tenant?</label>
+            <div className="col-sm-9">
+                <input type="checkbox" checked={hasTenant} onChange={(e) => handleCheckboxChange(e, setHasTenant, setTenantName, setTenantIdNumber, setTenantHouseAddress, setTenantSignature)} />
+            </div>
+        </div>
+        {hasTenant && (
+            <>
+                <div className="form-group row">
+                    <label className="col-sm-3 col-form-label">Tenant Name:</label>
+                    <div className="col-sm-9">
+                        <input type="text" className="form-control" value={tenantName} onChange={(e) => setTenantName(e.target.value)} required />
                     </div>
                 </div>
-
-                {/* Add Rent Period */}
-                <div className="row">
-    <div className="col-25">
-        <label>Rent Period (in months):</label>
-    </div>
-    <div className="col-75">
-        <select value={rentPeriod} onChange={(e) => handleRentPeriodChange(e)} required>
-            <option value="">Select rent period</option>
-            <option value="1">1 month</option>
-            <option value="2">2 months</option>
-            <option value="3">3 months</option>
-            <option value="6">6 months</option>
-            <option value="12">12 months</option>
-            <option value="other">Other</option>
-        </select>
-        {rentPeriod === "other" && (
-            <input type="number" value={customRentPeriod} onChange={(e) => setCustomRentPeriod(parseInt(e.target.value))} placeholder="Enter custom rent period" />
+                <div className="form-group row">
+                    <label className="col-sm-3 col-form-label">Tenant Identification Number:</label>
+                    <div className="col-sm-9">
+                        <input type="text" className="form-control" value={tenantIdNumber} onChange={(e) => setTenantIdNumber(e.target.value)} required />
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label className="col-sm-3 col-form-label">Tenant House Address:</label>
+                    <div className="col-sm-9">
+                        <input type="text" className="form-control" value={tenantHouseAddress} onChange={(e) => setTenantHouseAddress(e.target.value)} required />
+                    </div>
+                </div>
+            </>
         )}
     </div>
-</div>
 
-
-                {/* Add Effective Start Date */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Effective Start Date:</label>
-                    </div>
-                    <div className="col-75">
-                        <input placeholder="DD-MM-YYYY" type="date" value={effectiveStartDate} onChange={(e) => setEffectiveStartDate(e.target.value)} required />
-                    </div>
-                </div>
-                {/* Add Effective End Date */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Effective End Date:</label>
-                    </div>
-                    <div className="col-75">
-                        <input placeholder="DD-MM-YYYY" type="date" value={effectiveEndDate} onChange={(e) => setEffectiveEndDate(e.target.value)} required />
-                    </div>
-                </div>
-
-                {/* Add Monthly Rent */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Monthly Rent (RM):</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="number" value={monthlyRent} onChange={(e) => setMonthlyRent(parseInt(e.target.value))} required />
-                    </div>
-                </div>
-
-                {/* Add Payment Method */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Payment Method:</label>
-                    </div>
-                    <div className="col-75">
-                        <select value={paymentMethod} onChange={handlePaymentMethodChange} required>
-                            <option value="">Select Payment Method</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Bank Transfer">Bank Transfer</option>
-                            <option value="Credit Card">Credit Card</option>
-                            {/* Add more payment methods as needed */}
-                        </select>
-                    </div>
-                </div>
-
-                {/* Add Max Overdue Period */}
-                <div className="row">
-                <div className="col-25">
-                    <label>Max Overdue Period (in days):</label>
-                </div>
-                <div className="col-75">
-                    <select value={maxOverduePeriod} onChange={(e) => handleMaxOverduePeriodChange(e)} required>
-                        <option value="">Select max overdue period</option>
-                        <option value="1">1 day</option>
-                        <option value="7">7 days</option>
-                        <option value="14">14 days</option>
-                        <option value="30">30 days</option>
-                        <option value="other">Other</option>
-                    </select>
-                    {maxOverduePeriod === "other" && (
-                        <input 
-                            type="number" 
-                            value={customMaxOverduePeriod} 
-                            onChange={(e) => setCustomMaxOverduePeriod(parseInt(e.target.value))} 
-                            placeholder="Enter custom max overdue period" 
+    {/* Rental Details */}
+    <div className="form-container mt-4">
+        <h3 className="mb-3">Rental Details</h3>
+        <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Rent Address:</label>
+            <div className="col-sm-9">
+                <input type="text" className="form-control" value={rentAddress} onChange={(e) => setRentAddress(e.target.value)} required />
+            </div>
+        </div>
+        <div className="row">
+            <div className="col-12">
+                <div className="map-container mb-3">
+                    <MapContainer
+                        center={[selectedLocation.lat, selectedLocation.lng]}
+                        zoom={12}
+                        scrollWheelZoom={true}
+                        style={{
+                            border: "2px solid #6A67CE",
+                            borderRadius: "10px",
+                            height: "60vw",
+                            width: "100%",
+                            maxWidth: "800px",
+                            maxHeight: "400px",
+                            margin: "auto",
+                        }}
+                        onClick={handleClick}
+                    >
+                        <TileLayer
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
-                    )}
+                        {selectedLocation && (
+                            <Marker
+                                position={selectedLocation}
+                                draggable={true}
+                                eventHandlers={{
+                                    dragend: (e) => {
+                                        const lat = e.target.getLatLng().lat.toFixed(6);
+                                        const lng = e.target.getLatLng().lng.toFixed(6);
+                                        setSelectedLocation(e.target.getLatLng());
+                                        setLatitude(lat);
+                                        setLongitude(lng);
+                                    }
+                                }}
+                            >
+                                <Popup>
+                                    You clicked here:<br />
+                                    Latitude: {selectedLocation.lat.toFixed(4)}<br />
+                                    Longitude: {selectedLocation.lng.toFixed(4)}
+                                </Popup>
+                            </Marker>
+                        )}
+                    </MapContainer>
                 </div>
             </div>
-
-                {/* Add Deposit */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Deposit:</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="number" value={deposit} onChange={(e) => setDeposit(parseInt(e.target.value))} required />
-                    </div>
-                </div>
-
-                {/* Add Utility Deposit */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Utility Deposit:</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="number" value={utilityDeposit} onChange={(e) => setUtilityDeposit(parseInt(e.target.value))} required />
-                    </div>
-                </div>
-
-                {/* Add Advance Rental */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Advance Rental:</label>
-                    </div>
-                    <div className="col-75">
-                        <input type="number" value={advanceRental} onChange={(e) => setAdvanceRental(parseInt(e.target.value))} required />
-                    </div>
-                </div>
-                </div>
-            {/* Contract Terms */}
-                <div className="form-container">
-                    <h3>Contract Terms</h3>
-                    
-                {/* Add Agreement Details */}
-                <div className="row">
-                    <div className="col-25"> 
-                        <label>Agreement Details:</label>
-                    </div>
-                    <div className="col-75">
-                        <textarea value={agreementDetails} onChange={(e) => setAgreementDetails(e.target.value)} required />
-                        {/* <textarea value={generateAgreementDetails()} readOnly /> */}
-                    </div>
-                </div>
-
-                {/* Add Tenant Agreements */}
-                {/* <div className="row">
-                    <div className="col-25">
-                        <label>Tenant Agreements:</label>
-                    </div>
-                    <div className="col-75">
-                        {tenantAgreement.map((agreement, index) => (
-                            <div key={index}>
-                                <textarea
-                                    value={agreement}
-                                   onChange={e => handleTenantAgreementChange(index, e.target.value)}
-                                    
-                                    required
-                                />
-                                <button type="button" onClick={() => handleRemoveTenantAgreement(index)}>Remove</button>
-                            </div>
-                        ))}
-                        <button type="button" onClick={handleAddTenantAgreement}>Add Tenant Agreement</button>
-                    </div>
-                </div> */}
-     <div className="row">
-        <div className="col-25">
-          <label>Tenant Agreements:</label>
+            <div className="col-12 text-center mb-3">
+                <button className="btn btn-info" onClick={handleGetCurrentLocation}>
+                    Use My Current Location
+                </button>
+            </div>
         </div>
-        <div className="col-75">
-          {tenantAgreement.map((agreement, index) => (
-            <div key={index}>
-              {/* <textarea
-                value={agreement}
-                onChange={(e) => handleTenantAgreementChange(index, e.target.value)}
-                required
-              /> */}
-              {agreement}
-              {agreement && (
-              <button type="button" onClick={() => handleRemoveTenantAgreement(index)}>Remove</button>
-              )}
-              </div>
-          ))}
-          <div>
-            <select value={newTenantAgreement} onChange={(e) => setNewTenantAgreement(e.target.value)}>
-              <option value="">Select an option...</option>
-              {tenantAgreementOptions.map((option, index) => (
-                <option key={index} value={option}>{option}</option>
-              ))}
+        <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Latitude:</label>
+            <div className="col-sm-9">
+                <input type="text" className="form-control mb-2" value={rentLatitude || ""} readOnly />
+                <input type="text" className="form-control" value={rentLongitude || ""} readOnly />
+                <button className="btn btn-primary mt-2" type="button" onClick={handleConfirmLocation}>
+                    Confirm Location
+                </button>
+            </div>
+        </div>
+        <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Building Type:</label>
+            <div className="col-sm-9">
+                <select className="form-control" value={buildingType} onChange={handleBuildingTypeChange} required>
+                    <option value="">Select Building Type</option>
+                    <option value="Flat">Flat</option>
+                    <option value="Lot House">Lot House</option>
+                    <option value="Apartment">Apartment</option>
+                </select>
+            </div>
+        </div>
+        <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Rent Period (in months):</label>
+            <div className="col-sm-9">
+                <select className="form-control" value={rentPeriod} onChange={(e) => handleRentPeriodChange(e)} required>
+                    <option value="">Select rent period</option>
+                    <option value="1">1 month</option>
+                    <option value="2">2 months</option>
+                    <option value="3">3 months</option>
+                    <option value="6">6 months</option>
+                    <option value="12">12 months</option>
+                    <option value="other">Other</option>
+                </select>
+                {rentPeriod === "other" && (
+                    <input type="number" className="form-control mt-2" value={customRentPeriod} onChange={(e) => setCustomRentPeriod(parseInt(e.target.value))} placeholder="Enter custom rent period" />
+                )}
+            </div>
+        </div>
+        <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Effective Start Date:</label>
+            <div className="col-sm-9">
+                <input type="date" className="form-control" placeholder="DD-MM-YYYY" value={effectiveStartDate} onChange={(e) => setEffectiveStartDate(e.target.value)} required />
+            </div>
+        </div>
+        <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Effective End Date:</label>
+            <div className="col-sm-9">
+                <input type="date" className="form-control" placeholder="DD-MM-YYYY" value={effectiveEndDate} onChange={(e) => setEffectiveEndDate(e.target.value)} required />
+            </div>
+        </div>
+        <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Monthly Rent (RM):</label>
+            <div className="col-sm-9">
+                <input type="number" className="form-control" value={monthlyRent} onChange={(e) => setMonthlyRent(parseInt(e.target.value))} required />
+            </div>
+        </div>
+     {/* Add Payment Method */}
+   
+     <div className="form-group row">
+    <label className="col-sm-3 col-form-label">Payment Method:</label>
+    <div className="col-sm-9">
+        <select className="form-control" value={paymentMethod} onChange={handlePaymentMethodChange} required>
+            <option value="">Select Payment Method</option>
+            <option value="Cash">Cash</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="Credit Card">Credit Card</option>
+            {/* Add more payment methods as needed */}
+        </select>
+    </div>
+</div>
+<div className="form-group row">
+    <label className="col-sm-3 col-form-label">Max Overdue Period (in days):</label>
+    <div className="col-sm-9">
+        <select className="form-control" value={maxOverduePeriod} onChange={(e) => handleMaxOverduePeriodChange(e)} required>
+            <option value="">Select max overdue period</option>
+            <option value="1">1 day</option>
+            <option value="7">7 days</option>
+            <option value="14">14 days</option>
+            <option value="30">30 days</option>
+            <option value="other">Other</option>
+        </select>
+        {maxOverduePeriod === "other" && (
+            <input type="number" className="form-control mt-2" value={customMaxOverduePeriod} onChange={(e) => setCustomMaxOverduePeriod(parseInt(e.target.value))} placeholder="Enter custom max overdue period" />
+        )}
+    </div>
+</div>
+
+
+<div className="form-group row">
+    <label className="col-sm-3 col-form-label">Deposit:</label>
+    <div className="col-sm-9">
+        <input type="number" className="form-control" value={deposit} onChange={(e) => setDeposit(parseInt(e.target.value))} required />
+    </div>
+</div>
+<div className="form-group row">
+    <label className="col-sm-3 col-form-label">Utility Deposit:</label>
+    <div className="col-sm-9">
+        <input type="number" className="form-control" value={utilityDeposit} onChange={(e) => setUtilityDeposit(parseInt(e.target.value))} required />
+    </div>
+</div>
+<div className="form-group row">
+    <label className="col-sm-3 col-form-label">Advance Rental:</label>
+    <div className="col-sm-9">
+        <input type="number" className="form-control" value={advanceRental} onChange={(e) => setAdvanceRental(parseInt(e.target.value))} required />
+    </div>
+</div>
+
+
+
+<div className="form-group">
+    <h3>Contract Terms</h3>
+    <div className="form-row">
+                    <div className="form-group col-12">
+                        <label htmlFor="agreementDetails">Agreement Details:</label>
+                        <textarea
+                            id="agreementDetails"
+                            className="form-control"
+                            value={agreementDetails}
+                            onChange={(e) => setAgreementDetails(e.target.value)}
+                            required
+                        ></textarea>
+                    </div>
+                </div>
+
+
+    <div className="form-row">
+        <div className="form-group col-12">
+            <label>Tenant Agreements:</label>
+            {tenantAgreement.map((agreement, index) => (
+                <div key={index} className="d-flex align-items-center mb-2">
+                    <textarea className="form-control" value={agreement} readOnly />
+                    <button type="button" className="btn btn-danger ml-2" onClick={() => handleRemoveTenantAgreement(index)}>Remove</button>
+                </div>
+            ))}
+            <select className="form-control mt-2" value={newTenantAgreement} onChange={(e) => setNewTenantAgreement(e.target.value)}>
+                <option value="">Select an option...</option>
+                {tenantAgreementOptions.map((option, index) => (
+                    <option key={index} value={option}>{option}</option>
+                ))}
             </select>
-            <button type="button" onClick={handleAddTenantAgreement}>Add Tenant Agreement</button>
-          </div>
+            <button type="button" className="btn btn-primary mt-2" onClick={handleAddTenantAgreement}>Add Tenant Agreement</button>
         </div>
-      </div>
+    </div>
 
-                {/* Add Landlord Responsibilities */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Landlord Responsibilities:</label>
-                    </div>
-                    <div className="col-75">
-                        {landlordResponsibilities.map((responsibility, index) => (
-                            <div key={index}>
-                                {/* <textarea
-                                    value={responsibility}
-                                    onChange={e => handleLandlordResponsibilityChange(index, e.target.value)}
-                                    required
-                                /> */}
-                                {responsibility}
-                                {responsibility && (
-                                <button type="button" onClick={() => handleRemoveLandlordResponsibility(index)}>Remove</button>
-                                )}
-                            </div>
-                        ))}
-                        <div>
-                            <select value={newLandlordResponsibilites} onChange={(e) => setNewLandlordResponsibilities(e.target.value)}>
-                                <option value="">Select an option...</option>
-                                {landlordAgreementOptions.map((option, index) =>(
-                                    <option key={index} value={option}>{option}</option>
-                                ))}
-                            </select>
-                            <button type="button" onClick={handleAddLandlordResponsibility}>Add Landlord Responsibility</button>
 
-                        </div>
-                    </div>
+    <div className="form-row">
+        <div className="form-group col-12">
+            <label>Landlord Responsibilities:</label>
+            {landlordResponsibilities.map((responsibility, index) => (
+                <div key={index} className="d-flex align-items-center mb-2">
+                    <textarea className="form-control" value={responsibility} readOnly />
+                    <button type="button" className="btn btn-danger ml-2" onClick={() => handleRemoveLandlordResponsibility(index)}>Remove</button>
                 </div>
-
-                {/* Add Agreements Between Landlord */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Agreements Between Landlord:</label>
-                    </div>
-                    <div className="col-75">
-                        {agreementBetweenLandlord.map((agreement, index) => (
-                            <div key={index}>
-                                {/* <textarea
-                                    value={agreement}
-                                 onChange={e => handleAgreementBetweenLandlordChange(index, e.target.value)}
-                                 
-                                    required
-                                /> */}
-                                {agreement}
-                                {agreement && (
-                                <button type="button" onClick={() => handleRemoveAgreementBetweenLandlord(index)}>Remove</button>
-
-                                )}
-                            </div>
-                        ))}
-                        <div>
-                            <select value={newAgreementBetweenLandlord} onChange={(e) =>setNewAgreementBetweenLandlord(e.target.value)}>
-                                <option value="">Select an option...</option>
-                                {agreementBetweenLandlordOptions.map((option, index) => (
-                                    <option key={index} value={option}>{option}</option>
-                                ))}
-                            </select>
-                            <button type="button" onClick={handleAddAgreementBetweenLandlord}>Add Agreement Between Landlord</button>
-
-                        </div>
-                    </div>
-                </div>
-
-                </div>
-            {/* database data*/}
-                <div className="form-container">
-                <div className="row">
-        <div className="col-25">
-            <label>Preferred Occupants:</label>
-        </div>
-        <div className="col-75">
-            <select value={preferredOccupants} onChange={(e) => setPreferredOccupants(e.target.value)}>
-                <option value="">Select Preferred Occupants</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+            ))}
+            <select className="form-control mt-2" value={newLandlordResponsibilites} onChange={(e) => setNewLandlordResponsibilities(e.target.value)}>
+                <option value="">Select an option...</option>
+                {landlordAgreementOptions.map((option, index) => (
+                    <option key={index} value={option}>{option}</option>
+                ))}
             </select>
+            <button type="button" className="btn btn-primary mt-2" onClick={handleAddLandlordResponsibility}>Add Landlord Responsibility</button>
         </div>
+    </div>
+
+  
+    <div className="form-row">
+        <div className="form-group col-12">
+            <label>Agreements Between Landlord:</label>
+            {agreementBetweenLandlord.map((agreement, index) => (
+                <div key={index} className="d-flex align-items-center mb-2">
+                    <textarea className="form-control" value={agreement} readOnly />
+                    <button type="button" className="btn btn-danger ml-2" onClick={() => handleRemoveAgreementBetweenLandlord(index)}>Remove</button>
                 </div>
-                {/* number of rooms */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>Number of Rooms</label>
-                    </div>
-                    <div className="col-75">
-                        <select value={numberOfRooms} onChange={(e) => setnumberOfRooms(e.target.value)}>
-                        <option value="">Select Number of Rooms</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                        </select>
-                    </div>
-                </div>
-                {/* house descriiption */}
-                <div className="row">
-                    <div className="col-25">
-                        <label>House Description</label>
-                    </div>
-                    <div className="col-75">
-                    <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required />
-                    </div>
-                </div>
+            ))}
+            <select className="form-control mt-2" value={newAgreementBetweenLandlord} onChange={(e) => setNewAgreementBetweenLandlord(e.target.value)}>
+                <option value="">Select an option...</option>
+                {agreementBetweenLandlordOptions.map((option, index) => (
+                    <option key={index} value={option}>{option}</option>
+                ))}
+            </select>
+            <button type="button" className="btn btn-primary mt-2" onClick={handleAddAgreementBetweenLandlord}>Add Agreement Between Landlord</button>
+        </div>
+    </div>
+</div>
+
+
+<div className="form-group row">
+    <label className="col-sm-3 col-form-label">Preferred Occupants:</label>
+    <div className="col-sm-9">
+        <select className="form-control" value={preferredOccupants} onChange={(e) => setPreferredOccupants(e.target.value)}>
+            <option value="">Select Preferred Occupants</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+    </div>
+</div>
+<div className="form-group row">
+    <label className="col-sm-3 col-form-label">Number of Rooms:</label>
+    <div className="col-sm-9">
+        <select className="form-control" value={numberOfRooms} onChange={(e) => setnumberOfRooms(e.target.value)}>
+            <option value="">Select Number of Rooms</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+        </select>
+    </div>
+</div>
+<div className="form-group row">
+    <label className="col-sm-3 col-form-label">House Description:</label>
+    <div className="col-sm-9">
+        <input type="text" className="form-control" value={description} onChange={(e) => setDescription(e.target.value)} required />
+    </div>
+</div>
+<div className="form-group row">
+    <label className="col-sm-3 col-form-label">Amenities Offered by Landlord:</label>
+    <div className="col-sm-9">
+        <input type="text" className="form-control" value={amenities} onChange={(e) => setAmenities(e.target.value)} />
+    </div>
+</div>
+<div className="form-group row">
+    <label className="col-sm-3 col-form-label">Number of Bedrooms:</label>
+    <div className="col-sm-9">
+        <input type="number" className="form-control" value={numBedrooms} onChange={(e) => setNumBedrooms(e.target.value)} />
+    </div>
+</div>
+<div className="form-group row">
+    <label className="col-sm-3 col-form-label">Number of Toilets:</label>
+    <div className="col-sm-9">
+        <input type="number" className="form-control" value={numToilets} onChange={(e) => setNumToilets(e.target.value)} />
+    </div>
+</div>
+<div className="form-group row">
+    <label className="col-sm-3 col-form-label">Upload Pictures:</label>
+    <div className="col-sm-9">
+        <input type="file" accept="image/*" multiple onChange={handleImageUpload} />
+    </div>
+</div>
+
+
                 </div>
 
                 {/* Add Loading and Success/Error Messages */}
@@ -765,7 +740,7 @@ const handleClick = (event) => {
                 ) : (
                     <div className="button-container">
                         {/* <input type="submit" value="Create Contract" /> */}
-                        <button onClick={handleSubmit}>Create Contract</button>
+                        <button className="btn btn-primary" onClick={handleSubmit}>Create Contract</button>
                     </div>
                 )}
 

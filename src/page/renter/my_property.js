@@ -2,26 +2,35 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Modal, Button } from 'react-bootstrap';
+
+const ConfirmationModal = ({ show, handleClose, handleConfirm, title, message }) => {
+  return (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>{title}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{message}</Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button variant="primary" onClick={handleConfirm}>
+          Confirm
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
 const RenterDashboard = () => {
-  const [rentalHouseDetails, setRentalHouseDetails] = useState([]);
   const [appliedHouses, setAppliedHouses] = useState([]);
-  const [pendingTenants, setPendingTenants] = useState([]);
-  const [verifiedTenants, setVerifiedTenants] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [modalConfig, setModalConfig] = useState({});
   const userId = localStorage.getItem('userId');
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch rental house details
-    // axios.get('http://127.0.0.1:8000/api/rental-houses')
-    //   .then(response => {
-    //     setRentalHouseDetails(response.data);
-    //   })
-    //   .catch(error => {
-    //     console.error('Error fetching rental house details:', error);
-    //   });
-
-    // Fetch applied rental houses
     axios.get(`http://127.0.0.1:8000/api/applied-houses/${userId}`)
       .then(response => {
         setAppliedHouses(response.data);
@@ -29,70 +38,82 @@ const RenterDashboard = () => {
       .catch(error => {
         console.error('Error fetching applied houses:', error);
       });
-  }, []);
+  }, [userId]);
+
+  const openModal = (title, message, handleConfirm) => {
+    setModalConfig({ title, message, handleConfirm });
+    setShowModal(true);
+  };
 
   const handleCancel = async (houseId) => {
-    if (window.confirm('Are you sure you want to cancel the application?')) {
-      try {
-        // Send HTTP request to update tenant status to 'cancelled'
-        await axios.put(`http://127.0.0.1:8000/api/tenants/${houseId}`, { tenant_status: 'cancelled' });
-  
-        // Fetch updated applied houses data after cancellation
-        const response = await axios.get('http://127.0.0.1:8000/api/applied-houses');
-        setAppliedHouses(response.data);
-  
-        console.log('Application cancelled successfully');
-      } catch (error) {
-        console.error('Error cancelling application:', error);
+    openModal(
+      'Cancel Application',
+      'Are you sure you want to cancel the application?',
+      async () => {
+        try {
+          await axios.put(`http://127.0.0.1:8000/api/tenants/${houseId}`, { tenant_status: 'cancelled' });
+          const response = await axios.get(`http://127.0.0.1:8000/api/applied-houses/${userId}`);
+          setAppliedHouses(response.data);
+          setShowModal(false);
+          console.log('Application cancelled successfully');
+        } catch (error) {
+          console.error('Error cancelling application:', error);
+        }
       }
-    }
+    );
   };
-  
+
   const handleSignNow = async (houseId) => {
-    try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
-      const uniqueIdentifier = response.data.uni_identifier;
-      navigate(`/sign-now`, { state: { uniqueIdentifier } });
-    } catch (error) {
-      console.error("Error fetching house unique identifier:", error);
-      if (error.response) {
-        console.error(`Server responded with status: ${error.response.status}`);
-        console.error(`Response data: ${JSON.stringify(error.response.data)}`);
-      } else {
-        console.error(`Error message: ${error.message}`);
+    openModal(
+      'Sign Contract',
+      'Are you sure you want to sign the contract now?',
+      async () => {
+        try {
+          const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
+          const uniqueIdentifier = response.data.uni_identifier;
+          navigate(`/sign-now`, { state: { uniqueIdentifier } });
+          setShowModal(false);
+        } catch (error) {
+          console.error("Error fetching house unique identifier:", error);
+          if (error.response) {
+            console.error(`Server responded with status: ${error.response.status}`);
+            console.error(`Response data: ${JSON.stringify(error.response.data)}`);
+          } else {
+            console.error(`Error message: ${error.message}`);
+          }
+        }
       }
-    }
-  }
-  
+    );
+  };
+
   return (
     <div className="container mt-5">
-      <h2 className="text-center">Renter Dashboard</h2>
+      <h2 className="text-center mb-4">Renter Dashboard</h2>
 
       {/* Rental House Details Section */}
-      <div className="row mt-5">
+      <div className="row">
         <div className="col-md-12">
           <h3 className="text-center">Rental House Details</h3>
           <div className="table-responsive">
-            <table className="table">
-              {/* Table headers */}
+            <table className="table table-bordered">
               <thead>
                 <tr>
                   <th>House ID</th>
                   <th>Address</th>
                   <th>Status</th>
-                  {/* Add more columns as needed */}
                 </tr>
               </thead>
-              {/* Table body */}
               <tbody>
-                {/* {rentalHouseDetails.map(house => (
-                  <tr key={house.id}>
-                    <td>{house.id}</td>
-                    <td>{house.address}</td>
-                    <td>{house.tenant_status}</td>
-                  
-                  </tr>
-                ))} */}
+                {appliedHouses
+                  .filter(house => house.tenant_status === 'Approved' && house.sign_contract_status === 'Signed')
+                  .map(house => (
+                    <tr key={house.id}>
+                      <td>{house.house_id}</td>
+                      <td>{house.address}</td>
+                      <td>{house.tenant_status}</td>
+                      <td>Contract Signed</td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
@@ -104,58 +125,44 @@ const RenterDashboard = () => {
         <div className="col-md-12">
           <h3 className="text-center">Applied Rental Houses</h3>
           <div className="table-responsive">
-            <table className="table">
-              {/* Table headers */}
+            <table className="table table-bordered">
               <thead>
                 <tr>
                   <th>House ID</th>
-                  {/* <th>Address</th> */}
                   <th>Status</th>
-                  {/* Add more columns as needed */}
                   <th>Action</th>
                 </tr>
               </thead>
-              {/* Table body */}
               <tbody>
-
-                 {/* {
-               
-                  appliedHouses.map(house => (
-                  <tr key={house.id}>
-                    <td>{house.house_id}</td>
- 
-                    <td>{house.tenant_status}</td>
-                 
-                    <td>
-                        <button className='btn btn-danger' onClick={() => handleCancel(house.id)}>Cancel Application</button>
-                     
-                    </td>
-             
-                  </tr>
-                ))} */}
-
-                {
-         appliedHouses.map(house => (
-            <tr key={house.id}>
-                 <td>{house.house_id}</td>
-                <td>{house.tenant_status}</td>
-             <td>
-                {house.tenant_status === 'Approved' ? (
-                <button className='btn btn-success' onClick={() => handleSignNow(house.house_id)} >Sign Now</button>
-        ) : (
-                <button className='btn btn-danger' onClick={() => handleCancel(house.id)}>Cancel Application</button>
-        )}
-           {/* <button className='btn btn-primary '>Sign Now</button> */}
-            </td>
-    </tr>
-  ))
-}
-
+                {appliedHouses
+                  .filter(house => house.tenant_status === 'Approved' && house.sign_contract_status === 'Unsigned')
+                  .map(house => (
+                    <tr key={house.id}>
+                      <td>{house.house_id}</td>
+                      <td>{house.tenant_status}</td>
+                      <td>
+                        <button className="btn btn-primary me-2" onClick={() => handleSignNow(house.house_id)}>
+                          Sign Now
+                        </button>
+                        <button className="btn btn-danger" onClick={() => handleCancel(house.id)}>
+                          Cancel Application
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
         </div>
       </div>
+
+      <ConfirmationModal
+        show={showModal}
+        handleClose={() => setShowModal(false)}
+        handleConfirm={modalConfig.handleConfirm}
+        title={modalConfig.title}
+        message={modalConfig.message}
+      />
     </div>
   );
 };
