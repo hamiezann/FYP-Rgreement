@@ -21,7 +21,7 @@ const DropdownMenu = ({ handleLogout }) => {
       </Dropdown.Toggle>
       <Dropdown.Menu className="dropdown-menu-right"> {/* Right-aligned dropdown */}
         <Dropdown.Item as={Link} to="/conversations" onClick={() => setIsOpen(false)}>All Conversations</Dropdown.Item>
-        <Dropdown.Item as={Link} to="/my-property" onClick={() => setIsOpen(false)}>My Property</Dropdown.Item>
+        {/* <Dropdown.Item as={Link} to="/my-property" onClick={() => setIsOpen(false)}>My Property</Dropdown.Item> */}
         <Dropdown.Item onClick={handleLogoutClick}>Logout</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>

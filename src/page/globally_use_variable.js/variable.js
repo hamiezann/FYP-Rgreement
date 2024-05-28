@@ -15,8 +15,8 @@ export const useGlobalContractState = () => {
     
     const [rentPeriod, setRentPeriod] = useState(0);
     const [customRentPeriod, setCustomRentPeriod] = useState('');
-    const [effectiveStartDate, setEffectiveStartDate] = useState('');
-    const [effectiveEndDate, setEffectiveEndDate] = useState('');
+    const [effectiveStartDate, setEffectiveStartDate] = useState("");
+    const [effectiveEndDate, setEffectiveEndDate] = useState("");
     const [monthlyRent, setMonthlyRent] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('');
     const [maxOverduePeriod, setMaxOverduePeriod] = useState(0);
@@ -78,6 +78,8 @@ export const useGlobalContractState = () => {
                 setTenantIdNumber("");
                 setTenantHouseAddress("");
                 setTenantSignature("");
+                // setEffectiveStartDate("");
+                // setEffectiveEndDate("");
             }
         };
     

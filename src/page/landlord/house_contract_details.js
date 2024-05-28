@@ -4,7 +4,8 @@ import { ethers } from 'ethers';
 import HouseRentalContract from "../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
 import "../../style/landlord/house_contract_details.css";
 
-const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+// const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 
 const HouseContractDetails = () => {
   const { houseId } = useParams();
@@ -14,7 +15,9 @@ const HouseContractDetails = () => {
   const location = useLocation();
   const uniIdentifier = location.state.uniIdentifier;
   const fixedPassword = "123456";
+  const role = localStorage.getItem('role');
   const navigate = useNavigate();
+  const [depositAmount, setDepositAmount] = useState(null);
 
   const handleUpdate = (uniIdentifier) => {
     navigate(`/rental-contract-update`, { state: { uniIdentifier } });
@@ -34,8 +37,14 @@ const HouseContractDetails = () => {
           provider
         );
         const details = await contract.getContract(uniIdentifier, fixedPassword);
-        setContractDetails(details);
+       setContractDetails(details);
+       const contractDetails = await contract.contracts(uniIdentifier);
+       const depositAmountWei = contractDetails.houseDetails.deposit;
+       const depositAmountEther = ethers.formatEther(depositAmountWei); // Convert wei to ether
+       setDepositAmount(depositAmountEther);
+
         setIsLoading(false);
+     //  console.log("deposit in eth", depositInEth);
       } catch (error) {
         console.error("Error fetching contract details:", error);
         setError(error);
@@ -84,9 +93,11 @@ const HouseContractDetails = () => {
           <p><strong>Monthly Rent:</strong> {Number(contractDetails.houseDetails.monthlyRent)}</p>
           <p><strong>Payment Method:</strong> {contractDetails.houseDetails.paymentMethod}</p>
           <p><strong>Max Overdue Period:</strong> {Number(contractDetails.houseDetails.maxOverduePeriod)}</p>
-          <p><strong>Deposit:</strong> {Number(contractDetails.houseDetails.deposit)}</p>
-          <p><strong>Utility Deposit:</strong> {Number(contractDetails.houseDetails.utilityDeposit)}</p>
-          <p><strong>Advance Rental:</strong> {Number(contractDetails.houseDetails.advanceRental)}</p>
+          {/* <p><strong>Deposit:</strong> {Number(contractDetails.houseDetails.deposit)}</p> */}
+          
+          <p><strong>Deposit:</strong> {depositAmount} ETH</p>
+          {/* <p><strong>Utility Deposit:</strong> {Number(contractDetails.houseDetails.utilityDeposit)}</p>
+          <p><strong>Advance Rental:</strong> {Number(contractDetails.houseDetails.advanceRental)}</p> */}
         </div>
 
         <div className="section mb-4">
@@ -127,9 +138,10 @@ const HouseContractDetails = () => {
         </div>
 
         <div className="text-center mt-4">
-          {contractDetails.tenantSignature ? (
+          {(role === 'landlord' || contractDetails.tenantSignature) && (
             <button className="btn btn-primary" onClick={handlePrint}>Print</button>
-          ) : (
+          )}
+          {role === 'landlord' && !contractDetails.tenantSignature && (
             <button className="btn btn-secondary" onClick={() => handleUpdate(uniIdentifier)}>Update</button>
           )}
           <button className="btn btn-outline-secondary ml-2" type="button" onClick={() => navigate(-1)}>Back</button>

@@ -53,8 +53,8 @@
 
 /* Custom button styles */
 .delete-button {
-  background-color: #ff4d4f;
-  color: #fff;
+  background-color: #d49798;
+  color: #f01a1a;
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
@@ -62,7 +62,7 @@
 }
 
 .delete-button:hover {
-  background-color: #ff7875;
+  background-color: #f5d4d3;
 }
 
 .update-button {
@@ -93,7 +93,7 @@
 
 .back-button {
   display: block;
-  background-color: #6c757d;
+  background-color: #e7638f;
   color: #fff;
   border: none;
   padding: 15px 30px;
@@ -104,5 +104,40 @@
 }
 
 .back-button:hover {
-  background-color: #5a6268;
+  background-color: #269c16;
+}
+.uni-identifier {
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+}
+
+.uni-identifier.visible {
+  max-height: 100px; /* Adjust based on content height */
+  opacity: 1;
+}
+
+.uni-identifier.hidden {
+  max-height: 0;
+  opacity: 0;
+}
+
+.btn-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.button-group .btn {
+  margin: 0 5px;
+  width: 120px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -26,6 +26,9 @@ import TenantListPage from './page/landlord/tenant_list';
 import RenterDashboard from './page/renter/my_property';
 import RentContractPage from './page/renter/sign_now';
 import AboutPage from './page/about_page';
+import EventsPage from './page/landlord/event_list';
+import RenterMenu from './page/renter/menu';
+import RequestDepositReleasePage from './page/landlord/request_deposit_release';
 
 const App = () => {
    const { isAuthenticated } = useContext(AuthContext);
@@ -66,6 +69,8 @@ const App = () => {
                 <Route path="/yourtenant-list" element={<TenantListPage />} />
                 <Route path="/house-details/:houseId" element={<HouseDetailPage />} />
                 <Route path="/about-us" element={<AboutPage />} />
+                <Route path="/contract-event" element={<EventsPage />} />
+                <Route path="/request-deposit-release" element={<RequestDepositReleasePage />} />
               </>
             ) : (
               <>
@@ -82,6 +87,9 @@ const App = () => {
                 <Route path='/my-property' element={<RenterDashboard/>} />
                 <Route path='/sign-now' element={<RentContractPage />} />
                 <Route path="/about-us" element={<AboutPage />} />
+                <Route path="/house-contract-details" element={<HouseContractDetails />} />
+                <Route path="/contract-event" element={<EventsPage />} />
+                <Route path="/renter-menu" element={<RenterMenu/>} />
                 {/* Add UI components specific to renters here */}
               </>
             )}

@@ -1,20 +1,48 @@
 import React from 'react';
-import '../style/home.css'; // Import the CSS file
-import { Container, Row, Col, Card, Button } from 'react-bootstrap'; // Import Bootstrap components
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import useDocumentTitle from '../utils/useDocumentTitles';
+import '../style/home.css'; // Import the CSS file for other styles
 
 function Home() {
   useDocumentTitle('Home - Rgreement');
 
+  const heroSectionStyle = {
+    // background: 'url("/bg1.png") no-repeat center center',
+    background: 'url("/bg3.jpg") no-repeat center center',
+    backgroundSize: 'cover',
+    height: '100vh',
+    position: 'relative',
+    color: 'white',
+    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  };
+
+  const overlayStyle = {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    background: 'rgba(0, 0, 0, 0.5)', // Optional: add a dark overlay
+    zIndex: 0
+  };
+
+  const heroContentStyle = {
+    zIndex: 1
+  };
+
   return (
     <div className="home-container">
-      <Container fluid className="hero-section d-flex justify-content-center align-items-center text-center text-white">
-        <div className="hero-content">
+      <div style={heroSectionStyle}>
+        <div style={overlayStyle}></div>
+        <div style={heroContentStyle}>
           <h1 className="display-4">Welcome to RGreement</h1>
           <p className="lead">Connecting Renters and Landlords Seamlessly</p>
           <Button variant="primary" size="lg" href="/register" className="mt-3">Get Started</Button>
         </div>
-      </Container>
+      </div>
 
       <Container className="mt-5 video-section">
         <Row className="justify-content-center">

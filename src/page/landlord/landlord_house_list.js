@@ -1,9 +1,30 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button, Spinner, Alert } from 'react-bootstrap';
+import { Modal, Button, Spinner, Alert, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash, faCopy } from '@fortawesome/free-solid-svg-icons';
 import "../../style/landlord/landlord_house_list.css";
+
+const ConfirmationModal = ({ show, handleClose, handleConfirm, title, message }) => {
+  return (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>{title}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>{message}</Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button variant="primary" onClick={handleConfirm}>
+          Confirm
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
 
 const RentHouseList = () => {
   const [rentHouses, setRentHouses] = useState([]);
@@ -11,6 +32,8 @@ const RentHouseList = () => {
   const [error, setError] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [houseToDelete, setHouseToDelete] = useState(null);
+  const [visibleUniIdentifiers, setVisibleUniIdentifiers] = useState({});
+  const [copySuccess, setCopySuccess] = useState({});
   const navigate = useNavigate();
 
   const handleContractDetails = (uniIdentifier) => {
@@ -24,6 +47,7 @@ const RentHouseList = () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/list/${userId}/rent-houses`);
         setRentHouses(response.data);
+        console.log("Data response:", response.data);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching rent houses:", error);
@@ -54,6 +78,22 @@ const RentHouseList = () => {
   const handleUpdate = (houseId) => {
     const updateUrl = `/update-rent-house/${houseId}`;
     window.location.href = updateUrl;
+  };
+
+  const toggleUniIdentifier = (houseId) => {
+    setVisibleUniIdentifiers(prevState => ({
+      ...prevState,
+      [houseId]: !prevState[houseId]
+    }));
+  };
+
+  const handleCopy = (houseId, uniIdentifier) => {
+    navigator.clipboard.writeText(uniIdentifier).then(() => {
+      setCopySuccess({ ...copySuccess, [houseId]: true });
+      setTimeout(() => setCopySuccess({ ...copySuccess, [houseId]: false }), 2000);
+    }, () => {
+      console.error('Failed to copy text');
+    });
   };
 
   if (isLoading) {
@@ -93,6 +133,33 @@ const RentHouseList = () => {
                 <div><strong>Preferred Occupants:</strong> {house.prefered_occupants}</div>
                 <div><strong>Type of House:</strong> {house.type_of_house}</div>
                 <div><strong>Number of Rooms:</strong> {house.number_of_rooms}</div>
+                <div><strong>Amenities:</strong> {house.amenities}</div>
+                <div><strong>Number of bedrooms:</strong> {house.num_bedrooms}</div>
+                <div><strong>Number of toilet:</strong> {house.num_toilets}</div>
+                <div><strong>Rent Address:</strong> {house.rent_address}</div>
+                <div>
+                  <button
+                    className="btn btn-link p-0 mt-2"
+                    onClick={() => toggleUniIdentifier(house.id)}
+                    style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                  >
+                    <FontAwesomeIcon icon={visibleUniIdentifiers[house.id] ? faEyeSlash : faEye} />
+                    {visibleUniIdentifiers[house.id] ? 'Hide Uni Identifier' : 'Show Uni Identifier'}
+                  </button>
+                  <div className={`uni-identifier ${visibleUniIdentifiers[house.id] ? 'visible' : 'hidden'}`}>
+                    <strong>Uni Identifier:</strong> {house.uni_identifier}
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={<Tooltip>{copySuccess[house.id] ? "Copied!" : "Copy to clipboard"}</Tooltip>}
+                    >
+                      <FontAwesomeIcon
+                        icon={faCopy}
+                        style={{ marginLeft: '10px', cursor: 'pointer' }}
+                        onClick={() => handleCopy(house.id, house.uni_identifier)}
+                      />
+                    </OverlayTrigger>
+                  </div>
+                </div>
               </div>
               <div className="button-group">
                 <Button variant="danger" onClick={() => handleDeleteConfirmation(house.id)}>Delete</Button>

@@ -30,6 +30,22 @@ const RenterDashboard = () => {
   const userId = localStorage.getItem('userId');
   const navigate = useNavigate();
 
+  const handleContractDetails = async (houseId) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
+      const uniIdentifier = response.data.uni_identifier;
+      navigate(`/house-contract-details`, { state: { uniIdentifier } });
+    } catch (error) {
+      console.error("Error fetching house unique identifier:", error);
+      if (error.response) {
+        console.error(`Server responded with status: ${error.response.status}`);
+        console.error(`Response data: ${JSON.stringify(error.response.data)}`);
+      } else {
+        console.error(`Error message: ${error.message}`);
+      }
+    }
+  };
+
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/api/applied-houses/${userId}`)
       .then(response => {
@@ -71,7 +87,7 @@ const RenterDashboard = () => {
         try {
           const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
           const uniqueIdentifier = response.data.uni_identifier;
-          navigate(`/sign-now`, { state: { uniqueIdentifier } });
+          navigate(`/sign-now`, { state: { uniqueIdentifier, houseId } });
           setShowModal(false);
         } catch (error) {
           console.error("Error fetching house unique identifier:", error);
@@ -88,45 +104,15 @@ const RenterDashboard = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center mb-4">Renter Dashboard</h2>
+      {/* <h2 className="text-center mb-4">Renter Dashboard</h2> */}
 
-      {/* Rental House Details Section */}
+      {/* Signed Rental Contracts Section */}
       <div className="row">
         <div className="col-md-12">
-          <h3 className="text-center">Rental House Details</h3>
+          <h3 className="text-center text-primary mb-4">Signed Rental Contracts</h3>
           <div className="table-responsive">
-            <table className="table table-bordered">
-              <thead>
-                <tr>
-                  <th>House ID</th>
-                  <th>Address</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {appliedHouses
-                  .filter(house => house.tenant_status === 'Approved' && house.sign_contract_status === 'Signed')
-                  .map(house => (
-                    <tr key={house.id}>
-                      <td>{house.house_id}</td>
-                      <td>{house.address}</td>
-                      <td>{house.tenant_status}</td>
-                      <td>Contract Signed</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      {/* Applied Houses Section */}
-      <div className="row mt-5">
-        <div className="col-md-12">
-          <h3 className="text-center">Applied Rental Houses</h3>
-          <div className="table-responsive">
-            <table className="table table-bordered">
-              <thead>
+            <table className="table table-bordered table-striped text-center">
+              <thead className="thead-dark">
                 <tr>
                   <th>House ID</th>
                   <th>Status</th>
@@ -135,17 +121,55 @@ const RenterDashboard = () => {
               </thead>
               <tbody>
                 {appliedHouses
-                  .filter(house => house.tenant_status === 'Approved' && house.sign_contract_status === 'Unsigned')
+                  .filter(house => house.tenant_status === 'Approved' && house.sign_contract_status === 'Signed')
+                  .map(house => (
+                    <tr key={house.id}>
+                      <td>{house.house_id}</td>
+                      <td>{house.sign_contract_status}</td>
+                      <td>
+                        <button className="btn btn-success btn-sm action-btn" onClick={() => handleContractDetails(house.house_id)}>
+                          Contract Details
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* Pending and Approved Applications Section */}
+      <div className="row mt-5">
+        <div className="col-md-12">
+          <h3 className="text-center text-info mb-4">Pending and Approved Applications</h3>
+          <div className="table-responsive">
+            <table className="table table-bordered table-striped text-center">
+              <thead className="thead-dark">
+                <tr>
+                  <th>House ID</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {appliedHouses
+                  .filter(house => house.tenant_status === 'Pending' || (house.tenant_status === 'Approved' && house.sign_contract_status === 'Unsigned'))
                   .map(house => (
                     <tr key={house.id}>
                       <td>{house.house_id}</td>
                       <td>{house.tenant_status}</td>
                       <td>
-                        <button className="btn btn-primary me-2" onClick={() => handleSignNow(house.house_id)}>
-                          Sign Now
-                        </button>
-                        <button className="btn btn-danger" onClick={() => handleCancel(house.id)}>
+                        {house.tenant_status === 'Approved' && house.sign_contract_status === 'Unsigned' && (
+                          <button className="btn btn-primary btn-sm action-btn me-2" onClick={() => handleSignNow(house.house_id)}>
+                            Sign Now
+                          </button>
+                        )}
+                        <button className="btn btn-danger btn-sm action-btn me-2" onClick={() => handleCancel(house.id)}>
                           Cancel Application
+                        </button>
+                        <button className="btn btn-success btn-sm action-btn" onClick={() => handleContractDetails(house.house_id)}>
+                          Contract Details
                         </button>
                       </td>
                     </tr>

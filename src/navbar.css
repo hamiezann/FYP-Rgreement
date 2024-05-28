@@ -1,7 +1,7 @@
 /* navbar.css */
 .navbar-custom {
   /* background-color: #A3D8FF !important; */
-  background: linear-gradient(to bottom right, #FFB6C1, #87CEFA) !important;
+  background: linear-gradient(to bottom right, #FFB6C1, #10439F) !important;
   position: fixed !important;
   top: 0;
   width: 100%;
@@ -17,8 +17,8 @@
 
 .navbar-brand-custom img {
   margin-left: 100px;
-  width: 140px;
-  height: 70px;
+  width: 100px;
+  height: 90px;
   transition: all 0.3s ease;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .nav-link-custom:hover {
-  color: grey !important;
+  color: rgb(252, 252, 252) !important;
 }
 
 /* Additional styles for smaller navbar on scroll */
@@ -96,7 +96,7 @@ body {
 
 .profile-link:hover {
   border-radius: 20px;
-  background-color: #C40C0C;
+  background: linear-gradient(to bottom left, #FFB6C1, #10439F) !important;
   padding-right: 10px;
 }
 

@@ -1,4 +1,9 @@
-/* footer.css */
+.footer-gradient {
+  /* background: linear-gradient(to right, #ff7e5f, #feb47b);  */
+  /* background: linear-gradient(to right, #121481, #2C4E80);  */
+  background: linear-gradient(to bottom right, #FFB6C1, #87CEFA) !important;
+}
+
 .social-icons {
   display: flex;
   justify-content: flex-start;
@@ -39,4 +44,20 @@ footer ul.social-icons li a {
 
 footer ul.social-icons li a i {
   font-size: 1.5rem; /* Adjust the size of the icons */
+}
+
+/* Ensure responsiveness */
+@media (max-width: 767px) {
+  .social-icons {
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  footer h5 {
+    text-align: center;
+  }
+
+  footer ul {
+    text-align: center;
+  }
 }

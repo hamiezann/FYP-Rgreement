@@ -1,0 +1,46 @@
+.btn-success:hover {
+    background-color: #9DDE8B;
+    border-color: #28a745;
+    color: #28a745;
+  }
+  
+  .btn-primary:hover {
+    background-color: #CAF4FF;
+    border-color: #007bff;
+    color: #007bff;
+  }
+  
+  .btn-danger:hover {
+    background-color: #A91D3A;
+    border-color: #dc3545;
+    color: #dc3545;
+  }
+  
+  /* Center table content */
+.table td,
+.table th {
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Make buttons the same size */
+.action-btn {
+  width: 100px;
+  height: 40px;
+}
+
+/* Hover effects */
+/* .btn-success:hover {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-primary:hover {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-danger:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+} */

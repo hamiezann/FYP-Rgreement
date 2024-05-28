@@ -45,7 +45,8 @@ function Navbar() {
     <header className="App-header">
       <nav className={`navbar navbar-expand-lg container-fluid navbar-custom ${isSmall ? 'navbar-small' : ''}`}>
         <Link to="/" className="navbar-brand navbar-brand-custom">
-          <img src="/rgreement.png" alt="Rgreement Logo" />
+          {/* <img src="/rgreement.png" alt="Rgreement Logo" /> */}
+          <img src="/newlogo2.png" alt="Rgreement Logo" />
         </Link>
         <button
           className={`navbar-toggler ${isActive ? '' : 'collapsed'} navbar-toggler-custom`}
@@ -84,11 +85,19 @@ function Navbar() {
             )}
 
             {isAuthenticated && role === 'renter' && (
+              <>
               <li className="nav-item">
                 <Link to="/find-house" className="nav-link nav-link-custom">
                   Find Houses
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link to="/renter-menu" className="nav-link nav-link-custom">
+                  Menu
+                </Link>
+              </li>
+
+              </>
             )}
 
             {!isAuthenticated && (

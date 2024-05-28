@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
+import axios from "axios";
 import "../style/contract.css";
 import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
 import { useGlobalContractState } from "./globally_use_variable.js/variable";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+// import customMarkerIcon from './marker.png'; 
+import L from 'leaflet';
 
-const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+// const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 const contractAbi = HouseRentalContract.abi;
 
 const HouseRentalForm = () => {
@@ -105,22 +109,56 @@ const HouseRentalForm = () => {
     const [images, setImages] = useState([]);
 
 const handleImageUpload = (event) => {
-    // const files = event.target.files;
-    // setImages([...files]);
     const files = Array.from(event.target.files);
     setImages(files);
 };
 
+const [currency, setCurrency] = useState('MYR');
+const [conversionRate, setConversionRate] = useState(1); // default to 1 for simplicity
+const [ethDeposit, setEthDeposit] = useState(0);
+
+const customIcon = L.icon({
+    iconUrl: `${process.env.PUBLIC_URL}/marker.png`,
+    iconSize: [38, 38], // size of the icon
+    iconAnchor: [19, 38], // point of the icon which will correspond to marker's location
+    popupAnchor: [0, -38] // point from which the popup should open relative to the iconAnchor
+  });
+  
+
     const fixedPassword = "123456";
     const available = true;
     const [numberOfRooms, setnumberOfRooms] = useState(''); 
-   
- 
+
+    useEffect(() => {
+        const fetchConversionRate = async () => {
+            try {
+                // Example API call to fetch conversion rate
+                const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=${currency.toLowerCase()}`);
+                const rate = response.data.ethereum[currency.toLowerCase()];
+                setConversionRate(rate || 1);
+            } catch (error) {
+                console.error('Error fetching conversion rate:', error);
+                setConversionRate(1);
+            }
+        };
+
+        if (currency) {
+            fetchConversionRate();
+        }
+    }, [currency]);
+
+    useEffect(() => {
+        // Convert deposit amount to Ether using the conversion rate
+        const ethValue = deposit / conversionRate;
+        // setEthDeposit(ethValue);
+        setEthDeposit(isNaN(ethValue) ? 0 : ethValue);
+    }, [deposit, conversionRate]);
 
     useEffect(() => {
       // Retrieve userId from localStorage when the component mounts
       const userIdFromStorage = localStorage.getItem('userId');
       setUserId(userIdFromStorage);
+      console.log(`Deposit in Ether: ${ethDeposit}`);
     }, []);
  
     // const generateAgreementDetails = () => {
@@ -191,20 +229,25 @@ const handleImageUpload = (event) => {
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
             const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+            const depositInWei = ethers.parseUnits(ethDeposit.toString(), "ether");
+            //const depositInWei = Math.round(ethDeposit * 1e7); 
             const houseDetails = {
                 rent_address: rentAddress,
                 buildingType: buildingType,
                 rentPeriod: rentPeriod,
-                effectiveStartDate: new Date(effectiveStartDate).getTime() / 1000, // Convert date to Unix timestamp
-                effectiveEndDate: new Date(effectiveEndDate).getTime() / 1000, // Convert date to Unix timestamp
+                effectiveStartDate: new Date(effectiveStartDate).getTime() / 1000,
+                effectiveEndDate: new Date(effectiveEndDate).getTime() / 1000, 
+              //  effectiveStartDate: effectiveStartDate ? new Date(effectiveStartDate).getTime() / 1000 : null, // Handle empty date
+              //  effectiveEndDate: effectiveEndDate ? new Date(effectiveEndDate).getTime() / 1000 : null, // Handle empty date
+            //   effectiveStartDate: effectiveStartDate ? new Date(effectiveStartDate).getTime() / 1000 : "",
+            //   effectiveEndDate: effectiveEndDate ? new Date(effectiveEndDate).getTime() / 1000 : "",
                 monthlyRent: monthlyRent,
                 paymentMethod: paymentMethod,
                 maxOverduePeriod: maxOverduePeriod,
-                deposit: deposit,
-                utilityDeposit: utilityDeposit,
-                advanceRental: advanceRental,
-                // latitude: rentLatitude,
-                // longitude: rentLongitude
+                // deposit: deposit,
+                deposit: depositInWei.toString(),
+                // utilityDeposit: utilityDeposit,
+                // advanceRental: advanceRental,
                 latitude: latitudeInt,
                 longitude: longitudeInt
             };
@@ -245,7 +288,8 @@ const handleImageUpload = (event) => {
                
 
         // Log the contract details to the console
-       console.log("Created Contract Details:", createdContract);
+       //console.log("Created Contract Details:", createdContract);
+  
         const response = await fetch("http://127.0.0.1:8000/api/house-details",
         //  requestOptions
         {
@@ -414,15 +458,27 @@ const handleClick = (event) => {
                 <div className="form-group row">
                     <label className="col-sm-3 col-form-label">Tenant Identification Number:</label>
                     <div className="col-sm-9">
-                        <input type="text" className="form-control" value={tenantIdNumber} onChange={(e) => setTenantIdNumber(e.target.value)} required />
+                        <input type="text" className="form-control" value={tenantIdNumber} onChange={(e) => setTenantIdNumber(e.target.value )} required />
                     </div>
                 </div>
                 <div className="form-group row">
                     <label className="col-sm-3 col-form-label">Tenant House Address:</label>
                     <div className="col-sm-9">
-                        <input type="text" className="form-control" value={tenantHouseAddress} onChange={(e) => setTenantHouseAddress(e.target.value)} required />
+                        <input type="text" className="form-control" value={tenantHouseAddress} onChange={(e) => setTenantHouseAddress(e.target.value )} required />
                     </div>
                 </div>
+                {/* <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Effective Start Date:</label>
+            <div className="col-sm-9">
+                <input type="date" className="form-control" placeholder="DD-MM-YYYY" value={effectiveStartDate} onChange={(e) => setEffectiveStartDate(e.target.value || "")}  />
+            </div>
+        </div>
+        <div className="form-group row">
+            <label className="col-sm-3 col-form-label">Effective End Date:</label>
+            <div className="col-sm-9">
+                <input type="date" className="form-control" placeholder="DD-MM-YYYY" value={effectiveEndDate} onChange={(e) => setEffectiveEndDate(e.target.value || "")}  />
+            </div>
+        </div> */}
             </>
         )}
     </div>
@@ -462,6 +518,7 @@ const handleClick = (event) => {
                             <Marker
                                 position={selectedLocation}
                                 draggable={true}
+                                icon={customIcon}
                                 eventHandlers={{
                                     dragend: (e) => {
                                         const lat = e.target.getLatLng().lat.toFixed(6);
@@ -576,13 +633,14 @@ const handleClick = (event) => {
 </div>
 
 
-<div className="form-group row">
+{/* <div className="form-group row">
     <label className="col-sm-3 col-form-label">Deposit:</label>
     <div className="col-sm-9">
         <input type="number" className="form-control" value={deposit} onChange={(e) => setDeposit(parseInt(e.target.value))} required />
     </div>
-</div>
-<div className="form-group row">
+</div> */}
+
+{/* <div className="form-group row">
     <label className="col-sm-3 col-form-label">Utility Deposit:</label>
     <div className="col-sm-9">
         <input type="number" className="form-control" value={utilityDeposit} onChange={(e) => setUtilityDeposit(parseInt(e.target.value))} required />
@@ -593,7 +651,39 @@ const handleClick = (event) => {
     <div className="col-sm-9">
         <input type="number" className="form-control" value={advanceRental} onChange={(e) => setAdvanceRental(parseInt(e.target.value))} required />
     </div>
-</div>
+</div> */}
+            <div className="form-group row">
+                <label className="col-sm-3 col-form-label">Deposit:</label>
+                <div className="col-sm-6">
+                    <input
+                        type="number"
+                        className="form-control"
+                        value={deposit}
+                        onChange={(e) => setDeposit(parseInt(e.target.value) || 0)}
+                        // onChange={(e) => setDeposit(parseInt(e.target.value) )}
+                        required
+                    />
+                </div>
+                <div className="col-sm-3">
+                    <select className="form-control" value={currency} onChange={(e) => setCurrency(e.target.value)}>
+                        <option value="RM">MYR</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        {/* Add other currencies as needed */}
+                    </select>
+                </div>
+            </div>
+            <div className="form-group row">
+                <label className="col-sm-3 col-form-label">Equivalent Deposit in Ether:</label>
+                <div className="col-sm-9">
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={ethDeposit.toString()}
+                        readOnly
+                    />
+                </div>
+            </div>
 
 
 
