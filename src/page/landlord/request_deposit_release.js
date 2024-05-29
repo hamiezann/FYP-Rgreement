@@ -1,24 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { Container, Row, Col, Form, Button, Spinner, Alert } from 'react-bootstrap';
 import HouseRentalContract from '../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
 
-const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+const contractAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
 const contractAbi = HouseRentalContract.abi;
 
-const RequestDepositReleasePage = () => {
+const RequestDepositRelease = () => {
   const [contractId, setContractId] = useState('');
   const [amount, setAmount] = useState('');
-  const [currency, setCurrency] = useState('usd');
+  const [currency, setCurrency] = useState('USD');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [convertedValue, setConvertedValue] = useState('');
 
-  const fetchExchangeRate = async (currency) => {
-    const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=${currency}`);
-    return response.data.ethereum[currency];
+  const fetchConversionRate = async () => {
+    const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=${currency}`);
+    const data = await response.json();
+    return data.ethereum[currency.toLowerCase()];
   };
+
+  const updateConvertedValue = async (amount, currency) => {
+    if (!amount) {
+      setConvertedValue('');
+      return;
+    }
+    const conversionRate = await fetchConversionRate();
+    const etherAmount = amount / conversionRate;
+    setConvertedValue(etherAmount.toFixed(18));
+  };
+
+  useEffect(() => {
+    updateConvertedValue(amount, currency);
+  }, [amount, currency]);
 
   const handleRequestRelease = async (e) => {
     e.preventDefault();
@@ -26,26 +41,24 @@ const RequestDepositReleasePage = () => {
     setMessage('');
 
     try {
-      if (!window.ethereum) {
-        setMessage('Please install MetaMask to use this feature.');
-        setLoading(false);
-        return;
-      }
+      const conversionRate = await fetchConversionRate();
+      const etherAmount = amount / conversionRate;
 
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
+      // Round to 18 decimal places
+      const roundedEtherAmount = roundToMaxDecimals(etherAmount, 18);
 
       const provider = new ethers.BrowserProvider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(contractAddress, contractAbi, signer);
 
-      const exchangeRate = await fetchExchangeRate(currency);
-      const amountInEther = amount / exchangeRate;
-      const amountInWei = ethers.parseEther(amountInEther.toString());
-
-      const tx = await contract.requestDepositRelease(contractId, amountInWei);
+      const weiAmount = ethers.parseUnits(roundedEtherAmount.toString(), 'ether');
+      console.log("Deposit posted: " ,weiAmount);
+      const tx = await contract.requestDepositRelease(contractId, weiAmount);
       await tx.wait();
 
       setMessage('Deposit release requested successfully.');
+      
     } catch (error) {
       console.error('Error requesting deposit release:', error);
       setMessage(`Error: ${error.message}`);
@@ -91,24 +104,34 @@ const RequestDepositReleasePage = () => {
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
               >
-                <option value="usd">USD</option>
-                <option value="eur">EUR</option>
-                <option value="gbp">GBP</option>
-                {/* Add more currencies as needed */}
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="MYR">MYR</option>
               </Form.Control>
             </Form.Group>
           </Col>
         </Row>
         <Row className="justify-content-center mt-3">
-          <Col md={2} className="d-flex align-items-end">
+          <Col md={6}>
+            {convertedValue && (
+              <Alert variant="info">
+                Converted Value: {convertedValue} ETH
+              </Alert>
+            )}
+          </Col>
+        </Row>
+        <Row className="justify-content-center mt-4">
+          <Col md={6} className="d-flex justify-content-center">
             <Button variant="primary" type="submit" disabled={loading}>
-              {loading ? <Spinner animation="border" size="sm" /> : 'Request Release'}
+              {loading ? <Spinner animation="border" /> : 'Request Release'}
             </Button>
           </Col>
         </Row>
       </Form>
+
       {message && (
-        <Row className="justify-content-center mt-3">
+        <Row className="justify-content-center mt-4">
           <Col md={6}>
             <Alert variant={message.startsWith('Error') ? 'danger' : 'success'}>
               {message}
@@ -120,4 +143,9 @@ const RequestDepositReleasePage = () => {
   );
 };
 
-export default RequestDepositReleasePage;
+export default RequestDepositRelease;
+
+function roundToMaxDecimals(value, decimals) {
+  const factor = Math.pow(10, decimals);
+  return Math.round(value * factor) / factor;
+}

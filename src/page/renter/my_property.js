@@ -46,6 +46,24 @@ const RenterDashboard = () => {
     }
   };
 
+  const handleIssue = async (houseId) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
+      const uniIdentifier = response.data.uni_identifier;
+      navigate(`/approve-deposit`, { state: { uniIdentifier } });
+    } catch (error) {
+      console.error("Error fetching house unique identifier:", error);
+      if (error.response) {
+        console.error(`Server responded with status: ${error.response.status}`);
+        console.error(`Response data: ${JSON.stringify(error.response.data)}`);
+      } else {
+        console.error(`Error message: ${error.message}`);
+      }
+    }
+  };
+
+ 
+
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/api/applied-houses/${userId}`)
       .then(response => {
@@ -129,6 +147,9 @@ const RenterDashboard = () => {
                       <td>
                         <button className="btn btn-success btn-sm action-btn" onClick={() => handleContractDetails(house.house_id)}>
                           Contract Details
+                        </button>
+                        <button className="btn btn-danger btn-sm action-btn me-2" onClick={() => handleIssue(house.house_id)}>
+                          Issue
                         </button>
                       </td>
                     </tr>

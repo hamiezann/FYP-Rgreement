@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.24;
 
 contract HouseRentalContract {
     struct PersonalInfo {
@@ -18,8 +18,6 @@ contract HouseRentalContract {
         string paymentMethod;
         uint maxOverduePeriod;
         uint deposit;
-        // uint utilityDeposit;
-        // uint advanceRental;
         int256 latitude;
         int256 longitude;
     }
@@ -40,10 +38,18 @@ contract HouseRentalContract {
         bool depositPaid;
         bool depositReleased;
         bool contractActive;
+        uint remainingDeposit;
+    }
+
+    struct DepositReleaseRequest {
+        uint amount;
+        uint timestamp;
+        bool active;
     }
 
     mapping(bytes6 => ContractTerms) public contracts;
     mapping(bytes6 => address) public contractOwners;
+    mapping(bytes6 => DepositReleaseRequest[]) public depositReleaseRequests;
 
     modifier onlyLandlord(bytes6 contractId) {
         require(contractOwners[contractId] == msg.sender, "Only landlord can perform this action");
@@ -78,23 +84,24 @@ contract HouseRentalContract {
     ) public {
         require(contractOwners[_uniqueIdentifier] == address(0), "Contract with given identifier already exists");
 
-        ContractTerms memory newContract = ContractTerms(
-            block.timestamp,
-            _landlord,
-            _tenant,
-            _houseDetails,
-            _agreementDetails,
-            _tenantAgreements,
-            _landlordResponsibilities,
-            _agreementsBetweenLandlord,
-            _landlordSignature,
-            _tenantSignature,
-            _password,
-            address(0),
-            false,
-            false,
-            false
-        );
+        ContractTerms memory newContract = ContractTerms({
+            creationDate: block.timestamp,
+            landlord: _landlord,
+            tenant: _tenant,
+            houseDetails: _houseDetails,
+            agreementDetails: _agreementDetails,
+            tenantAgreements: _tenantAgreements,
+            landlordResponsibilities: _landlordResponsibilities,
+            agreementsBetweenLandlord: _agreementsBetweenLandlord,
+            landlordSignature: _landlordSignature,
+            tenantSignature: _tenantSignature,
+            password: _password,
+            tenantAddress: address(0),
+            depositPaid: false,
+            depositReleased: false,
+            contractActive: false,
+            remainingDeposit: _houseDetails.deposit
+        });
 
         contracts[_uniqueIdentifier] = newContract;
         contractOwners[_uniqueIdentifier] = msg.sender;
@@ -121,6 +128,7 @@ contract HouseRentalContract {
         uint _effectiveEndDate
     ) public onlyLandlord(contractId) {
         require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked(_password)), "Incorrect password");
+
         ContractTerms storage contractToUpdate = contracts[contractId];
         contractToUpdate.agreementDetails = _agreementDetails;
         contractToUpdate.tenantAgreements = _tenantAgreements;
@@ -162,29 +170,45 @@ contract HouseRentalContract {
         require(contracts[contractId].depositPaid, "Deposit not paid");
         require(!contracts[contractId].depositReleased, "Deposit already released");
         require(contracts[contractId].contractActive, "Contract not active");
+        require(amount <= contracts[contractId].remainingDeposit, "Requested amount exceeds deposit balance");
 
-        // Logic to handle disputes can be added here
+        depositReleaseRequests[contractId].push(DepositReleaseRequest({
+            amount: amount,
+            timestamp: block.timestamp,
+            active: true
+        }));
 
         emit DepositReleaseRequested(contractId, amount, block.timestamp);
     }
 
-    function approveDepositRelease(bytes6 contractId, uint amount) public onlyTenant(contractId) {
-        require(contracts[contractId].depositPaid, "Deposit not paid");
-        require(!contracts[contractId].depositReleased, "Deposit already released");
-        require(contracts[contractId].contractActive, "Contract not active");
+    function approveDepositRelease(bytes6 contractId, uint requestIndex) public onlyTenant(contractId) {
+        DepositReleaseRequest storage request = depositReleaseRequests[contractId][requestIndex];
+        require(request.active, "Request is not active");
+        require(request.amount <= contracts[contractId].remainingDeposit, "Requested amount exceeds deposit balance");
 
-        payable(msg.sender).transfer(amount);
-        contracts[contractId].depositReleased = true;
-        contracts[contractId].contractActive = false;
+        contracts[contractId].remainingDeposit -= request.amount;
+        request.active = false;
 
-        emit DepositReleased(contractId, amount, block.timestamp);
+        payable(msg.sender).transfer(request.amount);
+        if (contracts[contractId].remainingDeposit == 0) {
+            contracts[contractId].depositReleased = true;
+            contracts[contractId].contractActive = false;
+        }
+
+        emit DepositReleased(contractId, request.amount, block.timestamp);
+    }
+
+    function rejectDepositRelease(bytes6 contractId, uint requestIndex) public onlyTenant(contractId) {
+        DepositReleaseRequest storage request = depositReleaseRequests[contractId][requestIndex];
+        require(request.active, "Request is not active");
+
+        request.active = false;
     }
 
     function endContract(bytes6 contractId) public onlyLandlord(contractId) {
         require(contracts[contractId].contractActive, "Contract not active");
 
         contracts[contractId].contractActive = false;
-        // Additional logic to handle the end of the contract can be added here
 
         emit ContractEnded(contractId, block.timestamp);
     }
@@ -194,12 +218,20 @@ contract HouseRentalContract {
         require(block.timestamp >= contractToUpdate.houseDetails.effectiveEndDate, "Contract not ended yet");
         require(!contractToUpdate.depositReleased, "Deposit already released");
 
-        uint256 amount = contractToUpdate.houseDetails.deposit;
+        uint256 amount = contractToUpdate.remainingDeposit;
         contractToUpdate.depositPaid = false;
         contractToUpdate.depositReleased = true;
 
         payable(contractToUpdate.tenantAddress).transfer(amount);
 
         emit DepositReleased(contractId, amount, block.timestamp);
+    }
+
+    function getDepositBalance(bytes6 contractId) public view returns (uint) {
+        return contracts[contractId].remainingDeposit;
+    }
+
+    function getDepositReleaseRequests(bytes6 contractId) public view returns (DepositReleaseRequest[] memory) {
+        return depositReleaseRequests[contractId];
     }
 }
