@@ -30,7 +30,9 @@ import EventsPage from './page/landlord/event_list';
 import RenterMenu from './page/renter/menu';
 import RequestDepositReleasePage from './page/landlord/request_deposit_release';
 import DepositReleaseRequests from './page/renter/approve_deposit_request';
-
+import './App.css';
+import EndContract from './page/landlord/end_contract';
+import ManageHouse from './page/landlord/manage_house';
 const App = () => {
    const { isAuthenticated } = useContext(AuthContext);
    const role = localStorage.getItem('role');
@@ -72,6 +74,8 @@ const App = () => {
                 <Route path="/about-us" element={<AboutPage />} />
                 <Route path="/contract-event" element={<EventsPage />} />
                 <Route path="/request-deposit-release" element={<RequestDepositReleasePage />} />
+                <Route path="/end-contract" element={<EndContract />} />
+                <Route path="/manage-house" element={<ManageHouse />} />
               </>
             ) : (
               <>

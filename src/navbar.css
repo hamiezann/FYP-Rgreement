@@ -1,12 +1,16 @@
 /* navbar.css */
 .navbar-custom {
   /* background-color: #A3D8FF !important; */
-  background: linear-gradient(to bottom right, #FFB6C1, #10439F) !important;
+  /* background: linear-gradient(to bottom right, #FFB6C1, #10439F) !important; */
+  background-color: #5BBCFF !important;
   position: fixed !important;
-  top: 0;
-  width: 100%;
+  top: 10px;
+  /* width: 100%; */
+  width: calc(100% - 40px);
   z-index: 1000;
   transition: all 0.3s ease;
+  margin: 0 20px;
+  border-radius: 30px;
 }
 
 .navbar-brand-custom {

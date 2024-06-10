@@ -4,13 +4,14 @@ import { Container, Row, Col, Button, Spinner, Alert, Table } from 'react-bootst
 import HouseRentalContract from "../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
 import { useLocation } from 'react-router-dom';
 
-const contractAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
+const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAbi = HouseRentalContract.abi;
 
 const DepositReleaseRequests = () => {
   const [contract, setContract] = useState(null);
   const [depositBalance, setDepositBalance] = useState(0);
-  const [events, setEvents] = useState([]);
+  const [requests, setRequests] = useState([]);
+  // const [activeRequests, setActiveRequests] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const location = useLocation();
@@ -32,44 +33,130 @@ const DepositReleaseRequests = () => {
     init();
   }, []);
 
+  // useEffect(() => {
+  //   const fetchContractDetails = async () => {
+  //     if (contract) {
+  //       try {
+  //         const balance = await contract.getDepositBalance(contractId);
+  //         setDepositBalance(ethers.formatEther(balance));
+  
+  //         // Fetch deposit release requests
+  //         const requests = await contract.getDepositReleaseRequests(contractId);
+  //         const formattedRequests = requests.map((request, index) => ({
+  //           ...request,
+  //           amount: ethers.formatEther(request.amount),
+  //           timestamp: new Date(Number(request.timestamp) * 1000).toLocaleString(),
+  //           index
+  //         }));
+  
+  //         // Filter active deposit release requests
+  //         const activeRequests = formattedRequests.filter(request => request.active);
+  
+  //         setRequests(activeRequests);
+  //         // setActiveRequests(activeRequests);
+  //       } catch (err) {
+  //         console.error(err);
+  //         setError('Error fetching contract details');
+  //       }
+  //     }
+  //   };
+  
+  //   fetchContractDetails();
+  // }, [contract, contractId]);
+  
+
+  // useEffect(() => {
+  //   const fetchContractDetails = async () => {
+  //     if (contract) {
+  //       try {
+  //         const balance = await contract.getDepositBalance(contractId);
+  //         setDepositBalance(ethers.formatEther(balance));
+
+  //         // Fetch deposit release requests
+  //         const requests = await contract.getDepositReleaseRequests(contractId);
+  //         const formattedRequests = requests.map((request, index) => ({
+  //           ...request,
+  //           amount: ethers.formatEther(request.amount),
+  //           timestamp: new Date(Number(request.timestamp) * 1000).toLocaleString(),
+  //           index
+  //         }));
+  //         setRequests(formattedRequests);
+        
+  //       //  const activeRequests = allRequests.filter(request => request.active);
+  //       } catch (err) {
+  //         console.error(err);
+  //         setError('Error fetching contract details');
+  //       }
+  //     }
+  //   };
+    
+
+  //   fetchContractDetails();
+  // }, [contract, contractId]);
+
   useEffect(() => {
     const fetchContractDetails = async () => {
-      if (contract) {
-        try {
-          const balance = await contract.getDepositBalance(contractId);
-          setDepositBalance(ethers.formatEther(balance));
+        if (contract) {
+            try {
+                const balance = await contract.getDepositBalance(contractId);
+                setDepositBalance(ethers.formatEther(balance));
 
-          // Fetch past events
-          const filter = contract.filters.DepositReleaseRequested(contractId);
-          const events = await contract.queryFilter(filter);
-          const eventDetails = events.map(event => ({
-            amount: ethers.formatEther(event.args.amount),
-            timestamp: new Date(Number(event.args.timestamp) * 1000).toLocaleString() // Convert BigInt to Number
-          }));
-          setEvents(eventDetails);
-        } catch (err) {
-          console.error(err);
-          setError('Error fetching contract details');
+                // Fetch all deposit release requests
+                const allRequests = await contract.getDepositReleaseRequests(contractId);
+
+                // Filter active deposit release requests
+                const formattedRequests = allRequests.map((request, index) => ({
+                    ...request,
+                    amount: ethers.formatEther(request.amount),
+                    timestamp: new Date(Number(request.timestamp) * 1000).toLocaleString(),
+                    index,
+                    active: request.active // Ensure active status is properly set
+                }));
+                setRequests(formattedRequests);
+            } catch (err) {
+                console.error(err);
+                setError('Error fetching contract details');
+            }
         }
-      }
     };
 
     fetchContractDetails();
-  }, [contract, contractId]);
+}, [contract, contractId]);
 
-  const approveDepositRelease = async (amount) => {
+
+  const approveDepositRelease = async (index) => {
     if (contract) {
       setLoading(true);
       setError('');
 
       try {
-        const tx = await contract.approveDepositRelease(contractId, ethers.parseEther(amount.toString()));
+        const tx = await contract.approveDepositRelease(contractId, index);
         await tx.wait();
         setLoading(false);
         alert('Deposit release approved');
+       
       } catch (err) {
         console.error(err);
         setError('Error approving deposit release');
+        setLoading(false);
+      }
+    }
+  };
+
+  const rejectDepositRelease = async (index) => {
+    if (contract) {
+      setLoading(true);
+      setError('');
+
+      try {
+        const tx = await contract.rejectDepositRelease(contractId, index);
+        await tx.wait();
+        setLoading(false);
+        alert('Deposit release rejected');
+    
+      } catch (err) {
+        console.error(err);
+        setError('Error rejecting deposit release');
         setLoading(false);
       }
     }
@@ -97,14 +184,14 @@ const DepositReleaseRequests = () => {
               </tr>
             </thead>
             <tbody>
-              {events.map((event, index) => (
-                <tr key={index}>
-                  <td>{event.timestamp}</td>
-                  <td>{event.amount}</td>
+              {/* {requests.map((request) => (
+                <tr key={request.index}>
+                  <td>{request.timestamp}</td>
+                  <td>{request.amount}</td>
                   <td>
                     <Button
                       variant="success"
-                      onClick={() => approveDepositRelease(event.amount)}
+                      onClick={() => approveDepositRelease(request.index)}
                       disabled={loading}
                     >
                       {loading ? <Spinner animation="border" size="sm" /> : 'Approve'}
@@ -112,13 +199,50 @@ const DepositReleaseRequests = () => {
                     <Button
                       variant="danger"
                       className="ml-2"
-                      onClick={() => console.log("Rejected")} // Implement reject logic if needed
+                      onClick={() => rejectDepositRelease(request.index)}
+                      disabled={loading}
                     >
-                      Reject
+                      {loading ? <Spinner animation="border" size="sm" /> : 'Reject'}
                     </Button>
                   </td>
                 </tr>
-              ))}
+              ))} */}
+
+{requests.map((request) => (
+                            <tr key={request.index}>
+                                <td>{request.timestamp}</td>
+                                <td>{request.amount}</td>
+                                <td>
+                                    {request.active ? (
+                                        <>
+                                            <Button
+                                                variant="success"
+                                                onClick={() => approveDepositRelease(request.index)}
+                                                disabled={loading}
+                                            >
+                                                {loading ? <Spinner animation="border" size="sm" /> : 'Approve'}
+                                            </Button>
+                                            <Button
+                                                variant="danger"
+                                                className="ml-2"
+                                                onClick={() => rejectDepositRelease(request.index)}
+                                                disabled={loading}
+                                            >
+                                                {loading ? <Spinner animation="border" size="sm" /> : 'Reject'}
+                                            </Button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Button variant="warning" disabled>Inactive</Button>
+                                           
+                                        </>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+
+
+        
             </tbody>
           </Table>
         </Col>

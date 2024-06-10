@@ -1,7 +1,7 @@
 .footer-gradient {
   /* background: linear-gradient(to right, #ff7e5f, #feb47b);  */
-  /* background: linear-gradient(to right, #121481, #2C4E80);  */
-  background: linear-gradient(to bottom right, #FFB6C1, #87CEFA) !important;
+  background: black; 
+  /* background: linear-gradient(to bottom right, #FFB6C1, #87CEFA) !important; */
 }
 
 .social-icons {
@@ -16,7 +16,9 @@
 }
 
 .social-icons a:hover {
-  color: #f39c12; /* Change to any color you prefer for hover effect */
+  color: black; /* Change to any color you prefer for hover effect */
+  background-color: blue;
+  border-radius: 50%;
 }
 
 footer h5 {

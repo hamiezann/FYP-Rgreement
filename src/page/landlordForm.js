@@ -10,7 +10,7 @@ import "leaflet/dist/leaflet.css";
 import L from 'leaflet';
 
 // const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-const contractAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
+const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAbi = HouseRentalContract.abi;
 
 const HouseRentalForm = () => {
@@ -127,6 +127,7 @@ const customIcon = L.icon({
 
     const fixedPassword = "123456";
     const available = true;
+    const contract_status = 'Inactive';
     const [numberOfRooms, setnumberOfRooms] = useState(''); 
 
     useEffect(() => {
@@ -167,95 +168,173 @@ const customIcon = L.icon({
     //     AND WHEREAS the Landlord now agrees to lease, and the Tenant agrees to rent the Said House for ${rentDuration}, from ${effectiveStartDate} to ${effectiveEndDate}, subject to the terms and conditions contained herein.`;
     //   };
 
+    // const handleSubmit = async (event) => {
+    //     event.preventDefault();
+    //     setIsLoading(true);
+    //     setSuccessMessage("");
+    //     setErrorMessage("");
+    //         const uni_identifier_heh = ethers.randomBytes(6);
+    //         const uni_identifier = ethers.hexlify(uni_identifier_heh);
+
+    //         const formData = new FormData();
+    //         formData.append('user_id', userId);
+    //         formData.append('rent_address', rentAddress);
+    //         formData.append('latitude', rentLatitude);
+    //         formData.append('longitude', rentLongitude);
+    //         formData.append('uni_identifier', uni_identifier);
+    //         formData.append('prefered_occupants', preferredOccupants);
+    //         formData.append('type_of_house', buildingType);
+    //         formData.append('description', description);
+    //         formData.append('rent_fee', monthlyRent);
+    //         formData.append('number_of_rooms', numberOfRooms);
+    //         formData.append('amenities', amenities);
+    //         formData.append('num_bedrooms', numBedrooms);
+    //         formData.append('num_toilets', numToilets);
+    //         formData.append('available', available);
+    //         formData.append('contract_status', contract_status);
+    
+    //         for (let i = 0; i < images.length; i++) {
+    //             formData.append('images[]', images[i]);
+    //         }
+
+    // const latitudeInt = Math.round(rentLatitude * 1e6); // Convert to integer with 6 decimal places
+    // const longitudeInt = Math.round(rentLongitude * 1e6); // Convert to integer with 6 decimal places
+
+
+
+    //     try {
+    //         const provider = new ethers.BrowserProvider(window.ethereum);
+    //         const signer = await provider.getSigner();
+    //         const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+    //         const depositInWei = ethers.parseUnits(ethDeposit.toString(), "ether");
+    //         const houseDetails = {
+    //             rent_address: rentAddress,
+    //             buildingType: buildingType,
+    //             rentPeriod: rentPeriod,
+    //             effectiveStartDate: new Date(effectiveStartDate).getTime() / 1000,
+    //             effectiveEndDate: new Date(effectiveEndDate).getTime() / 1000, 
+    //             monthlyRent: monthlyRent,
+    //             paymentMethod: paymentMethod,
+    //             maxOverduePeriod: maxOverduePeriod,
+    //             deposit: depositInWei.toString(),
+    //             latitude: latitudeInt,
+    //             longitude: longitudeInt
+    //         };
+
+
+    //         const tx = await contract.createContract(
+            
+    //            uni_identifier,
+    //             {
+    //                 name: landlord,
+    //                 identificationNumber: identificationNumber,
+    //                 house_address: houseAddress
+    //             },
+    //             {
+    //                 name: tenantName,
+    //                 identificationNumber: tenantIdNumber,
+    //                 house_address: tenantHouseAddress
+    //             },
+    //             houseDetails,
+    //             agreementDetails,
+    //             tenantAgreement,
+    //             landlordResponsibilities,
+    //             agreementBetweenLandlord,
+    //             landlordSignature,
+    //             tenantSignature,
+    //             fixedPassword
+    //         );
+
+    //         await tx.wait();
+    //         setIsLoading(false);
+    //         setSuccessMessage("Contract created successfully!");
+
+    //         alert(`Contract created successfully! Contract Address: ${contractAddress}, uni_identifier: ${uni_identifier}`);
+      
+    //         // Get the created contract details using getContract function
+    //         const createdContract = await contract.getContract(uni_identifier, fixedPassword);
+               
+
+    //     // Log the contract details to the console
+    //    //console.log("Created Contract Details:", createdContract);
+  
+    //     const response = await fetch("http://127.0.0.1:8000/api/house-details",
+    //     //  requestOptions
+    //     {
+    //         method: 'POST',
+    //         body: formData,
+    //     }
+    //     );
+    //     if (!response.ok) {
+    //         throw new Error('Network response was not ok');
+    //     }
+    //     const data = await response.json();
+    //   //  console.log(data); // Log the response data
+
+    //     } catch (error) {
+    //         console.error("Error creating contract:", error);
+    //      //   alert('There was a problem with the fetch operation. Please try again.');
+        
+    //         setIsLoading(false);
+    //         setErrorMessage("An error occurred while creating the contract. Please try again.");
+    //     }
+
+    // };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setIsLoading(true);
         setSuccessMessage("");
         setErrorMessage("");
-
-            // const uni_identifier_heh = ethers.randomBytes(6);
-            // Optional: Convert byte array to hex string for display
-            // const uni_identifier = ethers.hexlify(uni_identifier_heh);
-            // console.log("Uni Identifier (byte array):", uni_identifier_heh);
-            // console.log("Uni Identifier (hex string):", uni_identifier);
-            const uni_identifier_heh = ethers.randomBytes(6);
-            const uni_identifier = ethers.hexlify(uni_identifier_heh);
-
-            const formData = new FormData();
-            formData.append('user_id', userId);
-            formData.append('rent_address', rentAddress);
-            formData.append('latitude', rentLatitude);
-            formData.append('longitude', rentLongitude);
-            formData.append('uni_identifier', uni_identifier);
-            formData.append('prefered_occupants', preferredOccupants);
-            formData.append('type_of_house', buildingType);
-            formData.append('description', description);
-            formData.append('rent_fee', monthlyRent);
-            formData.append('number_of_rooms', numberOfRooms);
-            formData.append('amenities', amenities);
-            formData.append('num_bedrooms', numBedrooms);
-            formData.append('num_toilets', numToilets);
-            formData.append('available', available);
+        
+        const uni_identifier_heh = ethers.randomBytes(6);
+        const uni_identifier = ethers.hexlify(uni_identifier_heh);
     
-            for (let i = 0; i < images.length; i++) {
-                formData.append('images[]', images[i]);
-            }
-
-    // const requestOptions = {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({
-    //         user_id: userId, // Replace with actual user ID
-    //         latitude: rentLatitude,
-    //         longitude: rentLongitude,
-    //         uni_identifier: uni_identifier,
-    //         prefered_occupants: preferredOccupants,
-    //         type_of_house: buildingType,
-    //         description: description, // Assuming this is the description from the form
-    //         rent_fee: monthlyRent,
-    //         number_of_rooms: numberOfRooms, // Assuming this is the number of rooms from the form
-    //         image,
-    //         amenities: amenities,
-    //         num_bedrooms: numBedrooms,
-    //         num_toilets: numToilets,
-    //     })
-    // };
-    const latitudeInt = Math.round(rentLatitude * 1e6); // Convert to integer with 6 decimal places
-    const longitudeInt = Math.round(rentLongitude * 1e6); // Convert to integer with 6 decimal places
-
-
-
+        const formData = new FormData();
+        formData.append('user_id', userId);
+        formData.append('rent_address', rentAddress);
+        formData.append('latitude', rentLatitude);
+        formData.append('longitude', rentLongitude);
+        formData.append('uni_identifier', uni_identifier);
+        formData.append('prefered_occupants', preferredOccupants);
+        formData.append('type_of_house', buildingType);
+        formData.append('description', description);
+        formData.append('rent_fee', monthlyRent);
+        formData.append('number_of_rooms', numberOfRooms);
+        formData.append('amenities', amenities);
+        formData.append('num_bedrooms', numBedrooms);
+        formData.append('num_toilets', numToilets);
+        formData.append('available', available);
+        formData.append('contract_status', contract_status);
+    
+        for (let i = 0; i < images.length; i++) {
+            formData.append('images[]', images[i]);
+        }
+    
+        const latitudeInt = Math.round(rentLatitude * 1e6); // Convert to integer with 6 decimal places
+        const longitudeInt = Math.round(rentLongitude * 1e6); // Convert to integer with 6 decimal places
+    
         try {
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
             const contract = new ethers.Contract(contractAddress, contractAbi, signer);
             const depositInWei = ethers.parseUnits(ethDeposit.toString(), "ether");
-            //const depositInWei = Math.round(ethDeposit * 1e7); 
             const houseDetails = {
                 rent_address: rentAddress,
                 buildingType: buildingType,
                 rentPeriod: rentPeriod,
                 effectiveStartDate: new Date(effectiveStartDate).getTime() / 1000,
                 effectiveEndDate: new Date(effectiveEndDate).getTime() / 1000, 
-              //  effectiveStartDate: effectiveStartDate ? new Date(effectiveStartDate).getTime() / 1000 : null, // Handle empty date
-              //  effectiveEndDate: effectiveEndDate ? new Date(effectiveEndDate).getTime() / 1000 : null, // Handle empty date
-            //   effectiveStartDate: effectiveStartDate ? new Date(effectiveStartDate).getTime() / 1000 : "",
-            //   effectiveEndDate: effectiveEndDate ? new Date(effectiveEndDate).getTime() / 1000 : "",
                 monthlyRent: monthlyRent,
                 paymentMethod: paymentMethod,
                 maxOverduePeriod: maxOverduePeriod,
-                // deposit: deposit,
                 deposit: depositInWei.toString(),
-                // utilityDeposit: utilityDeposit,
-                // advanceRental: advanceRental,
                 latitude: latitudeInt,
                 longitude: longitudeInt
             };
-
-
+    
             const tx = await contract.createContract(
-            
-               uni_identifier,
+                uni_identifier,
                 {
                     name: landlord,
                     identificationNumber: identificationNumber,
@@ -275,43 +354,38 @@ const customIcon = L.icon({
                 tenantSignature,
                 fixedPassword
             );
-
+    
             await tx.wait();
             setIsLoading(false);
             setSuccessMessage("Contract created successfully!");
-
             alert(`Contract created successfully! Contract Address: ${contractAddress}, uni_identifier: ${uni_identifier}`);
-      
-            // Get the created contract details using getContract function
-            //const createdContract = await contract.getContract(uni_identifier);
+    
             const createdContract = await contract.getContract(uni_identifier, fixedPassword);
-               
-
-        // Log the contract details to the console
-       //console.log("Created Contract Details:", createdContract);
-  
-        const response = await fetch("http://127.0.0.1:8000/api/house-details",
-        //  requestOptions
-        {
-            method: 'POST',
-            body: formData,
-        }
-        );
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-      //  console.log(data); // Log the response data
-
+    
+            const response = await fetch("http://127.0.0.1:8000/api/house-details", {
+                method: 'POST',
+                body: formData,
+            });
+    
+            // Log the full response for debugging
+            const responseText = await response.text();
+            // console.log('Full response:', responseText);
+    
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${responseText}`);
+            }
+    
+            // Parse JSON only if the response is valid JSON
+            const data = JSON.parse(responseText);
+            // console.log(data); // Log the response data
+    
         } catch (error) {
             console.error("Error creating contract:", error);
-         //   alert('There was a problem with the fetch operation. Please try again.');
-        
             setIsLoading(false);
             setErrorMessage("An error occurred while creating the contract. Please try again.");
         }
-
     };
+    
 
     // const tenantAgreementOptions = [
     //     'The Tenant agrees to pay the Landlord the agreed-upon rent amount. The details of the rent, including the amount and payment schedule, will be specified separately in the rental agreement document.',
@@ -665,6 +739,7 @@ const handleClick = (event) => {
                     />
                 </div>
                 <div className="col-sm-3">
+                <p>Selected Currency: {currency}</p>
                     <select className="form-control" value={currency} onChange={(e) => setCurrency(e.target.value)}>
                         <option value="RM">MYR</option>
                         <option value="USD">USD</option>

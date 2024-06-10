@@ -44,7 +44,7 @@ function Navbar() {
   return (
     <header className="App-header">
       <nav className={`navbar navbar-expand-lg container-fluid navbar-custom ${isSmall ? 'navbar-small' : ''}`}>
-        <Link to="/" className="navbar-brand navbar-brand-custom">
+        <Link to="/home" className="navbar-brand navbar-brand-custom">
           {/* <img src="/rgreement.png" alt="Rgreement Logo" /> */}
           <img src="/newlogo2.png" alt="Rgreement Logo" />
         </Link>

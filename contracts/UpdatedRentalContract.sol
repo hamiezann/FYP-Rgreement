@@ -204,6 +204,7 @@ contract HouseRentalContract {
 
         request.active = false;
     }
+    
 
     function endContract(bytes6 contractId) public onlyLandlord(contractId) {
         require(contracts[contractId].contractActive, "Contract not active");
@@ -234,4 +235,10 @@ contract HouseRentalContract {
     function getDepositReleaseRequests(bytes6 contractId) public view returns (DepositReleaseRequest[] memory) {
         return depositReleaseRequests[contractId];
     }
+
+    //     function getAllContractIds() public view returns (bytes6[] memory) {
+    //     return contractId;
+    // }
 }
+
+

@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './SignContractForm.module.css';
 
 const contractAbi = HouseRentalContract.abi;
-const contractAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
+const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const fixedPassword = "123456";
 
 const SignContractForm = () => {
@@ -89,7 +89,7 @@ const SignContractForm = () => {
       setIsLoading(false);
       setSuccessMessage("Contract signed successfully!");
 
-      const response = await axios.put(`http://127.0.0.1:8000/api/sign-now/${houseId}`, { sign_contract_status: 'Signed' });
+      const response = await axios.put(`http://127.0.0.1:8000/api/sign-now/${houseId}`, { sign_contract_status: 'Signed' , contract_status: 'Active'});
       console.log(response.data); 
     } catch (error) {
       console.error("Error signing contract:", error);

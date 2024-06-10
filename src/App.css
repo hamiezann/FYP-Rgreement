@@ -1,51 +1,33 @@
-/* .App {
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-} */
+/* App.css */
+body {
 
-/* .App-logo {
-  height: 40vmin;
-  pointer-events: none;
-} */
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: rgb(70, 13, 151);
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  /* padding-top: 30px; */
+  background-color: #fff;
+  /* color: #ffffff;  */
+  margin: 0; /* Remove default margin */
+  padding-top: 10%;
+  padding: 0; /* Remove default padding */
+  font-family: 'ROboto', sans-serif; 
 }
 
 .App {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ensure the app takes up at least the full viewport height */
+  min-height: 100vh; 
 }
 
-.content {
-  /* flex: 1; 
-  padding-bottom: 100px;  */
+.App-header {
+
+  padding-top: 30px;
+  /* background-color: #EEEEEE; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* font-size: calc(10px + 2vmin);
+  color: rgb(70, 13, 151); */
+}
+
+.container {
+  padding: 20px; 
 }

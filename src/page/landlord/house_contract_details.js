@@ -5,7 +5,7 @@ import HouseRentalContract from "../../artifacts/contracts/UpdatedRentalContract
 import "../../style/landlord/house_contract_details.css";
 
 // const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-const contractAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
+const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 const HouseContractDetails = () => {
   const { houseId } = useParams();
@@ -135,6 +135,11 @@ const HouseContractDetails = () => {
         <div className="section mb-4">
           <p><strong>Landlord Signature:</strong> {contractDetails.landlordSignature}</p>
           <p><strong>Tenant Signature:</strong> {contractDetails.tenantSignature}</p>
+        </div>
+
+        <div className="section mb-4">
+          <h4>Contract Status</h4>
+          <p>{contractDetails.contractActive ? "Active" : "Not Active"}</p>
         </div>
 
         <div className="text-center mt-4">
