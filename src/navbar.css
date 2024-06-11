@@ -1,17 +1,17 @@
 /* navbar.css */
 .navbar-custom {
-  /* background-color: #A3D8FF !important; */
-  /* background: linear-gradient(to bottom right, #FFB6C1, #10439F) !important; */
-  background-color: #5BBCFF !important;
-  position: fixed !important;
-  top: 10px;
-  /* width: 100%; */
-  width: calc(100% - 40px);
+  /* background-color: transparent; */
+  background-color: white; 
+  position: fixed;
+  /* width: calc(100% - 40px); */
   z-index: 1000;
   transition: all 0.3s ease;
   margin: 0 20px;
-  border-radius: 30px;
+  /* border-radius: 30px; */
+  padding: 0.75rem 1rem;
 }
+
+
 
 .navbar-brand-custom {
   display: flex;
@@ -20,7 +20,7 @@
 }
 
 .navbar-brand-custom img {
-  margin-left: 100px;
+  margin-left: 20px;
   width: 100px;
   height: 90px;
   transition: all 0.3s ease;
@@ -33,22 +33,51 @@
 .navbar-nav-custom {
   justify-content: center !important;
   display: flex;
-  padding-left: 15px;
-  padding-right: 15px;
+  /* padding-left: 15px !important ;
+  padding-right: 15px !important; */
 }
 
-.nav-link-custom {
-  color: black !important; /* Bootstrap often uses !important, so use it here to override */
+/* .nav-link-custom {
+
+  color: black !important;
   transition: all 0.3s ease;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+} */
+
+.nav-link-custom {
+  color: black !important;
+  transition: all 0.3s ease;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  font-family: 'Helvetica', 'Arial', sans-serif; /* or 'Roboto', sans-serif from Google Fonts */
+  font-size: 1rem; /* Adjust the font size as needed */
+  font-weight: 10000; /* Adjust the font weight as needed */
+  letter-spacing: 0.05em; /* Adjust letter spacing if needed */
 }
 
 .nav-link-custom:hover {
-  color: rgb(252, 252, 252) !important;
+  color:red !important;
+}
+
+.contact-button {
+  background-color: #ff416c;
+  color: white !important;
+  padding: 0.5rem 1rem;
+  border-radius: 30px;
+  transition: background-color 0.3s ease;
+}
+
+.contact-button:hover {
+  background-color: #54b5f1;
 }
 
 /* Additional styles for smaller navbar on scroll */
 .navbar-small {
+  background-color: #EEEEEE !important;
   padding: 0.5rem 1rem;
+ 
+  /* border-radius: 10px; */
 }
 
 .navbar-small .navbar-brand-custom img {
@@ -58,6 +87,7 @@
 
 .navbar-small .nav-link-custom {
   font-size: 0.9rem;
+  color: black !important;
 }
 
 /* Add this to account for the navbar height */
@@ -71,7 +101,6 @@ body {
   }
 }
 
-/* Profile link styles */
 .profile-link {
   display: flex;
   align-items: center;
@@ -82,7 +111,6 @@ body {
 
 .profile-icon {
   font-size: 1.5rem;
-  /* border-radius: 50px; */
   transition: color 0.3s ease;
 }
 
@@ -95,7 +123,7 @@ body {
 }
 
 .profile-link:hover .profile-icon {
-  color: white; /* Change this to the color you want on hover */
+  color: white;
 }
 
 .profile-link:hover {
@@ -109,4 +137,27 @@ body {
   opacity: 1;
   transform: translateX(0);
   color: white;
+}
+
+
+/* Add this new class for the overlay */
+.navbar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5) !important; /* Translucent gray */
+  z-index: 999 !important; /* Ensure it's above the navbar */
+  display: none; /* Initially hidden */
+}
+
+/* Show the overlay when navbar is active */
+.navbar-overlay.active {
+  display: block !important;
+
+}
+
+.App-header.mobile-active {
+  background-color: rgba(0, 0, 0, 0.5) !important; /* Translucent gray */
 }

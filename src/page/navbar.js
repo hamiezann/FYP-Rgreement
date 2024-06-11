@@ -13,12 +13,16 @@ function Navbar() {
   const [isSmall, setIsSmall] = useState(false);
   const navigate = useNavigate();
   const role = localStorage.getItem('role');
-
+  const [showOverlay, setShowOverlay] = useState(false);
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
   const isTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1024px)' });
   const isDesktop = useMediaQuery({ query: '(min-width: 1025px)' });
 
-  const toggleActiveClass = () => setIsActive(!isActive);
+  const toggleActiveClass = () => {
+    setIsActive(!isActive);
+    setShowOverlay(!showOverlay);
+    console.log("Navbar toggled:", !isActive);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
@@ -34,18 +38,27 @@ function Navbar() {
     }
   };
 
+  const closeNavbar = () => {
+    if (isMobile && isActive) {
+      setIsActive(false);
+      console.log("Navbar closed on click/scroll");
+    }
+  };
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('click', closeNavbar);
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('click', closeNavbar);
     };
-  }, []);
+  }, [isActive, isMobile]);
 
   return (
-    <header className="App-header">
+    // <header className="App-header">
+      <header className={`App-header ${isActive && isMobile ? 'mobile-active' : ''}`}>
       <nav className={`navbar navbar-expand-lg container-fluid navbar-custom ${isSmall ? 'navbar-small' : ''}`}>
         <Link to="/home" className="navbar-brand navbar-brand-custom">
-          {/* <img src="/rgreement.png" alt="Rgreement Logo" /> */}
           <img src="/newlogo2.png" alt="Rgreement Logo" />
         </Link>
         <button
@@ -73,33 +86,27 @@ function Navbar() {
                 RentBy
               </Link>
             </li>
-
             {isAuthenticated && role === 'landlord' && (
+              <li className="nav-item">
+                <Link to="/contract" className="nav-link nav-link-custom">
+                  Menu
+                </Link>
+              </li>
+            )}
+            {isAuthenticated && role === 'renter' && (
               <>
                 <li className="nav-item">
-                  <Link to="/contract" className="nav-link nav-link-custom">
+                  <Link to="/find-house" className="nav-link nav-link-custom">
+                    Find Houses
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/renter-menu" className="nav-link nav-link-custom">
                     Menu
                   </Link>
                 </li>
               </>
             )}
-
-            {isAuthenticated && role === 'renter' && (
-              <>
-              <li className="nav-item">
-                <Link to="/find-house" className="nav-link nav-link-custom">
-                  Find Houses
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/renter-menu" className="nav-link nav-link-custom">
-                  Menu
-                </Link>
-              </li>
-
-              </>
-            )}
-
             {!isAuthenticated && (
               <li className="nav-item">
                 <Link to="/about-us" className="nav-link nav-link-custom">
@@ -107,7 +114,6 @@ function Navbar() {
                 </Link>
               </li>
             )}
-
             {isAuthenticated ? (
               isMobile ? (
                 <>
@@ -134,6 +140,11 @@ function Navbar() {
                 </Link>
               </li>
             )}
+            <li className="nav-item">
+              <Link to="/contact" className="nav-link nav-link-custom contact-button">
+                Contact Us
+              </Link>
+            </li>
           </ul>
         </div>
       </nav>

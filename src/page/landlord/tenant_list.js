@@ -143,7 +143,10 @@ const TenantListPage = () => {
                         {tenant.sign_contract_status === 'Signed' && (
         <>
         {tenant.house.contract_status !== 'Contract Ended' && (
+          <>
           <button className={`btn btn-warning ${styles.buttonCustom}`} onClick={() => handleIssue(tenant.house_id)}>Issue</button>
+          <button className={`btn btn-danger ${styles.buttonCustom}`} onClick={() => handleEndContract(tenant.house_id)}>End Contract</button>
+          </>
         )}
         <button className={`btn btn-danger ${styles.buttonCustom}`} onClick={() => handleEndContract(tenant.house_id)}>End Contract</button>
       </>

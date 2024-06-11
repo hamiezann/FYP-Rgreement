@@ -9,7 +9,7 @@ import CreatedView from './page/created_view';
 import ContractUpdateForm from './page/update_contract';
 import RegistrationForm from './authentication/register';
 import LoginForm from './authentication/login';
-import { AuthContext} from './authentication/AuthContext';
+import { AuthContext } from './authentication/AuthContext';
 import RentHouseList from './page/landlord/landlord_house_list';
 import UpdateRentHouse from './page/landlord/update_housedb';
 import HouseContractDetails from './page/landlord/house_contract_details';
@@ -30,18 +30,19 @@ import EventsPage from './page/landlord/event_list';
 import RenterMenu from './page/renter/menu';
 import RequestDepositReleasePage from './page/landlord/request_deposit_release';
 import DepositReleaseRequests from './page/renter/approve_deposit_request';
-import './App.css';
 import EndContract from './page/landlord/end_contract';
 import ManageHouse from './page/landlord/manage_house';
+import './App.css';
+
 const App = () => {
-   const { isAuthenticated } = useContext(AuthContext);
-   const role = localStorage.getItem('role');
+  const { isAuthenticated } = useContext(AuthContext);
+  const role = localStorage.getItem('role');
 
   return (
     <Router>
       <div className="App">
-        <div className="App-header">
-          <Navbar />
+        <Navbar />
+        <div className="App-content">
           <Routes>
             {!isAuthenticated ? (
               <>
@@ -51,7 +52,7 @@ const App = () => {
                 <Route path="/home" element={<Home />} />
                 <Route path="/nearby-rent" element={<RentNearby />} />
                 <Route path="/about-us" element={<AboutPage />} />
-                <Route path="house-details" element={<HouseDetailPage />} />
+                <Route path="/house-details" element={<HouseDetailPage />} />
               </>
             ) : role === 'landlord' ? (
               <>
@@ -62,7 +63,7 @@ const App = () => {
                 <Route path="/landlord_form" element={<LandlordForm />} />
                 <Route path="/list" element={<CreatedView />} />
                 <Route path="/yourhouse-list" element={<RentHouseList />} />
-                <Route path="/update-rent-house/:houseId" element={<UpdateRentHouse  />} />
+                <Route path="/update-rent-house/:houseId" element={<UpdateRentHouse />} />
                 <Route path="/house-contract-details" element={<HouseContractDetails />} />
                 <Route path="/rental-contract-update" element={<UpdateHouseContractForm />} />
                 <Route path="/update_contract" element={<ContractUpdateForm />} />
@@ -87,25 +88,23 @@ const App = () => {
                 <Route path="/chat/:houseId" element={<MessageMain />} />
                 <Route path="/conversations" element={<ConversationsPage />} />
                 <Route path="/conversations/:senderId/:recipientId" element={<ConversationPage />} />
-                <Route path='/find-house' element={<FindHouse />} />
-                <Route path='/apply-house/:houseId' element={<ApplyHouseForm />} />
-                <Route path='/my-property' element={<RenterDashboard/>} />
-                <Route path='/sign-now' element={<RentContractPage />} />
+                <Route path="/find-house" element={<FindHouse />} />
+                <Route path="/apply-house/:houseId" element={<ApplyHouseForm />} />
+                <Route path="/my-property" element={<RenterDashboard />} />
+                <Route path="/sign-now" element={<RentContractPage />} />
                 <Route path="/about-us" element={<AboutPage />} />
                 <Route path="/house-contract-details" element={<HouseContractDetails />} />
                 <Route path="/contract-event" element={<EventsPage />} />
-                <Route path="/renter-menu" element={<RenterMenu/>} />
-                <Route path="/approve-deposit" element={<DepositReleaseRequests/>} />
-                {/* Add UI components specific to renters here */}
+                <Route path="/renter-menu" element={<RenterMenu />} />
+                <Route path="/approve-deposit" element={<DepositReleaseRequests />} />
               </>
             )}
           </Routes>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </Router>
-   
   );
-}
+};
 
 export default App;

@@ -173,7 +173,21 @@ const RentNearby = () => {
   };
   
   return (
-    <div className="container mt-5">
+  
+
+   
+    <div className="container mt-5 ">
+      <div className="custom-block">
+
+      </div>
+      <h1> Discover you new rental home.</h1>
+      <div className="button-row">
+       
+        <button className="filter-button">Search by Property ID...</button>
+        
+        <button className="filter-button">Filter</button>
+        <button className="filter-button">Search Now</button>
+      </div>
       <div className="filter-container mb-4">
         <h2>Rent Nearby</h2>
         <div className="row g-3">
@@ -276,6 +290,8 @@ const RentNearby = () => {
         </div>
       )}
     </div>
+
+   
   );
 };
 
