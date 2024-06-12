@@ -33,6 +33,8 @@ import DepositReleaseRequests from './page/renter/approve_deposit_request';
 import EndContract from './page/landlord/end_contract';
 import ManageHouse from './page/landlord/manage_house';
 import './App.css';
+import FilterModal from './page/renter/FilterModal';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -77,6 +79,7 @@ const App = () => {
                 <Route path="/request-deposit-release" element={<RequestDepositReleasePage />} />
                 <Route path="/end-contract" element={<EndContract />} />
                 <Route path="/manage-house" element={<ManageHouse />} />
+                <Route path="/filter-modal" element={<FilterModal />} />
               </>
             ) : (
               <>
@@ -97,6 +100,7 @@ const App = () => {
                 <Route path="/contract-event" element={<EventsPage />} />
                 <Route path="/renter-menu" element={<RenterMenu />} />
                 <Route path="/approve-deposit" element={<DepositReleaseRequests />} />
+                <Route path="/filter-modal" element={<FilterModal />} />
               </>
             )}
           </Routes>

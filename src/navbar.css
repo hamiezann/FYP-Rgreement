@@ -1,7 +1,7 @@
 /* navbar.css */
 .navbar-custom {
-  /* background-color: transparent; */
-  background-color: white; 
+  background-color: transparent;
+  /* background-color: white;  */
   position: fixed;
   /* width: calc(100% - 40px); */
   z-index: 1000;

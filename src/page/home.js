@@ -87,15 +87,18 @@ function Home() {
               <div className="comment-card-header">
                 <img
                   src="https://www.marketing91.com/wp-content/uploads/2020/11/Customer-Satisfaction.jpg"
+                  // src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtJwW5H0qR3bLQVzeOgl4HZR_ARyIGn5zsuA&s"
                   alt="User"
                   className="comment-card-image"
                 />
               </div>
               <Card.Body className="comment-card-body">
                 <blockquote className="blockquote mb-0">
+                  {/* <p>Hehe bestnye menyewa menggunakan RGreement!</p> */}
                   <p>"As a landlord, I found the perfect tenants quickly thanks to RGreement."</p>
                   <footer className="blockquote-footer">
                     <cite title="Source Title">Jane Smith</cite>
+                   
                   </footer>
                 </blockquote>
                 <p className="comment-card-role">House Owner</p>

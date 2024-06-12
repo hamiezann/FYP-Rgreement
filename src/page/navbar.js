@@ -95,11 +95,11 @@ function Navbar() {
             )}
             {isAuthenticated && role === 'renter' && (
               <>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <Link to="/find-house" className="nav-link nav-link-custom">
                     Find Houses
                   </Link>
-                </li>
+                </li> */}
                 <li className="nav-item">
                   <Link to="/renter-menu" className="nav-link nav-link-custom">
                     Menu

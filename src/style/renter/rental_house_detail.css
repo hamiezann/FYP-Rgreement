@@ -1,129 +1,61 @@
-/* .product-page {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 20px;
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-.product-image-container {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 20px;
+.top-spacer {
+  /* padding-top: 110px; */
 }
-
-.product-image-container img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.product-details {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.product-details-box {
-  padding: 20px;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.product-details h1 {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.product-details p {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.product-details label {
-  font-size: 18px;
-  margin-right: 10px;
-}
-
-.product-details select {
-  font-size: 18px;
-  padding: 5px;
-  margin-bottom: 20px;
-}
-
-.product-details button {
-  font-size: 18px;
-  padding: 10px 20px;
-  background-color: lightblue;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.product-details button:hover {
-  background-color: deepskyblue;
-} */
-
-/* For screens below 768 pixels */
-/* 
-@media (max-width: 767px) {
-  .product-page {
-    flex-direction: column;
-  }
-
-  .product-image-container,
-  .product-details {
-    width: 100%;
-  }
-
-  .product-image-container {
-    margin-bottom: 20px;
-  }
-
-  .product-image-container img {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-
-  .product-details button {
-    width: 100%;
-  }
-} */
 
 .house-detail-container {
   display: flex;
-  flex-wrap: wrap; /* Ensures elements wrap to the next line on smaller screens */
-  gap: 20px;
-  padding: 20px;
+  flex-direction: column; /* Stack elements vertically */
   background-color: #f9f9f9;
   border-radius: 10px;
 }
 
-/* .image-section {
-  flex: 1;
-} */
+/* Image section */
 .image-section {
-  flex: 1;
-  background: linear-gradient(to bottom right, #e0c3fc, #8ec5fc);
-  border-radius: 10px;
-  overflow: hidden; /* Ensure the gradient is contained within the border-radius */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Full width */
+  height: 70vh; /* Cover half of the viewport height */
+  overflow: hidden;
+  border-bottom-right-radius: 90px 90px;
+  margin: auto;
 }
 
 .house-image {
   width: 100%;
-  border-radius: 10px;
+  height: auto;
+  object-fit: cover;
+  border-bottom-right-radius: 90px 90px;
 }
 
+.vertical-line {
+  width: 1px;
+  background-color: #ddd;
+  height: 100%;
+  margin: 0 20px; /* Adjust this value as needed for spacing */
+}
+
+/* Details section */
 .details-section {
   flex: 2;
+  padding: 20px;
+}
+
+.description-class {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .badge {
   display: inline-block;
-  background-color: #ff6347;
+  background-color: #83B4FF;
   color: white;
   padding: 5px 10px;
   border-radius: 5px;
@@ -159,36 +91,106 @@
   gap: 10px;
 }
 
-.chat-now-button, .apply-button {
+.chat-now-button,
+.apply-button {
   padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   width: 100%; /* Make buttons fill the width on smaller screens */
 }
 
 .chat-now-button {
-  background-color: #007bff;
-  color: white;
+  background-color: white;
+  color: #007bff;
+  border-color:  #007bff;
+  font-size: 16px !important;
 }
 
 .apply-button {
+  background-color: white;
+  color: #28a745;
+  border-color:  #28a745;
+}
+
+.chat-now-button:hover {
+  background-color: #007bff;
+  color: white;
+  border-color: white;
+
+  
+}
+
+.apply-button:hover {
   background-color: #28a745;
   color: white;
+  border-color: white;
 }
 
 /* Media query for screens below 768 pixels */
 @media (max-width: 767px) {
+  .header-container {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .house-detail-container {
     flex-direction: column; /* Stack image and details sections vertically */
+  }
+
+  .vertical-line {
+    width: 100%;
+    height: 1px;
+    margin: 20px 0; /* Adjust this value as needed for spacing */
   }
 
   .image-section,
   .details-section {
     width: 100%; /* Full width for both sections on smaller screens */
+    height: 30vh; /* Adjust height for mobile view */
   }
 
   .house-image {
-    margin-bottom: 20px; /* Add space below image on smaller screens */
+    height: auto;
+    object-fit: cover;
   }
+
+  .header-end-product {
+
+    border-left : none !important; 
+  
+  }
+}
+
+/* Header container styles */
+.header-container {
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px; /* Optional: Adds some padding around the container */
+  border: 1px solid #ddd;
+  border-radius: 20px;
+}
+
+.header-start-product {
+  flex: 1; /* Optional: Allows this element to take available space */
+}
+
+.header-end-product {
+  flex: 1; /* Optional: Allows this element to take available space */
+  text-align: right; /* Aligns text to the right within this div */
+  border-left: 2px solid black; /* Black border on the left side */
+  padding-left: 20px; /* Optional: Adds some padding to the left side */
+}
+
+.header-start-product h1 {
+  margin: 0; /* Removes default margin from h1 */
+}
+
+.header-start-product p {
+  margin: 5px 0 0 0; /* Adds some spacing to the paragraph */
+}
+
+.header-end-product p {
+  margin: 0; /* Removes default margin from p */
 }

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../../style/rentby.css"; // Custom styles
 import useDocumentTitle from '../../utils/useDocumentTitles';
+import { Modal, Button } from 'react-bootstrap';
 
 const RentNearby = () => {
   const [rentHouses, setRentHouses] = useState([]);
@@ -12,13 +13,17 @@ const RentNearby = () => {
   const [userLocation, setUserLocation] = useState(null);
   const [showNearest, setShowNearest] = useState(false);
   const [showFarthest, setShowFarthest] = useState(false);
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [searchPropertyId, setSearchPropertyId] = useState('');
   const navigate = useNavigate();
   useDocumentTitle('Rentby - Rgreement');
+
   useEffect(() => {
     const fetchRentHouses = async () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/nearby-house-list`);
         setRentHouses(response.data);
+        console.log('Response data:', response.data);
       } catch (error) {
         console.error("Error fetching rent houses:", error);
         setError(error);
@@ -171,24 +176,55 @@ const RentNearby = () => {
     setShowNearest(false);
     setShowFarthest(true);
   };
+
+  const handleShowFilterModal = () => {
+    setShowFilterModal(true);
+  };
+
+  const handleCloseFilterModal = () => {
+    setShowFilterModal(false);
+  };
+  
+  const handleSearchPropertyIdChange = (e) => {
+    setSearchPropertyId(e.target.value);
+  };
+
+  const handleSearchPropertyId = () => {
+    const filteredHouses = rentHouses.filter(house => house.id === parseInt(searchPropertyId));
+    setRentHouses(filteredHouses);
+  }
+
+
   
   return (
-  
 
-   
     <div className="container mt-5 ">
       <div className="custom-block">
 
       </div>
       <h1> Discover you new rental home.</h1>
-      <div className="button-row">
-       
-        <button className="filter-button">Search by Property ID...</button>
-        
-        <button className="filter-button">Filter</button>
-        <button className="filter-button">Search Now</button>
+    <div className="button-row">
+      <div className="search-bar-wrapper">
+    <i className="fas fa-search"></i>
+          <input
+          type="text"
+          id="property-search"
+          placeholder="Enter Property ID..."
+          value={searchPropertyId}
+          onChange={handleSearchPropertyIdChange}
+          className="property-search"
+          />
+          </div>
+     
+      <button className="filter-button" onClick={handleSearchPropertyId}>Search by Property ID</button>
+      <button className="filter-button" onClick={handleShowFilterModal}>Filter</button>
+    </div>
+      <div className="button-row-map">
+      <i className="fas fa-map"></i>
+        <button className="filter-button">See in Map</button>
       </div>
-      <div className="filter-container mb-4">
+
+      {/* <div className="filter-container mb-4">
         <h2>Rent Nearby</h2>
         <div className="row g-3">
           <div className="col-md-3">
@@ -251,7 +287,80 @@ const RentNearby = () => {
           <button onClick={handleApplyFilters} className="btn btn-primary me-2">Apply Filters</button>
           <button onClick={handleClearFilters} className="btn btn-secondary">Clear Filters</button>
         </div>
-      </div>
+      </div> */}
+
+<Modal show={showFilterModal} onHide={handleCloseFilterModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Filter Properties</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="filter-container mb-4">
+            <h2>Rent Nearby</h2>
+            <div className="row g-3">
+              <div className="col-md-6">
+                <label htmlFor="sortBy" className="form-label">Sort By:</label>
+                <select
+                  id="sortBy"
+                  name="sortBy"
+                  value={filterOptions.sortBy}
+                  onChange={handleFilterChange}
+                  className="form-select"
+                >
+                  <option value="">Select</option>
+                  <option value="cheapest">Cheapest</option>
+                  <option value="expensive">Most Expensive</option>
+                </select>
+              </div>
+              <div className="col-md-6">
+                <label htmlFor="houseType" className="form-label">House Type:</label>
+                <select
+                  id="houseType"
+                  name="houseType"
+                  value={filterOptions.houseType}
+                  onChange={handleFilterChange}
+                  className="form-select"
+                >
+                  <option value="">Select</option>
+                  <option value="Flat">Flat</option>
+                  <option value="Lot House">Lot House</option>
+                  <option value="Apartment">Apartment</option>
+                </select>
+              </div>
+              <div className="col-md-6 mt-3">
+                <div className="form-check">
+                  <input
+                    type="checkbox"
+                    id="showNearest"
+                    name="showNearest"
+                    checked={showNearest}
+                    onChange={handleShowNearestChange}
+                    className="form-check-input"
+                  />
+                  <label htmlFor="showNearest" className="form-check-label">Show Nearest</label>
+                </div>
+              </div>
+              <div className="col-md-6 mt-3">
+                <div className="form-check">
+                  <input
+                    type="checkbox"
+                    id="showFarthest"
+                    name="showFarthest"
+                    checked={showFarthest}
+                    onChange={handleShowFarthestChange}
+                    className="form-check-input"
+                  />
+                  <label htmlFor="showFarthest" className="form-check-label">Show Farthest</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseFilterModal}>Close</Button>
+          <Button variant="primary" onClick={handleApplyFilters}>Apply Filters</Button>
+          <Button variant="danger" onClick={handleClearFilters}>Clear Filters</Button>
+        </Modal.Footer>
+      </Modal>
 
       {rentHouses.length === 0 ? (
         <p>No rent houses found nearby.</p>
@@ -281,8 +390,17 @@ const RentNearby = () => {
                       Distance from your location: {calculateDistance(userLocation.latitude, userLocation.longitude, house.latitude, house.longitude)} km
                     </p>
                   )}
-                  <button onClick={() => handleHouseDetails(house.id)} className="btn btn-info me-2">See Details</button>
-                  <button onClick={() => handleChatOwner(house.id, house.user_id)} className="btn btn-success">Chat Owner</button>
+<div className="button-container">
+  <button onClick={() => handleHouseDetails(house.id)} className="button-details">
+    <i className="fas fa-info-circle"></i>
+    See Details
+  </button>
+  <button onClick={() => handleChatOwner(house.id, house.user_id)} className="button-chat">
+    <i className="fas fa-comments"></i>
+    Chat Owner
+  </button>
+</div>
+
                 </div>
               </div>
             </div>

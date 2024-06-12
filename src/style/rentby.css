@@ -16,9 +16,83 @@
     justify-content: center;
   }
 
+  .button-row-map {
+    /* position: relative; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .button-row-map .fas.fa-map {
+    /* position: absolute; */
+    position: relative;
+    left: 45px; 
+    color: black; /* Adjust color as necessary */
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  .button-container button {
+    padding: 8px 16px; /* Adjust padding to change button size */
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 16px; /* Adjust font size as necessary */
+  }
+  
+  .button-container button i {
+    margin-right: 5px; /* Adjust spacing between icon and text */
+  }
+  
+  .button-details {
+    background-color: white; 
+    color:  #28a745;
+    border-color: #28a745 !important;
+  }
+  
+  .button-chat {
+    background-color:white; 
+    color: #dc3545;
+    border-color: #dc3545;
+  }
+
+  .button-details:hover {
+    background-color: #06D001;
+    color: white;
+  }
+
+  .button-chat:hover {
+    background-color: red;
+    color: white;
+  }
+  
+
+  .search-bar-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-bar-wrapper .fas.fa-search {
+    position: absolute;
+    left: 10px; /* Adjust as necessary */
+    color: grey; /* Adjust color as necessary */
+  }
+  
+  .property-search {
+    width: 100%;
+    padding: 10px 10px 10px 35px !important; /* Adjust padding to make space for the icon */
+    box-sizing: border-box;
+  }
+  
+
   .filter-button {
     border-color: black;
-    padding-left: 20px;
+    padding-left: 30px;
     padding-right: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -31,6 +105,11 @@
   .filter-button:hover {
     background-color: #007bff;
   }
+/* 
+  .button-row {
+    display: flex;
+    justify-content: space-around;
+  } */
 
   .property-select-button {
     display: flex;
@@ -47,15 +126,10 @@
     margin-right: 8px;
   }
   
-  .form-select {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
+  .property-search {
+
   }
+
   
   .button-group {
     margin-top: 16px;
@@ -159,4 +233,6 @@
       margin-right: 0;
     }
   }
+
+  
   
