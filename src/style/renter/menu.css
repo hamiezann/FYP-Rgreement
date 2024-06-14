@@ -32,9 +32,7 @@ body {
 .card-container {
     position: relative;
     top: -100px; /* Adjust this value to pull the cards up */
-    justify-content: center;
-    display: flex;
-    flex-wrap: wrap;
+  
 }
 
 /* Card Styling */

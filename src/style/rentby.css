@@ -1,238 +1,263 @@
-.property-item {
-    display: flex;
-    margin-bottom: 20px;
-    background-color: aquamarine;
-    border-radius: 10px;
-    margin: 15px;
-    padding: 10px;
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Top Padding */
+.custom-block {
+  padding-top: 80px;
+}
+
+/* Title */
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2.5rem;
+  color: #333;
+}
+
+/* Button Row */
+.button-row, .button-map {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Search Bar */
+.search-bar-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar-wrapper .fas.fa-search {
+  position: absolute;
+  left: 10px;
+  color: grey;
+}
+
+.property-search {
+  width: 300px;
+  padding: 10px 10px 10px 35px;
+  border: 2px solid #ccc;
+  border-radius: 25px;
+  transition: border-color 0.3s;
+}
+
+.property-search:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Filter Button */
+.filter-button, .filter-button-map {
+  padding: 10px 20px;
+  margin: 0 10px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.filter-button:hover, .filter-button-map:hover {
+  background-color: #062f5c;
+}
+
+@media (max-width: 768px) {
+  .filter-button, .filter-button-map {
+    margin: 5px 0;
+    width: 100%;
+  }
+}
+
+/* Modal Styling */
+.modal-content {
+  border-radius: 20px;
+}
+
+.modal-header, .modal-footer {
+  border: none;
+}
+
+.modal-title {
+  color: #007bff;
+}
+
+button {
+  border-radius: 25px;
+}
+
+button.btn-secondary {
+  background-color: #6c757d;
+}
+
+button.btn-primary {
+  background-color: #007bff;
+}
+
+button.btn-danger {
+  background-color: #dc3545;
+}
+
+/* Card Styling */
+.custom-card {
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.custom-card:hover {
+  transform: scale(1.02);
+}
+
+.custom-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+}
+
+.custom-card-body {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.custom-card-title {
+  font-size: 1.5rem;
+  padding-top: 10px;
+  margin-bottom: 10px;
+  color: #333;
+  font-family: "Roboto", sans-serif !important;
+  /* font-weight: 700; */
+  /* font-style: normal; */
+  display: flex;
+  justify-content: center;
+}
+
+.custom-card-text {
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.custom-rent-fee {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #007bff;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 2px solid black;
+}
+
+.custom-details {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+}
+
+.custom-details span {
+  display: flex;
+  align-items: center;
+  color: #666;
+}
+
+.custom-details span i {
+  margin-right: 5px;
+  color: black;
+}
+
+.rent-address {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.rent-address i {
+  margin-right: 5px;
+  color: red;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.button-details, .button-chat {
+  padding: 10px 15px;
+  border-radius: 25px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.button-details {
+  background-color: white;
+  padding: 8px 16px;
+  color: #28a745;
+}
+
+.button-chat {
+  background-color: white;
+  padding: 8px 16px;
+  color: #dc3545;
+}
+
+.button-details:hover {
+  background-color: #28a745;
+  color: white;
+}
+
+.button-chat:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Heart Icon */
+.heart-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.heart-icon:hover {
+  color: #ff0000;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .button-row {
+    flex-direction: column;
   }
 
   .custom-block {
-    padding-top: 80px;
+    padding-top: 50px;
   }
 
-  .button-row {
-    display: flex;
-    justify-content: center;
-  }
-
-  .button-row-map {
-    /* position: relative; */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .button-row-map .fas.fa-map {
-    /* position: absolute; */
-    position: relative;
-    left: 45px; 
-    color: black; /* Adjust color as necessary */
-  }
-
-  .button-container {
-    display: flex;
-    justify-content: space-evenly;
-  }
-  
-  .button-container button {
-    padding: 8px 16px; /* Adjust padding to change button size */
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    font-size: 16px; /* Adjust font size as necessary */
-  }
-  
-  .button-container button i {
-    margin-right: 5px; /* Adjust spacing between icon and text */
-  }
-  
-  .button-details {
-    background-color: white; 
-    color:  #28a745;
-    border-color: #28a745 !important;
-  }
-  
-  .button-chat {
-    background-color:white; 
-    color: #dc3545;
-    border-color: #dc3545;
-  }
-
-  .button-details:hover {
-    background-color: #06D001;
-    color: white;
-  }
-
-  .button-chat:hover {
-    background-color: red;
-    color: white;
-  }
-  
-
-  .search-bar-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-  
-  .search-bar-wrapper .fas.fa-search {
-    position: absolute;
-    left: 10px; /* Adjust as necessary */
-    color: grey; /* Adjust color as necessary */
-  }
-  
   .property-search {
     width: 100%;
-    padding: 10px 10px 10px 35px !important; /* Adjust padding to make space for the icon */
-    box-sizing: border-box;
   }
-  
+}
 
-  .filter-button {
-    border-color: black;
-    padding-left: 30px;
-    padding-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin: 20px;
-    background-color: white;
-    color: black;
-    border-radius: 10px;
-  }
+.row-cols-1 .col, .row-cols-md-3 .col {
+  margin-bottom: 30px;
+}
 
-  .filter-button:hover {
-    background-color: #007bff;
-  }
-/* 
-  .button-row {
-    display: flex;
-    justify-content: space-around;
-  } */
-
-  .property-select-button {
-    display: flex;
-    align-items: center;
-    padding: 8px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 8px;
-  }
-  
-  .property-icon {
-    margin-right: 8px;
-  }
-  
-  .property-search {
-
-  }
-
-  
-  .button-group {
-    margin-top: 16px;
-  }
-  
-
-
-  
-  .image-container {
-    width: 200px; /* Adjust as needed */
-    margin-right: 20px;
-  }
-  
-  .image-container img {
-    max-width: 100%;
-    height: auto;
-  }
-  
-  .details-container {
-    flex: 1;
-  }
-  
-  /* Responsive styles */
-  @media (max-width: 768px) {
-    .property-item {
-      flex-direction: column;
-    }
-    
-    .image-container {
-      width: 100%;
-      margin-right: 0;
-      margin-bottom: 10px;
-    }
-  }
-  
-
-  .filter-container {
-    padding: 20px;
-    background: linear-gradient(to bottom right, #ffc0cb, #a64dff);  /* Red to light blue gradient */
-    border-radius: 5px;
-    margin-bottom: 20px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow effect */
-    transition: box-shadow 0.3s ease; /* Smooth transition for shadow on hover */
-    position: relative; /* Needed for absolute positioning of pseudo-element */
-  }
-  
-  .filter-container::before {
-    content: ''; /* Create a pseudo-element */
-    position: absolute; /* Position it absolutely */
-    top: 0;
-    left: -100%; /* Start position off-screen to the left */
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0.5), transparent); /* White to transparent gradient */
-    transition: left 0.3s ease; /* Smooth transition for left position */
-  }
-  
-  .filter-container:hover::before {
-    left: 100%; /* Move the pseudo-element to the right */
-  }
-  
-  .filter-container:hover {
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
-  }
-  
-  
-  
-  .filter-inputs {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-  }
-  
-  .filter-inputs label {
-    margin-right: 10px;
-  }
-  
-  .filter-inputs input {
-    width: 100px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .filter-inputs button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  /* Responsive styles */
-  @media (max-width: 768px) {
-    .filter-inputs input {
-      width: calc(50% - 5px);
-    }
-  
-    .filter-inputs button {
-      width: 100%;
-      margin-right: 0;
-    }
-  }
-
-  
-  
+p {
+  margin: 0;
+  padding: 0;
+}

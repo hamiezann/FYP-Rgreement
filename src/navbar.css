@@ -57,7 +57,9 @@
 }
 
 .nav-link-custom:hover {
-  color:red !important;
+  color:white !important;
+  background-color: grey;
+  border-radius: 2px;
 }
 
 .contact-button {
@@ -69,12 +71,12 @@
 }
 
 .contact-button:hover {
-  background-color: #54b5f1;
+  background-color: #C80036;
 }
 
 /* Additional styles for smaller navbar on scroll */
 .navbar-small {
-  background-color: #EEEEEE !important;
+  background-color: #F3F7EC !important;
   padding: 0.5rem 1rem;
  
   /* border-radius: 10px; */

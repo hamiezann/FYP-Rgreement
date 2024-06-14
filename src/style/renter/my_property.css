@@ -1,46 +1,45 @@
-.btn-success:hover {
-    background-color: #9DDE8B;
-    border-color: #28a745;
-    color: #28a745;
-  }
-  
-  .btn-primary:hover {
-    background-color: #CAF4FF;
-    border-color: #007bff;
-    color: #007bff;
-  }
-  
-  .btn-danger:hover {
-    background-color: #A91D3A;
-    border-color: #dc3545;
-    color: #dc3545;
-  }
-  
-  /* Center table content */
-.table td,
-.table th {
+.table-responsive {
+  margin-bottom: 20px;
+}
+
+.table th, .table td {
   vertical-align: middle;
   text-align: center;
 }
 
-/* Make buttons the same size */
-.action-btn {
-  width: 100px;
-  height: 40px;
+.table thead th {
+  background-color: #343a40;
+  color: white;
 }
 
-/* Hover effects */
-/* .btn-success:hover {
-  background-color: #28a745;
-  border-color: #28a745;
+.btn-sm {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
 }
 
-.btn-primary:hover {
+.btn-primary {
   background-color: #007bff;
   border-color: #007bff;
 }
 
-.btn-danger:hover {
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-danger {
   background-color: #dc3545;
   border-color: #dc3545;
-} */
+}
+
+.action-btn {
+  margin-right: 5px;
+}
+
+.text-primary {
+  color: #007bff !important;
+}
+
+.text-info {
+  color: #17a2b8 !important;
+}

@@ -197,99 +197,32 @@ const RentNearby = () => {
 
   
   return (
-
-    <div className="container mt-5 ">
-      <div className="custom-block">
-
-      </div>
-      <h1> Discover you new rental home.</h1>
-    <div className="button-row">
-      <div className="search-bar-wrapper">
-    <i className="fas fa-search"></i>
+    <div className="container mt-5">
+      <div className="custom-block"></div>
+      <h1>Discover your new rental home.</h1>
+      <div className="button-row">
+        <div className="search-bar-wrapper">
           <input
-          type="text"
-          id="property-search"
-          placeholder="Enter Property ID..."
-          value={searchPropertyId}
-          onChange={handleSearchPropertyIdChange}
-          className="property-search"
+            type="text"
+            id="property-search"
+            placeholder="Enter Property ID..."
+            value={searchPropertyId}
+            onChange={handleSearchPropertyIdChange}
+            className="property-search"
           />
-          </div>
-     
-      <button className="filter-button" onClick={handleSearchPropertyId}>Search by Property ID</button>
-      <button className="filter-button" onClick={handleShowFilterModal}>Filter</button>
-    </div>
-      <div className="button-row-map">
-      <i className="fas fa-map"></i>
-        <button className="filter-button">See in Map</button>
+        </div>
+        <button className="filter-button" onClick={handleSearchPropertyId}>
+          <i className="fas fa-search"></i>
+        </button>
+        <button className="filter-button" onClick={handleShowFilterModal}>Filter</button>
       </div>
-
-      {/* <div className="filter-container mb-4">
-        <h2>Rent Nearby</h2>
-        <div className="row g-3">
-          <div className="col-md-3">
-            <label htmlFor="sortBy" className="form-label">Sort By:</label>
-            <select
-              id="sortBy"
-              name="sortBy"
-              value={filterOptions.sortBy}
-              onChange={handleFilterChange}
-              className="form-select"
-            >
-              <option value="">Select</option>
-              <option value="cheapest">Cheapest</option>
-              <option value="expensive">Most Expensive</option>
-            </select>
-          </div>
-          <div className="col-md-3">
-            <label htmlFor="houseType" className="form-label">House Type:</label>
-            <select
-              id="houseType"
-              name="houseType"
-              value={filterOptions.houseType}
-              onChange={handleFilterChange}
-              className="form-select"
-            >
-              <option value="">Select</option>
-              <option value="Flat">Flat</option>
-              <option value="Lot House">Lot House</option>
-              <option value="Apartment">Apartment</option>
-            </select>
-          </div>
-          <div className="col-md-3">
-            <div className="form-check mt-4">
-              <input
-                type="checkbox"
-                id="showNearest"
-                name="showNearest"
-                checked={showNearest}
-                onChange={handleShowNearestChange}
-                className="form-check-input"
-              />
-              <label htmlFor="showNearest" className="form-check-label">Show Nearest</label>
-            </div>
-          </div>
-          <div className="col-md-3">
-            <div className="form-check mt-4">
-              <input
-                type="checkbox"
-                id="showFarthest"
-                name="showFarthest"
-                checked={showFarthest}
-                onChange={handleShowFarthestChange}
-                className="form-check-input"
-              />
-              <label htmlFor="showFarthest" className="form-check-label">Show Farthest</label>
-            </div>
-          </div>
-        </div>
-        <div className="mt-3">
-          <button onClick={handleApplyFilters} className="btn btn-primary me-2">Apply Filters</button>
-          <button onClick={handleClearFilters} className="btn btn-secondary">Clear Filters</button>
-        </div>
-      </div> */}
-
-<Modal show={showFilterModal} onHide={handleCloseFilterModal} centered>
+      <div className="button-map">
+        <button className="filter-button-map">
+          <i className="fas fa-map"></i> See in Map
+        </button>
+      </div>
+  
+      <Modal show={showFilterModal} onHide={handleCloseFilterModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Filter Properties</Modal.Title>
         </Modal.Header>
@@ -361,56 +294,61 @@ const RentNearby = () => {
           <Button variant="danger" onClick={handleClearFilters}>Clear Filters</Button>
         </Modal.Footer>
       </Modal>
-
+  
       {rentHouses.length === 0 ? (
         <p>No rent houses found nearby.</p>
       ) : (
+        <div class="container">
         <div className="row row-cols-1 row-cols-md-3 g-4">
           {rentHouses.map((house) => (
             <div key={house.id} className="col">
-              <div className="card h-100">
-                {/* <img src="/dummy.png" className="card-img-top" alt="Property" /> */}
+              <div className="card h-100 custom-card">
                 {house.images && house.images.length > 0 ? (
-             <img src={house.images[0].url} className="card-img-top" alt="Property" />
-          ) : (
-            <img src="/dummy.png" className="card-img-top" alt="Property" />
-          )}
-                <div className="card-body">
-                  <h5 className="card-title">House No: {house.id}</h5>
-                  {/* <p className="card-text">Owner ID: {house.user_id}</p> */}
-                  <p className="card-text">Rent Address: {house.rent_address}</p>
-                  {/* <p className="card-text">Latitude: {house.latitude}, Longitude: {house.longitude}</p> */}
-                  <p className="card-text">Description: {house.description}</p>
-                  <p className="card-text">Rent Fee: {house.rent_fee}</p>
-                  {/* <p className="card-text">Preferred Occupants: {house.prefered_occupants}</p> */}
-                  <p className="card-text">Type of House: {house.type_of_house}</p>
-                  {/* <p className="card-text">Number of Rooms: {house.number_of_rooms}</p> */}
+                  <img src={house.images[0].url} className="card-img-top custom-img" alt="Property" />
+                ) : (
+                  <img src="/dummy.png" className="card-img-top custom-img" alt="Property" />
+                )}
+                {/* <div className="card-body custom-card-body"> */}
+                <div className=" custom-card-body">
+                  <h5 className="card-title custom-card-title">House No: {house.id}</h5>
+                  <div className="rent-address">
+                    {/* <i className="fas fa-location"></i> */}
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p className="card-text custom-card-text"> {house.rent_address}</p>
+                    {/* <p> {house.rent_address}</p> */}
+                  </div>
+                  <div className="custom-details">
+                    <span><i className="fas fa-bed"></i> {house.num_bedrooms}</span>
+                    <span><i className="fas fa-bath"></i> {house.num_toilets}</span>
+                    <span><i className="fas fa-door-open"></i> {house.number_of_rooms}</span>
+                    <span className="badge">FOR RENT</span>
+                  </div>
+                  <div className="rent-fee-container">
+                    <p className="card-text custom-rent-fee">RM {house.rent_fee} per month</p>
+                  </div>
                   {userLocation && (
                     <p className="card-text">
-                      Distance from your location: {calculateDistance(userLocation.latitude, userLocation.longitude, house.latitude, house.longitude)} km
+                      {calculateDistance(userLocation.latitude, userLocation.longitude, house.latitude, house.longitude)} km from you!
                     </p>
                   )}
-<div className="button-container">
-  <button onClick={() => handleHouseDetails(house.id)} className="button-details">
-    <i className="fas fa-info-circle"></i>
-    See Details
-  </button>
-  <button onClick={() => handleChatOwner(house.id, house.user_id)} className="button-chat">
-    <i className="fas fa-comments"></i>
-    Chat Owner
-  </button>
-</div>
-
+                  <div className="button-container">
+                    <button onClick={() => handleHouseDetails(house.id)} className="button-details">
+                      <i className="fas fa-info-circle"></i> See Details
+                    </button>
+                    <button onClick={() => handleChatOwner(house.id, house.user_id)} className="button-chat">
+                      <i className="fas fa-comments"></i> Chat Owner
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
+        </div>
       )}
     </div>
-
-   
   );
+  
 };
 
 export default RentNearby;

@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
 import "../../style/renter/rental_house_detail.css";
+import "leaflet/dist/leaflet.css";
+import useDocumentTitle from '../../utils/useDocumentTitles';
 
 const HouseDetailPage = () => {
   const { houseId } = useParams();
@@ -9,6 +13,8 @@ const HouseDetailPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  
+  useDocumentTitle('Product Details - Rgreement');
 
   useEffect(() => {
     const fetchHouseDetails = async () => {
@@ -45,13 +51,15 @@ const HouseDetailPage = () => {
     navigate(`/apply-house/${houseId}`);
   };
 
+  const position = [houseDetails.latitude, houseDetails.longitude];
+
   return (
     <div className="house-detail-container">
       <div className='top-spacer'></div>
       <div className="image-section">
         <img src={houseDetails.images[0].url} alt="Property" className="house-image" />
       </div>
-      
+
       <div className="details-section">
         <span className="badge">FOR RENT</span>
         <div className="header-container">
@@ -66,26 +74,39 @@ const HouseDetailPage = () => {
             <p><strong>{houseDetails.num_toilets}</strong> Toilets</p>
           </div>
         </div>
-    <div className='description-class'>
-        <p className="category">RENTAL HOUSE | ⭐⭐⭐⭐⭐ 4.9 (2130 reviews)</p>
-        <h5>ABOUT THIS PROPERTY</h5>
-        <p className='description'>{houseDetails.description}</p>
-        <h5>PROPERTY FEATURES</h5>
-        <p className='description'>{houseDetails.amenities}</p>
-        <ul className="features">
-          <li>Rent Fee: RM{houseDetails.rent_fee}</li>
-          <li>Preferred Occupants: {houseDetails.prefered_occupants}</li>
-          <li>Type of House: {houseDetails.type_of_house}</li>
-          {/* <li>Amenities: {houseDetails.amenities}</li>
-          <li>Number of Rooms: {houseDetails.number_of_rooms}</li>
-          <li>Number of Bedrooms: {houseDetails.num_bedrooms}</li>
-          <li>Number of Toilet: {houseDetails.num_toilets}</li> */}
-        </ul>
-        <div className="actions">
-          <button className="chat-now-button">Chat Now</button>
-          <button className="apply-button" onClick={() => handleApplyNow(houseId)}>Apply</button>
+        <div className='description-class'>
+          <p className="category">RENTAL HOUSE | ⭐⭐⭐⭐⭐ 4.9 (2130 reviews)</p>
+          <h5>ABOUT THIS PROPERTY</h5>
+          <p className='description'>{houseDetails.description}</p>
+          <h5>PROPERTY FEATURES</h5>
+          <p className='description'>{houseDetails.amenities}</p>
+          <ul className="features">
+            <li>Rent Fee: RM{houseDetails.rent_fee}</li>
+            <li>Preferred Occupants: {houseDetails.prefered_occupants}</li>
+            <li>Type of House: {houseDetails.type_of_house}</li>
+          </ul>
+          <div className="actions">
+            <button className="chat-now-button">Chat Now</button>
+            <button className="apply-button" onClick={() => handleApplyNow(houseId)}>Apply</button>
+          </div>
         </div>
-      </div>
+
+        {/* Map Section */}
+        
+        <div className="map-section">
+        <h5>LOCATION</h5>
+          <MapContainer center={position} zoom={13} scrollWheelZoom={false} className="map-container">
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <Marker position={position} icon={L.icon({ iconUrl:  `${process.env.PUBLIC_URL}/marker.png`, iconSize: [25, 25], iconAnchor: [12, 41] })}>
+              <Popup>
+                {houseDetails.rent_address}
+              </Popup>
+            </Marker>
+          </MapContainer>
+        </div>
       </div>
     </div>
   );

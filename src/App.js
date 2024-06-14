@@ -35,6 +35,9 @@ import ManageHouse from './page/landlord/manage_house';
 import './App.css';
 import FilterModal from './page/renter/FilterModal';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ProfilePage from './page/profile';
+import EditProfilePage from './page/edit_profile';
+import ChangePasswordPage from './page/edit_password';
 
 const App = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -101,6 +104,9 @@ const App = () => {
                 <Route path="/renter-menu" element={<RenterMenu />} />
                 <Route path="/approve-deposit" element={<DepositReleaseRequests />} />
                 <Route path="/filter-modal" element={<FilterModal />} />
+                <Route path="/my-profile" element={<ProfilePage />} />
+                <Route path="/edit-profile" element={<EditProfilePage />} />
+                <Route path="/change-password" element={<ChangePasswordPage />} />
               </>
             )}
           </Routes>
