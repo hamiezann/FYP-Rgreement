@@ -279,6 +279,7 @@ const RenterDashboard = () => {
     axios.get(`http://127.0.0.1:8000/api/applied-houses/${userId}`)
       .then(response => {
         setAppliedHouses(response.data);
+        console.log('response:', response);
       })
       .catch(error => {
         console.error('Error fetching applied houses:', error);
@@ -342,7 +343,9 @@ const RenterDashboard = () => {
               <thead className="thead-dark">
                 <tr>
                   <th>House ID</th>
+                  <th>Landlord</th>
                   <th>Status</th>
+                  <th>Date Signed</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -352,13 +355,18 @@ const RenterDashboard = () => {
                   .map(house => (
                     <tr key={house.id}>
                       <td>{house.house_id}</td>
+                      <td>{house.house.owner.name}</td>
                       <td>{house.sign_contract_status}</td>
+                      <td>{house.updated_at}</td>
                       <td>
                         <button className="btn btn-success btn-sm action-btn" onClick={() => handleContractDetails(house.house_id)}>
                           Contract Details
                         </button>
                         <button className="btn btn-danger btn-sm action-btn me-2" onClick={() => handleIssue(house.house_id)}>
                           Issue
+                        </button>
+                        <button className="btn btn-primary btn-sm action-btn" onClick={() => handleContractDetails(house.house_id)}>
+                          Chat Now
                         </button>
                       </td>
                     </tr>
@@ -377,11 +385,11 @@ const RenterDashboard = () => {
             <table className="table table-bordered table-striped text-center">
               <thead className="thead-dark">
                 <tr>
-                  <th>Name</th>
-                  <th>Contacts</th>
-                  <th>Stage</th>
-                  <th>Lead Status</th>
-                  <th>Lead Source</th>
+                  <th>House Id</th>
+                  <th>Landlord</th>
+                  <th>Contact No</th>
+                  <th>Application Status</th>
+                  <th>Date</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -390,11 +398,11 @@ const RenterDashboard = () => {
                   .filter(house => house.tenant_status === 'Pending' || (house.tenant_status === 'Approved' && house.sign_contract_status === 'Unsigned'))
                   .map(house => (
                     <tr key={house.id}>
-                      <td>{house.name}</td>
-                      <td>{house.contacts}</td>
-                      <td>{house.stage}</td>
-                      <td>{house.lead_status}</td>
-                      <td>{house.lead_source}</td>
+                      <td>{house.house_id}</td>
+                      <td>{house.house.owner.name}</td>
+                      <td>{house.house.owner.phone_number}</td>
+                      <td>{house.tenant_status}</td>
+                      <td>{house.created_at}</td>
                       <td>
                         {house.tenant_status === 'Approved' && house.sign_contract_status === 'Unsigned' && (
                           <button className="btn btn-primary btn-sm action-btn me-2" onClick={() => handleSignNow(house.house_id)}>
@@ -406,6 +414,9 @@ const RenterDashboard = () => {
                         </button>
                         <button className="btn btn-success btn-sm action-btn" onClick={() => handleContractDetails(house.house_id)}>
                           Contract Details
+                        </button>
+                        <button className="btn btn-primary btn-sm action-btn" onClick={() => handleContractDetails(house.house_id)}>
+                          Chat Now
                         </button>
                       </td>
                     </tr>
