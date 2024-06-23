@@ -1,10 +1,14 @@
 /* landlord_house_list.css */
+:root {
+  --var-heading: normal normal 600 1.5em/1.6em 'Outfit', sans-serif;
+  --var-para: normal normal 300 1em/1.55em 'Outfit', sans-serif;
+}
 
 /* Main container styling */
 .main-container {
-  padding: 20px;
-  background-color: #f8f9fa; /* Light background color */
-  min-height: 100vh;
+  padding-top: 20vh;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 /* Title styling */
@@ -19,7 +23,7 @@
 /* Rent house list styling */
 .rent-house-list {
   list-style-type: none;
-  padding: 0;
+  padding: 20px;
 }
 
 .rent-house-list li {
@@ -29,6 +33,10 @@
   padding: 20px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .house-details {
@@ -42,53 +50,68 @@
   color: #555;
 }
 
+.image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+}
+
+.property-image {
+  max-width: 150px;
+  max-height: 150px;
+  cursor: pointer;
+}
+
+.image-icon {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .image-container {
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+
+  .property-image {
+    display: none;
+  }
+
+  .image-icon {
+    display: flex;
+  }
+}
+
 .button-group {
   display: flex;
   justify-content: flex-end;
+  width: 100%;
 }
 
 .button-group button {
   margin-left: 10px;
 }
 
-/* Custom button styles */
-.delete-button {
-  background-color: #d49798;
-  color: #f01a1a;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
+.list-group-item {
+  width: 100%;
+  max-width: 800px;
+  margin: 2em auto;
+  /* background-color: var(--var-card-dark); */
+  background-color: hsl(216, 50%, 16%) !important;
+  border-radius: 15px !important;
+  margin-bottom: 1rem;
+  padding: 2rem;
 }
 
-.delete-button:hover {
-  background-color: #f5d4d3;
+.house-title-l1 {
+  font: var(--var-heading);
+  color: white !important;
+  padding: 1.2em 0;
 }
 
-.update-button {
-  background-color: #1890ff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.update-button:hover {
-  background-color: #40a9ff;
-}
-
-.contract-details-button {
-  background-color: #52c41a;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.contract-details-button:hover {
-  background-color: #73d13d;
+.house-details-l1 {
+  font: var(--var-para);
+  color: hsl(215, 51%, 70%) !important;
 }
 
 .back-button {
@@ -99,13 +122,14 @@
   padding: 15px 30px;
   border-radius: 4px;
   cursor: pointer;
-  margin: 40px auto 0; /* Center the button and add top margin */
+  margin: 40px auto 0;
   font-size: 1.2rem;
 }
 
 .back-button:hover {
-  background-color: #269c16;
+  background-color: #402E7A;
 }
+
 .uni-identifier {
   transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
   overflow: hidden;
@@ -114,7 +138,7 @@
 }
 
 .uni-identifier.visible {
-  max-height: 100px; /* Adjust based on content height */
+  max-height: 100px;
   opacity: 1;
 }
 

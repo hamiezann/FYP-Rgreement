@@ -4,7 +4,6 @@ import { ethers } from 'ethers';
 import HouseRentalContract from "../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
 import "../../style/landlord/house_contract_details.css";
 
-// const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 const HouseContractDetails = () => {
@@ -64,9 +63,12 @@ const HouseContractDetails = () => {
   }
 
   return (
-    <div className="container mt-5">
+    <div className="container-contract-detail">
       <div className="document p-4">
-        <div className="text-center mb-4">
+        <div className="logo-container">
+          <img src="/newlogo2.png" alt="Logo" className="logo" />
+        </div>
+        <div className="receipt-header text-center mb-4">
           <h2>House Rental Contract Details</h2>
         </div>
         <div className="section mb-4">
@@ -88,16 +90,12 @@ const HouseContractDetails = () => {
           <p><strong>Rent Address:</strong> {contractDetails.houseDetails.rent_address}</p>
           <p><strong>Building Type:</strong> {contractDetails.houseDetails.buildingType}</p>
           <p><strong>Rent Period:</strong> {Number(contractDetails.houseDetails.rentPeriod)}</p>
-          <p><strong>Effective StartDate:</strong> {new Date(Number(contractDetails.houseDetails.effectiveStartDate) * 1000).toLocaleDateString()}</p>
+          <p><strong>Effective Start Date:</strong> {new Date(Number(contractDetails.houseDetails.effectiveStartDate) * 1000).toLocaleDateString()}</p>
           <p><strong>Effective End Date:</strong> {new Date(Number(contractDetails.houseDetails.effectiveEndDate) * 1000).toLocaleDateString()}</p>
           <p><strong>Monthly Rent:</strong> {Number(contractDetails.houseDetails.monthlyRent)}</p>
           <p><strong>Payment Method:</strong> {contractDetails.houseDetails.paymentMethod}</p>
           <p><strong>Max Overdue Period:</strong> {Number(contractDetails.houseDetails.maxOverduePeriod)}</p>
-          {/* <p><strong>Deposit:</strong> {Number(contractDetails.houseDetails.deposit)}</p> */}
-          
           <p><strong>Deposit:</strong> {depositAmount} ETH</p>
-          {/* <p><strong>Utility Deposit:</strong> {Number(contractDetails.houseDetails.utilityDeposit)}</p>
-          <p><strong>Advance Rental:</strong> {Number(contractDetails.houseDetails.advanceRental)}</p> */}
         </div>
 
         <div className="section mb-4">
@@ -144,12 +142,18 @@ const HouseContractDetails = () => {
 
         <div className="text-center mt-4">
           {(role === 'landlord' || contractDetails.tenantSignature) && (
-            <button className="btn btn-primary" onClick={handlePrint}>Print</button>
+            <div className='btn-container-chat'>
+              <button className="btn-my-property-sign-now" onClick={handlePrint}>Print</button>
+            </div>
           )}
           {role === 'landlord' && !contractDetails.tenantSignature && (
-            <button className="btn btn-secondary" onClick={() => handleUpdate(uniIdentifier)}>Update</button>
+            <div className='btn-container-details'>
+              <button className="btn-my-property-sign-now" type="button" onClick={() => handleUpdate(uniIdentifier)}>Update</button>
+            </div>
           )}
-          <button className="btn btn-outline-secondary ml-2" type="button" onClick={() => navigate(-1)}>Back</button>
+          <div className='btn-container-back'>
+            <button className="btn-my-property-sign-now" type="button" onClick={() => navigate(-1)}>Back</button>
+          </div>
         </div>
       </div>
     </div>

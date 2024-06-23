@@ -1,0 +1,78 @@
+.container-sign-now{
+  /* background-color: #35374B; */
+  color: #FFFFFF;
+  padding-top: 20vh;
+}
+
+.form-container-sign-now {
+  width: 100%;
+  max-width: 800px;
+  margin: 2em auto;
+  /* background-color: var(--var-card-dark); */
+  background-color: hsl(216, 50%, 16%) !important;
+  border-radius: 15px !important;
+  margin-bottom: 1rem;
+  padding: 2rem;
+}
+
+.eth-alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1b2b3a; /* Dark background color */
+  color: #ffffff; /* White text color */
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 1.2em; /* Adjust font size as needed */
+}
+
+.eth-icon {
+  width: 20px; /* Adjust width as needed */
+  height: 24px; /* Adjust height as needed */
+  margin-right: 8px;
+}
+
+
+.title {
+  color: #FFFFFF;
+}
+
+.btn-outline-secondary {
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+.form-control {
+  background-color: #2C2C2C;
+  color: #FFFFFF;
+  border-color: #3A3A3A;
+}
+
+.form-control:focus {
+  background-color: #2C2C2C;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+.btn-primary {
+  background-color: #00A3E0;
+  border-color: #00A3E0;
+}
+
+.btn-primary:hover {
+  background-color: #0091C8;
+  border-color: #0091C8;
+}
+
+.text-success {
+  color: #28A745 !important;
+}
+
+.text-danger {
+  color: #DC3545 !important;
+}

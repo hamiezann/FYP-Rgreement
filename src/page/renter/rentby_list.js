@@ -23,7 +23,7 @@ const RentNearby = () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/nearby-house-list`);
         setRentHouses(response.data);
-        console.log('Response data:', response.data);
+        // console.log('Response data:', response.data);
       } catch (error) {
         console.error("Error fetching rent houses:", error);
         setError(error);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { Container, Row, Col, Form, Button, Spinner, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Spinner, Alert, Modal } from 'react-bootstrap';
 import HouseRentalContract from '../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
@@ -13,13 +13,18 @@ const RequestDepositRelease = () => {
   const [contractId, setContractId] = useState('');
   const [amount, setAmount] = useState('');
   const [currency, setCurrency] = useState('USD');
+  const [description, setDescription] = useState('');
+  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [convertedValue, setConvertedValue] = useState('');
   const [error, setError] = useState(null);
-  
+  const [issues, setIssues] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [tenantId, setTenantId] = useState('');
+  const landlord_id = localStorage.getItem('userId');
   const location = useLocation();
-  const houseId = location.state?.houseId; // Ensure houseId is accessed safely
+  const houseId = location.state?.houseId;
 
   const fetchConversionRate = async () => {
     const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=${currency}`);
@@ -46,12 +51,13 @@ const RequestDepositRelease = () => {
       try {
         setLoading(true);
         const response = await axios.get(`http://127.0.0.1:8000/api/house-details/${houseId}`);
-        // console.log('Response data:', response.data);
-        setContractId(response.data[0].uni_identifier || ''); // Ensure correct data access and avoid undefined
+        const tenantResponse = await axios.get(`http://127.0.0.1:8000/api/tenant-by-house/${houseId}`);
+        setContractId(response.data[0].uni_identifier || '');
+        setTenantId(tenantResponse.data.tenant_id);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching house details:', error);
-        setError(error);
+        setError(error.message);
         setLoading(false);
       }
     };
@@ -71,8 +77,6 @@ const RequestDepositRelease = () => {
     try {
       const conversionRate = await fetchConversionRate();
       const etherAmount = amount / conversionRate;
-
-      // Round to 18 decimal places
       const roundedEtherAmount = roundToMaxDecimals(etherAmount, 18);
 
       const provider = new ethers.BrowserProvider(window.ethereum);
@@ -81,18 +85,38 @@ const RequestDepositRelease = () => {
       const contract = new ethers.Contract(contractAddress, contractAbi, signer);
 
       const weiAmount = ethers.parseUnits(roundedEtherAmount.toString(), 'ether');
-      console.log("Deposit posted: ", weiAmount);
       const tx = await contract.requestDepositRelease(contractId, weiAmount);
       await tx.wait();
 
+      // Create issue in backend
+      const formData = new FormData();
+      formData.append('landlord_id', landlord_id);
+      formData.append('renter_id', tenantId);
+      formData.append('house_id', houseId);
+      formData.append('description', description);
+      if (image) formData.append('image', image);
+      formData.append('amount_requested', amount);
+      formData.append('status', 'pending');
+
+      await axios.post('http://127.0.0.1:8000/api/issues/create', formData);
+
       setMessage('Deposit release requested successfully.');
-      
     } catch (error) {
       console.error('Error requesting deposit release:', error);
       setMessage(`Error: ${error.message}`);
     }
 
     setLoading(false);
+  };
+
+  const fetchIssueHistory = async () => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/houses/${houseId}/issues`);
+      setIssues(response.data);
+      setShowModal(true);
+    } catch (error) {
+      console.error('Error fetching issue history:', error);
+    }
   };
 
   return (
@@ -145,6 +169,30 @@ const RequestDepositRelease = () => {
             </Row>
             <Row className="justify-content-center mt-3">
               <Col md={6}>
+                <Form.Group controlId="description">
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row className="justify-content-center mt-3">
+              <Col md={6}>
+                <Form.Group controlId="image">
+                  <Form.Label>Image</Form.Label>
+                  <Form.Control
+                    type="file"
+                    onChange={(e) => setImage(e.target.files[0])}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row className="justify-content-center mt-3">
+              <Col md={6}>
                 {convertedValue && (
                   <Alert variant="info">
                     Converted Value: {convertedValue} ETH
@@ -160,6 +208,13 @@ const RequestDepositRelease = () => {
               </Col>
             </Row>
           </Form>
+          <Row className="justify-content-center mt-4">
+            <Col md={6} className="d-flex justify-content-center">
+              <Button variant="secondary" onClick={fetchIssueHistory}>
+                View Issue History
+              </Button>
+            </Col>
+          </Row>
         </>
       )}
       {message && (
@@ -171,6 +226,41 @@ const RequestDepositRelease = () => {
           </Col>
         </Row>
       )}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Issue History</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {issues.length > 0 ? (
+            issues.map((issue) => (
+              <Alert key={issue.id} variant="info">
+                <p><strong>Description:</strong> {issue.description}</p>
+                {/* {issue.image && (
+                  <p>
+                    <strong>Image:</strong> 
+                    <img src={issue.image[0].url} className="card-img-top custom-img" alt="Property" />
+                  </p>
+                )} */}
+
+                {issue.images && issue.images.map((image) => (
+                  <p key={image.id}>
+                    <strong>Image:</strong> <a href={image.url} target="_blank" rel="noopener noreferrer">View Image</a>
+                  </p>
+                ))}
+                <p><strong>Status:</strong> {issue.status}</p>
+                <p><strong>Amount Requested:</strong> {issue.amount_requested}</p>
+              </Alert>
+            ))
+          ) : (
+            <p>No issues found.</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };

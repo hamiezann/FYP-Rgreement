@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal, Button, Spinner, Alert, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash, faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faCopy, faImage } from '@fortawesome/free-solid-svg-icons';
 import "../../style/landlord/landlord_house_list.css";
 
 const ConfirmationModal = ({ show, handleClose, handleConfirm, title, message }) => {
@@ -26,6 +26,24 @@ const ConfirmationModal = ({ show, handleClose, handleConfirm, title, message })
   );
 };
 
+const ImageModal = ({ show, handleClose, imageUrl }) => {
+  return (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Property Image</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <img src={imageUrl} alt="Property" className="img-fluid" />
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
 const RentHouseList = () => {
   const [rentHouses, setRentHouses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,6 +52,8 @@ const RentHouseList = () => {
   const [houseToDelete, setHouseToDelete] = useState(null);
   const [visibleUniIdentifiers, setVisibleUniIdentifiers] = useState({});
   const [copySuccess, setCopySuccess] = useState({});
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [currentImage, setCurrentImage] = useState(null);
   const navigate = useNavigate();
 
   const handleContractDetails = (uniIdentifier) => {
@@ -47,7 +67,6 @@ const RentHouseList = () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/list/${userId}/rent-houses`);
         setRentHouses(response.data);
-        console.log("Data response:", response.data);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching rent houses:", error);
@@ -96,6 +115,11 @@ const RentHouseList = () => {
     });
   };
 
+  const handleImageClick = (imageUrl) => {
+    setCurrentImage(imageUrl);
+    setShowImageModal(true);
+  };
+
   if (isLoading) {
     return (
       <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
@@ -126,17 +150,17 @@ const RentHouseList = () => {
           {rentHouses.map((house) => (
             <li key={house.id} className="list-group-item">
               <div className="house-details">
-                <div><strong>No:</strong> {house.id}</div>
-                <div><strong>Latitude and Longitude:</strong> {house.latitude}, {house.longitude}</div>
-                <div><strong>Description:</strong> {house.description}</div>
-                <div><strong>Rent Fee:</strong> {house.rent_fee}</div>
-                <div><strong>Preferred Occupants:</strong> {house.prefered_occupants}</div>
-                <div><strong>Type of House:</strong> {house.type_of_house}</div>
-                <div><strong>Number of Rooms:</strong> {house.number_of_rooms}</div>
-                <div><strong>Amenities:</strong> {house.amenities}</div>
-                <div><strong>Number of bedrooms:</strong> {house.num_bedrooms}</div>
-                <div><strong>Number of toilet:</strong> {house.num_toilets}</div>
-                <div><strong>Rent Address:</strong> {house.rent_address}</div>
+                <div className="house-title-l1"><strong>House #</strong>{house.id}</div>
+                <div className="house-details-l1"><strong>Latitude and Longitude:</strong> {house.latitude}, {house.longitude}</div>
+                <div className="house-details-l1"><strong>Description:</strong> {house.description}</div>
+                <div className="house-details-l1"><strong>Rent Fee:</strong> {house.rent_fee}</div>
+                <div className="house-details-l1"><strong>Preferred Occupants:</strong> {house.prefered_occupants}</div>
+                <div className="house-details-l1"><strong>Type of House:</strong> {house.type_of_house}</div>
+                <div className="house-details-l1"><strong>Number of Rooms:</strong> {house.number_of_rooms}</div>
+                <div className="house-details-l1"><strong>Amenities:</strong> {house.amenities}</div>
+                <div className="house-details-l1"><strong>Number of bedrooms:</strong> {house.num_bedrooms}</div>
+                <div className="house-details-l1"><strong>Number of toilet:</strong> {house.num_toilets}</div>
+                <div className="house-details-l1"><strong>Rent Address:</strong> {house.rent_address}</div>
                 <div>
                   <button
                     className="btn btn-link p-0 mt-2"
@@ -161,17 +185,39 @@ const RentHouseList = () => {
                   </div>
                 </div>
               </div>
+              <div className="image-container">
+                {house.images && house.images.length > 0 ? (
+                  <img src={house.images[0].url} className="property-image" onClick={() => handleImageClick(house.images[0].url)} alt="Property" />
+                ) : (
+                  <img src="/dummy.png" className="property-image" alt="Property" />
+                )}
+                <button
+                  className="btn btn-link p-0 mt-2 image-icon"
+                  onClick={() => handleImageClick(house.image_url)}
+                  style={{ display: house.image_url ? 'flex' : 'none', alignItems: 'center', gap: '5px' }}
+                >
+                  <FontAwesomeIcon icon={faImage} />
+                </button>
+              </div>
               <div className="button-group">
-                <Button variant="danger" onClick={() => handleDeleteConfirmation(house.id)}>Delete</Button>
-                <Button variant="primary" onClick={() => handleUpdate(house.id)}>Update</Button>
-                <Button variant="success" onClick={() => handleContractDetails(house.uni_identifier)}>Contract Details</Button>
+                <div className='btn-container-cancel'>
+                  <button className="btn-my-property-sign-now" onClick={() => handleDeleteConfirmation(house.id)}>Delete</button>
+                </div>
+                <div className='btn-container-sign'>
+                  <button className="btn-my-property-sign-now" onClick={() => handleUpdate(house.id)}>Update</button>
+                </div>
+                <div className='btn-container-details'>
+                  <button className="btn-my-property-sign-now" onClick={() => handleContractDetails(house.uni_identifier)}>Contract Details</button>
+                </div>
               </div>
             </li>
           ))}
         </ul>
       )}
-      <Button variant="secondary" className="back-button" onClick={() => navigate(-1)}>Back</Button>
-
+      {/* <Button variant="secondary" className="back-button" onClick={() => navigate(-1)}>Back</Button> */}
+      <div className='btn-container-back'>
+                  <button className="btn-my-property-sign-now" type="button" onClick={() => navigate(-1)}>Back</button>
+        </div>
       {/* Delete Confirmation Modal */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>
@@ -187,6 +233,9 @@ const RentHouseList = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {/* Image Modal */}
+      <ImageModal show={showImageModal} handleClose={() => setShowImageModal(false)} imageUrl={currentImage} />
     </div>
   );
 };

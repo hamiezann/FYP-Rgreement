@@ -9,7 +9,6 @@ import "leaflet/dist/leaflet.css";
 // import customMarkerIcon from './marker.png'; 
 import L from 'leaflet';
 
-// const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAbi = HouseRentalContract.abi;
 
@@ -387,25 +386,7 @@ const customIcon = L.icon({
     };
     
 
-    // const tenantAgreementOptions = [
-    //     'The Tenant agrees to pay the Landlord the agreed-upon rent amount. The details of the rent, including the amount and payment schedule, will be specified separately in the rental agreement document.',
-    //     'Not to use and/or allow the Said House and/or any part thereof to be used for illegal, unlawful, or immoral activities, whether business or trade, gambling, or protecting criminals in any form whatsoever.',
-    //     'The Tenant shall not rent or hand over either wholly or partially any part of the Said House, including parking, to any other person without the prior written consent of the Landlord. If the Tenant violates the intention of this paragraph, the Landlord has the right to collect all rental payments made by other parties and/or take any action as stipulated in this agreement.',
-    //     'The Tenant shall not allow and/or carry out any changes or additions to the exterior or interior of the Said House in any way whatsoever without the Landlord\'s prior written consent. If any amendments or additions are allowed, the Tenant will make them at their own expense without the right to demand any contribution or assistance from the Landlord. The Tenant is also not entitled to claim any compensation after the end or termination of this agreement.',
-    //     'The Tenant shall not keep and/or breed any animals within the premises of the Said House or anywhere within the compound of the Said House.',
-    //     'The Tenant shall not bring or store any weapon, explosive material, poisonous or hazardous material that is easily flammable or combustible into the Said House unless after complying with the legal requirements and obtaining the consent of the relevant authorities and the Landlord.',
-    //     'Maintain the cleanliness of the entire interior and exterior of the Said House, including the corridor, staircase, and the surroundings of the Said House, as determined by the Landlord or his/her authorized officers or representatives.',
-    //     'Maintain and ensure that the condition of the Said House throughout the rental period is always in a good and habitable condition (normal wear and tear excepted).',
-    //     'Obtain permission from the Landlord before hanging picture frames or furniture. After obtaining consent and before ending the lease, the Tenant must remove the frames or furniture, and patch the wall back to its original condition, including repainting.',
-    //     'The Tenant is only allowed to install additional locks with the Landlord\'s written consent. The Landlord will be given a duplicate of all keys installed at the Tenant\'s expense before installation.',
-    //     'Not to allow or permit any matter that violates the law, house rules, government regulations, or any other authority involving the Said House or which may render the insurance policy that protects it from loss or destruction due to fire invalid or cause its premium to increase.',
-    //     'The Tenant shall not engage in or allow anyone to engage in any immoral or unlawful act in the Said House that may disturb the peace or tranquility or cause discomfort to the residents in the area.',
-    //     'The Tenant shall settle any disputes with neighbors peacefully and responsibly.',
-    //     'Allow the Landlord or his/her authorized representative or employees to enter the Said House at any time to inspect or repair the house the Landlord deems necessary. For this inspection, the Landlord shall give the Tenant 48 hours\' notice or notice before entering the House or any part thereof.',
-    //     'The Tenant is responsible for repairing any damage caused by the Tenant\'s use or negligence or by the Tenant\'s hired workers or visitors.',
-    //     'Responsible for timely electricity, water, and sewerage bill payments.',
-    //     'The Tenant agrees to rent the Said House in its current condition. The Tenant also agrees to return the Said House in the same condition to the Landlord and bear the cost of cleaning/repairing/restoring if the Landlord hires someone to perform as such when the rental agreement period ends or is terminated. The Tenant is also responsible for settling all outstanding utility bills, if any.'
-    //   ];
+
     const tenantAgreementOptions = [
         'Agree to pay the rent amount as specified in the rental agreement document.',
         'Do not engage in illegal, unlawful, or immoral activities on the premises.',
@@ -578,8 +559,8 @@ const handleClick = (event) => {
                             borderRadius: "10px",
                             height: "60vw",
                             width: "100%",
-                            maxWidth: "800px",
-                            maxHeight: "400px",
+                            maxWidth: "700px",
+                            maxHeight: "300px",
                             margin: "auto",
                         }}
                         onClick={handleClick}

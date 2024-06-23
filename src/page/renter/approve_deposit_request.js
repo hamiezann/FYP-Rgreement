@@ -3,6 +3,7 @@ import { ethers } from 'ethers';
 import { Container, Row, Col, Button, Spinner, Alert, Table } from 'react-bootstrap';
 import HouseRentalContract from "../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAbi = HouseRentalContract.abi;
@@ -131,6 +132,8 @@ const DepositReleaseRequests = () => {
 
       try {
         const tx = await contract.approveDepositRelease(contractId, index);
+        // issues/{id}/
+        // const response = await axios.put(`http://127.0.0.1:8000/api/issues/${id}/status`, {status: 'Approve' });
         await tx.wait();
         setLoading(false);
         alert('Deposit release approved');
@@ -181,6 +184,7 @@ const DepositReleaseRequests = () => {
                 <th>Timestamp</th>
                 <th>Requested Amount (ETH)</th>
                 <th>Actions</th>
+                <th>Details</th>
               </tr>
             </thead>
             <tbody>

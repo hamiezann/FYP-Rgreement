@@ -1,5 +1,6 @@
-/* Container Styling */
-.container-my-property {
+/* TenantListPage.module.css */
+
+.container-landlord-tenant {
   padding-top: 20vh;
   padding-left: 20px;
   padding-right: 20px;
@@ -109,6 +110,15 @@
 .btn-container-details {
   display: inline-block;
   background-color: #06D001;
+  border-radius: 5px;
+  /* padding: 10px; */
+  width: 150px;
+  text-align: center;
+  margin: 5px;
+}
+.btn-container-back {
+  display: inline-block;
+  background-color: #402E7A;
   border-radius: 5px;
   /* padding: 10px; */
   width: 150px;

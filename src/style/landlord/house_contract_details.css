@@ -1,39 +1,111 @@
 /* HouseContractDetails.css */
+
+.container-contract-detail {
+  padding-top: 20vh;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+}
+
 .document {
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 5px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Courier New', Courier, monospace;
+  position: relative;
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo-placeholder {
+  width: 50px;
+  /* height: 100px; */
+  background-color: #ccc;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.receipt-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section h4 {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+}
+
+.section p,
+.section ul li {
+  font-size: 0.9rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+.btn-container-chat,
+.btn-container-details,
+.btn-container-back {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.btn-my-property-sign-now {
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  margin: 5px;
+  border: 1px solid #007bff;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-my-property-sign-now:hover {
+  background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .document {
+    padding: 15px;
   }
-  
-  .section {
-    margin-bottom: 20px;
-  }
-  
+
   .section h4 {
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 5px;
-    margin-bottom: 15px;
+    font-size: 1.2rem;
   }
-  
-  @media (max-width: 768px) {
-    .document {
-      padding: 15px;
-    }
-  
-    .section h4 {
-      font-size: 1.2rem;
-    }
-  
-    .section p,
-    .section ul li {
-      font-size: 0.9rem;
-    }
-  
-    .btn {
-      font-size: 0.9rem;
-      padding: 8px 12px;
-    }
+
+  .section p,
+  .section ul li {
+    font-size: 0.9rem;
   }
-  
+
+  .btn-my-property-sign-now {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+}

@@ -40,8 +40,9 @@ const UpdateRentHouse = (props) => {
   };
 
   return (
-    <div >
+    <div className="update-formdb-container">
         <div className="form-container">
+        {/* <div className="update-form-container"> */}
       <h2>Update Rent House</h2>
       <form onSubmit={handleSubmit}>
         
@@ -121,9 +122,14 @@ const UpdateRentHouse = (props) => {
         </div>
 
         {/* Submit button */}
-        <button type="submit">Update</button>
-        <button type="button" onClick={() => navigate(-1)}>Back</button>
-
+        {/* <button type="submit">Update</button>
+        <button type="button" onClick={() => navigate(-1)}>Back</button> */}
+        <div className='btn-container-sign'>
+                  <button className="btn-my-property-sign-now" type="submit">Update</button>
+        </div>
+        <div className='btn-container-back'>
+                  <button className="btn-my-property-sign-now" type="button" onClick={() => navigate(-1)}>Back</button>
+        </div>
       </form>
       </div>
     </div>

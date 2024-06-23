@@ -5,7 +5,7 @@ import HouseRentalContract from "../../artifacts/contracts/UpdatedRentalContract
 import axios from 'axios';
 import { Form, Button, Spinner, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import styles from './SignContractForm.module.css';
+import './SignContractForm.css'; // Import the standard CSS file
 
 const contractAbi = HouseRentalContract.abi;
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
@@ -99,17 +99,25 @@ const SignContractForm = () => {
   };
 
   return (
-    <div className={`container mt-5 ${styles.container}`}>
-      <h2 className={`text-center mb-4 ${styles.title}`}>Sign Contract Form</h2>
-      {depositAmount !== null && (
+    <div className="container-sign-now">
+    <div className="form-container-sign-now">
+      <h2 className="text-center mb-4">Sign Contract Form</h2>
+      {/* {depositAmount !== null && (
         <Alert variant="info" className="text-center">
           Deposit to be paid: {depositAmount} ETH
         </Alert>
-      )}
+        
+      )} */}
+      {depositAmount !== null && (
+  <Alert variant="info" className="eth-alert">
+    <img src='https://i.postimg.cc/T1F1K0bW/Ethereum.png' alt="ETH Icon" className="eth-icon" />
+    {depositAmount} ETH
+  </Alert>
+)}
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="formContractId" className="mb-3">
           <Form.Label>Contract ID</Form.Label>
-          <Form.Control as="textarea" value={contractId} readOnly className={styles['form-control']} />
+          <Form.Control as="textarea" value={contractId} readOnly className="form-control" />
         </Form.Group>
         <Form.Group controlId="formName" className="mb-3">
           <Form.Label>Name</Form.Label>
@@ -118,7 +126,7 @@ const SignContractForm = () => {
             value={name} 
             onChange={(e) => setName(e.target.value)} 
             required 
-            className={styles['form-control']}
+            className="form-control"
           />
         </Form.Group>
         <Form.Group controlId="formIdentificationNumber" className="mb-3">
@@ -128,7 +136,7 @@ const SignContractForm = () => {
             value={identificationNumber} 
             onChange={(e) => setIdentificationNumber(e.target.value)} 
             required 
-            className={styles['form-control']}
+            className="form-control"
           />
         </Form.Group>
         <Form.Group controlId="formHouseAddress" className="mb-3">
@@ -138,7 +146,7 @@ const SignContractForm = () => {
             value={houseAddress} 
             onChange={(e) => setHouseAddress(e.target.value)} 
             required 
-            className={styles['form-control']}
+            className="form-control"
           />
         </Form.Group>
         <Form.Group controlId="formTenantSignature" className="mb-3">
@@ -148,22 +156,34 @@ const SignContractForm = () => {
               type="text" 
               value={tenantSignature} 
               readOnly 
-              className={`me-2 ${styles['form-control']}`}
+              className="me-2 form-control"
             />
-            <Button variant="outline-secondary" onClick={generateTenantSignature} className={styles['btn-outline-secondary']}>
+            {/* <Button variant="outline-secondary" onClick={generateTenantSignature}>
               Generate Signature
-            </Button>
+            </Button> */}
+            <div className='btn-container-details'>
+                  <button className="btn-my-property-sign-now"onClick={generateTenantSignature}>Generate Signature</button>
+          </div>
           </div>
         </Form.Group>
         <div className="d-flex justify-content-between">
-          <Button variant="secondary" onClick={() => navigate(-1)}>Cancel</Button>
-          <Button variant="primary" type="submit" className={styles['btn-primary']}>
+          {/* <Button variant="secondary" onClick={() => navigate(-1)}>Cancel</Button> */}
+          <div className='btn-container-cancel'>
+                  <button className="btn-my-property-sign-now" onClick={() => navigate(-1)}>Cancel</button>
+          </div>
+          {/* <Button variant="primary" type="submit">
             {isLoading ? <Spinner animation="border" size="sm" /> : "Sign Contract"}
-          </Button>
+          </Button> */}
+          <div className='btn-container-chat'>
+                  <button className="btn-my-property-sign-now"  variant="primary" type="submit">
+                  {isLoading ? <Spinner animation="border" size="sm" /> : "Sign Contract"}
+                  </button>
+          </div>
         </div>
-        {successMessage && <p className={`text-success mt-3 ${styles['text-success']}`}>{successMessage}</p>}
-        {errorMessage && <p className={`text-danger mt-3 ${styles['text-danger']}`}>{errorMessage}</p>}
+        {successMessage && <p className="text-success mt-3">{successMessage}</p>}
+        {errorMessage && <p className="text-danger mt-3">{errorMessage}</p>}
       </Form>
+    </div>
     </div>
   );
 };
