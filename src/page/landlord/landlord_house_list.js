@@ -204,7 +204,13 @@ const RentHouseList = () => {
                   <button className="btn-my-property-sign-now" onClick={() => handleDeleteConfirmation(house.id)}>Delete</button>
                 </div>
                 <div className='btn-container-sign'>
-                  <button className="btn-my-property-sign-now" onClick={() => handleUpdate(house.id)}>Update</button>
+                  <button
+                    className="btn-my-property-sign-now"
+                    onClick={() => handleUpdate(house.id)}
+                    disabled={house.contract_status === "Contract Ended" || house.contract_status === "Active"}
+                  >
+                    Update
+                  </button>
                 </div>
                 <div className='btn-container-details'>
                   <button className="btn-my-property-sign-now" onClick={() => handleContractDetails(house.uni_identifier)}>Contract Details</button>
@@ -214,10 +220,9 @@ const RentHouseList = () => {
           ))}
         </ul>
       )}
-      {/* <Button variant="secondary" className="back-button" onClick={() => navigate(-1)}>Back</Button> */}
       <div className='btn-container-back'>
-                  <button className="btn-my-property-sign-now" type="button" onClick={() => navigate(-1)}>Back</button>
-        </div>
+        <button className="btn-my-property-sign-now" type="button" onClick={() => navigate(-1)}>Back</button>
+      </div>
       {/* Delete Confirmation Modal */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>

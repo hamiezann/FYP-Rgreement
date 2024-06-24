@@ -80,6 +80,8 @@ const EndContract = () => {
                 setError('Error ending contract');
             }
         }
+
+        
     };
 
     return (

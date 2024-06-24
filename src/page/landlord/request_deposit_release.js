@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
+import { ethers, keccak256 } from 'ethers';
 import { Container, Row, Col, Form, Button, Spinner, Alert, Modal } from 'react-bootstrap';
 import HouseRentalContract from '../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAbi = HouseRentalContract.abi;
@@ -22,6 +23,7 @@ const RequestDepositRelease = () => {
   const [issues, setIssues] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [tenantId, setTenantId] = useState('');
+  const [issue_id, setIssueId] = useState('');
   const landlord_id = localStorage.getItem('userId');
   const location = useLocation();
   const houseId = location.state?.houseId;
@@ -69,25 +71,46 @@ const RequestDepositRelease = () => {
     }
   }, [houseId]);
 
+  // const generateUniqueId = () => {
+  //   const timestamp = Date.now().toString();
+  //   const randomNum = Math.floor(Math.random() * 1000000).toString();
+  //   const combined = timestamp + randomNum;
+  //   const hash = keccak256(Buffer.from(combined));
+  //   return BigInt(hash).toString();
+  // };
+
+  const generateUniqueId = () => {
+    const uuid = uuidv4();
+  const numericPart = uuid.replace(/-/g, ''); // Remove hyphens
+  const sixDigitId = parseInt(numericPart, 16) % 1000000; // Get the last 6 digits
+  return sixDigitId;
+  };
+  
   const handleRequestRelease = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
-
+  
     try {
       const conversionRate = await fetchConversionRate();
       const etherAmount = amount / conversionRate;
       const roundedEtherAmount = roundToMaxDecimals(etherAmount, 18);
-
+  
       const provider = new ethers.BrowserProvider(window.ethereum);
       await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-
+      
+      // Generate unique issue ID
+      const newIssueId = generateUniqueId();
+      setIssueId(newIssueId);
+  
       const weiAmount = ethers.parseUnits(roundedEtherAmount.toString(), 'ether');
-      const tx = await contract.requestDepositRelease(contractId, weiAmount);
+      
+      // Pass the correct issue_id to the contract call
+      const tx = await contract.requestDepositRelease(contractId, weiAmount, newIssueId);
       await tx.wait();
-
+  
       // Create issue in backend
       const formData = new FormData();
       formData.append('landlord_id', landlord_id);
@@ -97,17 +120,19 @@ const RequestDepositRelease = () => {
       if (image) formData.append('image', image);
       formData.append('amount_requested', amount);
       formData.append('status', 'pending');
-
+      formData.append('issue_id', newIssueId); // Use the new issue ID
+  
       await axios.post('http://127.0.0.1:8000/api/issues/create', formData);
-
+  
       setMessage('Deposit release requested successfully.');
     } catch (error) {
       console.error('Error requesting deposit release:', error);
       setMessage(`Error: ${error.message}`);
     }
-
+  
     setLoading(false);
   };
+  
 
   const fetchIssueHistory = async () => {
     try {
@@ -120,7 +145,7 @@ const RequestDepositRelease = () => {
   };
 
   return (
-    <Container className="mt-5">
+    <div className="main-container">
       <h2 className="text-center mb-4">Request Deposit Release</h2>
       {error && (
         <Row className="justify-content-center mt-4">
@@ -261,7 +286,7 @@ const RequestDepositRelease = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </Container>
+    </div>
   );
 };
 

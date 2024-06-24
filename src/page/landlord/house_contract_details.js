@@ -17,6 +17,7 @@ const HouseContractDetails = () => {
   const role = localStorage.getItem('role');
   const navigate = useNavigate();
   const [depositAmount, setDepositAmount] = useState(null);
+  const [remainingdepositAmount, remainingsetDepositAmount] = useState(null);
 
   const handleUpdate = (uniIdentifier) => {
     navigate(`/rental-contract-update`, { state: { uniIdentifier } });
@@ -41,6 +42,10 @@ const HouseContractDetails = () => {
        const depositAmountWei = contractDetails.houseDetails.deposit;
        const depositAmountEther = ethers.formatEther(depositAmountWei); // Convert wei to ether
        setDepositAmount(depositAmountEther);
+       
+       const remainingdepositAmountWei = contractDetails.remainingDeposit;
+       const remainingdepositAmountEther = ethers.formatEther(remainingdepositAmountWei); // Convert wei to ether
+       remainingsetDepositAmount(remainingdepositAmountEther);
 
         setIsLoading(false);
      //  console.log("deposit in eth", depositInEth);
@@ -138,7 +143,9 @@ const HouseContractDetails = () => {
         <div className="section mb-4">
           <h4>Contract Status</h4>
           <p>{contractDetails.contractActive ? "Active" : "Not Active"}</p>
+          <p><strong>Remaining Deposit:</strong> {remainingdepositAmount} ETH</p>
         </div>
+    
 
         <div className="text-center mt-4">
           {(role === 'landlord' || contractDetails.tenantSignature) && (

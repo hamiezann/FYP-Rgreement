@@ -45,6 +45,7 @@ contract HouseRentalContract {
         uint amount;
         uint timestamp;
         bool active;
+        uint issueId;  // Add issueId to the DepositReleaseRequest struct
     }
 
     mapping(bytes6 => ContractTerms) public contracts;
@@ -65,7 +66,7 @@ contract HouseRentalContract {
     event ContractUpdated(bytes6 indexed contractId, uint timestamp);
     event ContractSigned(bytes6 indexed contractId, uint timestamp);
     event DepositPaid(bytes6 indexed contractId, uint amount, uint timestamp);
-    event DepositReleaseRequested(bytes6 indexed contractId, uint amount, uint timestamp);
+    event DepositReleaseRequested(bytes6 indexed contractId, uint amount, uint issueId, uint timestamp);
     event DepositReleased(bytes6 indexed contractId, uint amount, uint timestamp);
     event ContractEnded(bytes6 indexed contractId, uint timestamp);
 
@@ -166,7 +167,7 @@ contract HouseRentalContract {
         emit DepositPaid(contractId, msg.value, block.timestamp);
     }
 
-    function requestDepositRelease(bytes6 contractId, uint amount) public onlyLandlord(contractId) {
+    function requestDepositRelease(bytes6 contractId, uint amount, uint issueId) public onlyLandlord(contractId) {
         require(contracts[contractId].depositPaid, "Deposit not paid");
         require(!contracts[contractId].depositReleased, "Deposit already released");
         require(contracts[contractId].contractActive, "Contract not active");
@@ -175,10 +176,11 @@ contract HouseRentalContract {
         depositReleaseRequests[contractId].push(DepositReleaseRequest({
             amount: amount,
             timestamp: block.timestamp,
-            active: true
+            active: true,
+            issueId: issueId
         }));
 
-        emit DepositReleaseRequested(contractId, amount, block.timestamp);
+        emit DepositReleaseRequested(contractId, amount, issueId, block.timestamp);
     }
 
     function approveDepositRelease(bytes6 contractId, uint requestIndex) public onlyTenant(contractId) {
@@ -204,7 +206,6 @@ contract HouseRentalContract {
 
         request.active = false;
     }
-    
 
     function endContract(bytes6 contractId) public onlyLandlord(contractId) {
         require(contracts[contractId].contractActive, "Contract not active");
@@ -224,7 +225,7 @@ contract HouseRentalContract {
         contractToUpdate.depositReleased = true;
 
         payable(contractToUpdate.tenantAddress).transfer(amount);
-
+//  payable(contractToUpdate.tenantAddress).transfer(amount);
         emit DepositReleased(contractId, amount, block.timestamp);
     }
 
@@ -235,10 +236,4 @@ contract HouseRentalContract {
     function getDepositReleaseRequests(bytes6 contractId) public view returns (DepositReleaseRequest[] memory) {
         return depositReleaseRequests[contractId];
     }
-
-    //     function getAllContractIds() public view returns (bytes6[] memory) {
-    //     return contractId;
-    // }
 }
-
-
