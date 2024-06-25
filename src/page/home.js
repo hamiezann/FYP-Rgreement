@@ -7,8 +7,8 @@ function Home() {
   useDocumentTitle('Home - Rgreement');
 
   const heroSectionStyle = {
-    // background: 'url("/bg3.jpg") no-repeat center center',
-    background: 'url("https://static.vecteezy.com/system/resources/previews/008/028/244/large_2x/exterior-luxury-house-classic-style-on-white-background-concept-for-real-estate-sale-or-property-investment3d-rendering-free-photo.jpg") no-repeat center center',
+    background: 'url("/rmbg.png") no-repeat center center',
+    // background: 'url("https://static.vecteezy.com/system/resources/previews/008/028/244/large_2x/exterior-luxury-house-classic-style-on-white-background-concept-for-real-estate-sale-or-property-investment3d-rendering-free-photo.jpg") no-repeat center center',
     backgroundSize: 'cover',
     // height: '100vh',
     minHeight: '100vh', 

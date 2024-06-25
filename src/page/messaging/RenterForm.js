@@ -36,14 +36,18 @@ const RenterForm = ({ownerId, senderId, onSubmitMessage}) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='chat-form' onSubmit={handleSubmit}>
             <textarea
+                className='chat-input-form'
                 value={content}
                 onChange={event => setContent(event.target.value)}
                 onKeyDown={handleEnterWasPressed}
                 placeholder="Type your message here..."
             />
-            <button type="submit">Send</button>
+            <button type="submit">
+                {/* <FontAwesomeIcon icon="fa-solid fa-paper-plane" /> */}
+                <i className="fa-solid fa-paper-plane"></i>
+            </button>
         </form>
     );
 };

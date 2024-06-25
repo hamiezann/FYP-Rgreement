@@ -46,6 +46,17 @@ function App() {
               </div>
             </div>
           </div>
+          <div className='col-md-6 mb-4'>
+            <div className='card template-box-container h-100'>
+              <div className="card-body d-flex flex-column">
+                <h2 className="card-title">My Profile</h2>
+                <p className="card-text">View and update your profile information.</p>
+                <Link to="/my-profile" className='btn btn-primary mt-auto'>
+                  Edit Profile
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

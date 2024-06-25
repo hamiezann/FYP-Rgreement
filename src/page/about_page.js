@@ -4,7 +4,7 @@ import '../style/about.css'; // Import your custom CSS file
 
 const AboutPage = () => {
   return (
-    <div className="about-container container mt-5">
+    <div className="about-container ">
       <div className="row justify-content-center">
         <div className="col-md-8">
           <div className="card shadow-lg border-0">
@@ -29,7 +29,7 @@ const AboutPage = () => {
                 Our team is comprised of experienced professionals passionate about real estate and technology. We work tirelessly to ensure that our platform remains the best choice for your rental needs.
               </p>
               <div className="text-center mt-4">
-                <a href="/contact" className="btn btn-primary custom-btn">Contact Us</a>
+                <a href="/contact-us" className="btn btn-primary custom-btn">Contact Us</a>
               </div>
             </div>
           </div>

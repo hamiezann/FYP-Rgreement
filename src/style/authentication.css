@@ -58,3 +58,12 @@ select {
 .card-title {
   margin-bottom: 20px;
 }
+
+.card-body-authentication {
+  /* justify-content: center;
+  display: flex; */
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-bottom: 30px;
+}

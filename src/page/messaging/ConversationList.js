@@ -15,6 +15,7 @@ const ConversationsPage = () => {
     const fetchConversations = async () => {
         try {
             const response = await axios.get(`http://127.0.0.1:8000/api/conversations?user_id=${userId}`);
+            console.log('Data',response.data);
             setConversations(response.data);
         } catch (error) {
             console.error('Error fetching conversations:', error);
@@ -22,8 +23,11 @@ const ConversationsPage = () => {
     };
 
     return (
-        <div className="container mt-5">
-            <h1 className="mb-4 text-center text-primary">All Conversations</h1>
+        <div className="main-container">
+            <div className='message-list-header-wrapper'>
+            <h3>Messages</h3>
+            <i className='fas fa-search'></i>
+            </div>
             <div className="list-group conversation-list-container">
                 {conversations.map(conversation => (
                     <Link 
@@ -32,11 +36,17 @@ const ConversationsPage = () => {
                         key={conversation.id}
                     >
                         <div className="conversation-icon">
-                            <span>{conversation.name.charAt(0)}</span> {/* Display first letter of the name */}
+                            {/* {conversation.profile_pic ? (
+                                <img src={conversation.profile_pic} alt={`${conversation.name}'s Profile Pic`} />
+                            ) : (
+                                <span>{conversation.name.charAt(0)}</span>
+                            )} */}
+                            <span>{conversation.name.charAt(0)}</span>
                         </div>
                         <div className="conversation-info">
                             <div className="conversation-header">
                                 <p>{conversation.name}</p>
+                                {/* Add timestamp if available */}
                                 {conversation.timestamp && (
                                     <small className="timestamp">{conversation.timestamp}</small>
                                 )}

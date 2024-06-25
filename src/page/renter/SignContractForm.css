@@ -1,7 +1,11 @@
 .container-sign-now{
   /* background-color: #35374B; */
   color: #FFFFFF;
-  padding-top: 20vh;
+  padding-top: 13vh;
+  margin: 10px;
+
+  background: linear-gradient(to bottom, #FFC0CB, #FFFFFF, #ADD8E6);
+  height: 100vh; 
 }
 
 .form-container-sign-now {
@@ -48,8 +52,8 @@
 }
 
 .form-control {
-  background-color: #2C2C2C;
-  color: #FFFFFF;
+  /* background-color: #2C2C2C; */
+  /* color: #FFFFFF; */
   border-color: #3A3A3A;
 }
 

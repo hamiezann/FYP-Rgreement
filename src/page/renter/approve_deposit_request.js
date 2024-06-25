@@ -205,7 +205,7 @@
 // export default DepositReleaseRequests;
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../style/landlord/TenantListPage.css'; // Import the custom CSS file
@@ -252,11 +252,9 @@ const DepositReleaseRequests = () => {
           const formattedRequests = allRequests.map((request, index) => ({
             ...request,
             amount: ethers.formatEther(request.amount),
-            // issueId: request.issueId,
             timestamp: new Date(Number(request.timestamp) * 1000).toLocaleString(),
             index,
             active: request.active,
-            
           }));
           setRequests(formattedRequests);
         } catch (err) {
@@ -277,6 +275,7 @@ const DepositReleaseRequests = () => {
         await tx.wait();
 
         await axios.put(`http://127.0.0.1:8000/api/issues/update-status/${issueId}`, { status: 'accepted' });
+        console.log('Status updated successfully');
 
         setLoading(false);
         alert('Deposit release approved');
@@ -297,6 +296,7 @@ const DepositReleaseRequests = () => {
         await tx.wait();
 
         await axios.put(`http://127.0.0.1:8000/api/issues/update-status/${issueId}`, { status: 'rejected' });
+        console.log('Status updated successfully');
 
         setLoading(false);
         alert('Deposit release rejected');
@@ -312,6 +312,7 @@ const DepositReleaseRequests = () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/api/issues/${issueId}`);
       // console.log(response.data);
+      console.log('Issue details', response.data);
       setIssueDetails(response.data);
     } catch (err) {
       console.error(err);
@@ -337,7 +338,6 @@ const DepositReleaseRequests = () => {
               <thead>
                 <tr>
                   <th>Timestamp</th>
-                  {/* <th>Issue Id</th> */}
                   <th>Requested Amount (ETH)</th>
                   <th>Actions</th>
                   <th>Details</th>
@@ -347,41 +347,39 @@ const DepositReleaseRequests = () => {
                 {requests.map((request) => (
                   <tr key={request.index}>
                     <td>{request.timestamp}</td>
-                    {/* <td>{request.issueId}</td> */}
                     <td>{request.amount}</td>
                     <td>
                       {request.active ? (
                         <div>
-                           <div className='btn-container-details'>
-                          <button
-                            className="btn-my-property-sign-now"
-                            onClick={() => approveDepositRelease(request.index, request.issueId)}
-                            disabled={loading}
-                          >
-                            {loading ? <span className="spinner-border spinner-border-sm" /> : 'Approve'}
-                          </button>
+                          <div className='btn-container-details'>
+                            <button
+                              className="btn-my-property-sign-now"
+                              onClick={() => approveDepositRelease(request.index, request.issueId)}
+                              disabled={loading}
+                            >
+                              {loading ? <span className="spinner-border spinner-border-sm" /> : 'Approve'}
+                            </button>
                           </div>
                           <div className='btn-container-cancel'>
-                          <button
-                            className="btn-my-property-sign-now ms-2"
-                            onClick={() => rejectDepositRelease(request.index, request.issueId)}
-                            disabled={loading}
-                          >
-                            {loading ? <span className="spinner-border spinner-border-sm" /> : 'Reject'}
-                          </button>
+                            <button
+                              className="btn-my-property-sign-now ms-2"
+                              onClick={() => rejectDepositRelease(request.index, request.issueId)}
+                              disabled={loading}
+                            >
+                              {loading ? <span className="spinner-border spinner-border-sm" /> : 'Reject'}
+                            </button>
                           </div>
                         </div>
                       ) : (
                         <div className='btn-container-sign'>
-
-                        <button className="btn-my-property-sign-now" disabled>Inactive</button>
+                          <button className="btn-my-property-sign-now" disabled>Inactive</button>
                         </div>
                       )}
                     </td>
                     <td>
-                    <div className='btn-container-chat'>
-                      <button className="btn-my-property-sign-now" onClick={() => fetchIssueDetails(request.issueId)}>View Details</button>
-                    </div>
+                      <div className='btn-container-chat'>
+                        <button className="btn-my-property-sign-now" onClick={() => fetchIssueDetails(request.issueId)}>View Details</button>
+                      </div>
                     </td>
                   </tr>
                 ))}

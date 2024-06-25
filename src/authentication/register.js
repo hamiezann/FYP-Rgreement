@@ -33,11 +33,11 @@ const RegistrationForm = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="main-container">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card shadow">
-            <div className="card-body">
+            <div className="card-body-authentication">
               <h2 className="card-title text-center">Register</h2>
               <form onSubmit={handleSubmit}>
                 <div className="form-group">

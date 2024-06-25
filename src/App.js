@@ -38,6 +38,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ProfilePage from './page/profile';
 import EditProfilePage from './page/edit_profile';
 import ChangePasswordPage from './page/edit_password';
+import ContactUs from './page/contact_us';
 
 const App = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -58,6 +59,8 @@ const App = () => {
                 <Route path="/nearby-rent" element={<RentNearby />} />
                 <Route path="/about-us" element={<AboutPage />} />
                 <Route path="/house-details" element={<HouseDetailPage />} />
+                <Route path="/contact-us" element={<ContactUs />} />
+                <Route path="/house-details/:houseId" element={<HouseDetailPage />} />
               </>
             ) : role === 'landlord' ? (
               <>
@@ -83,10 +86,14 @@ const App = () => {
                 <Route path="/end-contract" element={<EndContract />} />
                 <Route path="/manage-house" element={<ManageHouse />} />
                 <Route path="/filter-modal" element={<FilterModal />} />
+                <Route path="/contact-us" element={<ContactUs />} />
+                <Route path="/my-profile" element={<ProfilePage />} />
+                <Route path="/edit-profile" element={<EditProfilePage />} />
+                <Route path="/change-password" element={<ChangePasswordPage />} />
               </>
             ) : (
               <>
-                <Route path="/" element={<Navigate to="/home" />} />
+                <Route path="*" element={<Navigate to="/home" />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/nearby-rent" element={<RentNearby />} />
                 <Route path="/house-details/:houseId" element={<HouseDetailPage />} />
@@ -107,6 +114,7 @@ const App = () => {
                 <Route path="/my-profile" element={<ProfilePage />} />
                 <Route path="/edit-profile" element={<EditProfilePage />} />
                 <Route path="/change-password" element={<ChangePasswordPage />} />
+                <Route path="/contact-us" element={<ContactUs />} />
               </>
             )}
           </Routes>

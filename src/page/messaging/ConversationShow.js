@@ -41,7 +41,7 @@ const ConversationPage = () => {
     return (
         <div className="message-main-container">
             <div className='chat-header'>
-            <h1>Chatting with User: {senderId === localStorage.getItem('userId') ? recipientId : senderId}</h1>
+            <h3>Chatting with User: {senderId === localStorage.getItem('userId') ? recipientId : senderId}</h3>
             </div>
             <div className="chat-body">
                 <RenterComponent ownerId={recipientId} user_id={senderId} />

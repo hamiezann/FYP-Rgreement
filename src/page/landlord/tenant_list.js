@@ -188,6 +188,10 @@ const TenantListPage = () => {
   const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   const contractAbi = HouseRentalContract.abi;
 
+  const handleIssue = (houseId) => {
+    navigate(`/request-deposit-release`, { state: { houseId } });
+  }
+
   useEffect(() => {
     axios.get(`http://127.0.0.1:8000/api/tenants?user_id=${userId}`)
       .then(response => {
@@ -393,9 +397,14 @@ const TenantListPage = () => {
                         {tenant.sign_contract_status === 'Signed' && (
                           <>
                             {tenant.house.contract_status !== 'Contract Ended' && (
+                              <>
                               <div className='btn-container-sign'>
                                 <button className="btn-my-property-sign-now" onClick={() => handleEndContract(tenant.house_id, tenant.house.uni_identifier)}>End Contract</button>
                               </div>
+                                <div className='btn-container-cancel'>
+                                <button className="btn-my-property-sign-now" onClick={() => handleIssue(tenant.house_id)}>Issue</button>
+                                </div>
+                                </>
                             )}
                             {tenant.house.contract_status === 'Contract Ended' && (
                               <div className='btn-container-cancel'>

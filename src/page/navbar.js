@@ -141,7 +141,7 @@ function Navbar() {
               </li>
             )}
             <li className="nav-item">
-              <Link to="/contact" className="nav-link nav-link-custom contact-button">
+              <Link to="/contact-us" className="nav-link nav-link-custom contact-button">
                 Contact Us
               </Link>
             </li>
