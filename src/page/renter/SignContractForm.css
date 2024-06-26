@@ -11,7 +11,7 @@
 .form-container-sign-now {
   width: 100%;
   max-width: 800px;
-  margin: 2em auto;
+  /* margin: 2em auto; */
   /* background-color: var(--var-card-dark); */
   background-color: hsl(216, 50%, 16%) !important;
   border-radius: 15px !important;

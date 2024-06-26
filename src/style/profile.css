@@ -4,7 +4,8 @@
 }
 
 .profile-top-spacer {
-  background-color: #ffd0d0;
+  /* background-color: #ffd0d0; */
+  background: linear-gradient(to bottom, #FFC0CB, #FFFFFF, #ADD8E6) !important;
   height: 50vh;
   display: flex;
   align-items: center;

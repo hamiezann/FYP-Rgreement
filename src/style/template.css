@@ -9,7 +9,8 @@ body {
 
 /* Top Header */
 .renter-top-header {
-    background-color: #A7E6FF;
+    /* background-color: #A7E6FF; */
+    background: linear-gradient(to bottom, #FFC0CB, #FFFFFF, #ADD8E6) !important;
     height: 45vh;
     display: flex;
     align-items: center;

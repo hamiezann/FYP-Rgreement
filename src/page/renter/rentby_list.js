@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../../style/rentby.css"; // Custom styles
 import useDocumentTitle from '../../utils/useDocumentTitles';
 import { Modal, Button } from 'react-bootstrap';
+import MapModal from './map_modal';
 
 const RentNearby = () => {
   const [rentHouses, setRentHouses] = useState([]);
@@ -15,6 +16,8 @@ const RentNearby = () => {
   const [showFarthest, setShowFarthest] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [searchPropertyId, setSearchPropertyId] = useState('');
+  const [showModalMap, setShowModalMap] = useState(false);
+  // const [userLocation, setUserLocation] = useState(null);
   const navigate = useNavigate();
   useDocumentTitle('Rentby - Rgreement');
 
@@ -23,7 +26,7 @@ const RentNearby = () => {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/nearby-house-list`);
         setRentHouses(response.data);
-        // console.log('Response data:', response.data);
+        console.log('Response data:', response.data);
       } catch (error) {
         console.error("Error fetching rent houses:", error);
         setError(error);
@@ -32,6 +35,28 @@ const RentNearby = () => {
 
     fetchRentHouses();
   }, []);
+
+  const handleMapButtonClick = () => {
+    // Request user's location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          setUserLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          });
+          setShowModalMap(true); // Open map modal after getting location
+        },
+        error => {
+          setError(error.message);
+          setShowModalMap(true); // Open map modal even if location fails
+        }
+      );
+    } else {
+      setError("Geolocation is not supported by this browser.");
+      setShowModalMap(true); // Open map modal even if geolocation is not supported
+    }
+  };
 
   useEffect(() => {
     if (navigator.geolocation && (showNearest || showFarthest)) {
@@ -217,10 +242,12 @@ const RentNearby = () => {
         <button className="filter-button" onClick={handleShowFilterModal}>Filter</button>
       </div>
       <div className="button-map">
-        <button className="filter-button-map">
+        <button className="filter-button-map" onClick={handleMapButtonClick}>
           <i className="fas fa-map"></i> See in Map
         </button>
       </div>
+      <MapModal show={showModalMap} onClose={() => setShowModalMap(false)} rentHouses={rentHouses} userLocation={userLocation} />
+
   
       <Modal show={showFilterModal} onHide={handleCloseFilterModal} centered>
         <Modal.Header closeButton>
@@ -298,7 +325,7 @@ const RentNearby = () => {
       {rentHouses.length === 0 ? (
         <p>No rent houses found nearby.</p>
       ) : (
-        <div class="container">
+        <div className="container">
         <div className="row row-cols-1 row-cols-md-3 g-4">
           {rentHouses.map((house) => (
             <div key={house.id} className="col">
@@ -313,7 +340,7 @@ const RentNearby = () => {
                   <h5 className="card-title custom-card-title">House No: {house.id}</h5>
                   <div className="rent-address">
                     {/* <i className="fas fa-location"></i> */}
-                    <i class="fas fa-map-marker-alt"></i>
+                    <i className="fas fa-map-marker-alt"></i>
                     <p className="card-text custom-card-text"> {house.rent_address}</p>
                     {/* <p> {house.rent_address}</p> */}
                   </div>
