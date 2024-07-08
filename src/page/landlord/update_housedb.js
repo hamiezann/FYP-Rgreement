@@ -40,10 +40,12 @@ const UpdateRentHouse = (props) => {
   };
 
   return (
-    <div className="update-formdb-container">
+    <div className="contract-container">
         <div className="form-container">
         {/* <div className="update-form-container"> */}
-      <h2>Update Rent House</h2>
+        <div className="title-container">
+                <h3 className="title-container-contract">UPDATE RENT HOUSE</h3>
+        </div>
       <form onSubmit={handleSubmit}>
         
         {/* Description */}

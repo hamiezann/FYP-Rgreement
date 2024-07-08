@@ -19,8 +19,8 @@
 /* Title */
 h1 {
   text-align: center;
-  margin-bottom: 40px;
-  font-size: 2.5rem;
+  /* margin-bottom: 40px; */
+  font-size: 1.5rem;
   color: #333;
 }
 
@@ -258,6 +258,8 @@ button.btn-danger {
   .property-search {
     width: 100%;
   }
+
+
 }
 
 .row-cols-1 .col, .row-cols-md-3 .col {

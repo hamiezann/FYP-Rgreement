@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { ethers } from "ethers";
 import "../style/contract.css";
-import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
+// import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
+import HouseRentalContract from "../HostedAbi/HouseRentalContract.json";
 import { useGlobalContractState } from "./globally_use_variable.js/variable";
 
 const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";

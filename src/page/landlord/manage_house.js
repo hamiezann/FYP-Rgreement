@@ -5,7 +5,8 @@ import { ethers } from 'ethers';
 import { useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './manage_house.module.css'; 
-import HouseRentalContract from '../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json';
+// import HouseRentalContract from '../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json';
+import HouseRentalContract from "../../HostedAbi/HouseRentalContract.json";
 
 const ManageHouse = () => {
   const [description, setDescription] = useState('');

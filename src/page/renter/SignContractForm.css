@@ -12,8 +12,8 @@
   width: 100%;
   max-width: 800px;
   /* margin: 2em auto; */
-  /* background-color: var(--var-card-dark); */
-  background-color: hsl(216, 50%, 16%) !important;
+  background-color: lightskyblue !important;
+  /* background-color: hsl(216, 50%, 16%) !important; */
   border-radius: 15px !important;
   margin-bottom: 1rem;
   padding: 2rem;

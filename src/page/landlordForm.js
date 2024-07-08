@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import axios from "axios";
 import "../style/contract.css";
-import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
+// import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
+import HouseRentalContract from "../HostedAbi/HouseRentalContract.json";
 import { useGlobalContractState } from "./globally_use_variable.js/variable";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -167,42 +168,43 @@ const customIcon = L.icon({
     //     AND WHEREAS the Landlord now agrees to lease, and the Tenant agrees to rent the Said House for ${rentDuration}, from ${effectiveStartDate} to ${effectiveEndDate}, subject to the terms and conditions contained herein.`;
     //   };
 
+
     // const handleSubmit = async (event) => {
     //     event.preventDefault();
     //     setIsLoading(true);
     //     setSuccessMessage("");
     //     setErrorMessage("");
-    //         const uni_identifier_heh = ethers.randomBytes(6);
-    //         const uni_identifier = ethers.hexlify(uni_identifier_heh);
-
-    //         const formData = new FormData();
-    //         formData.append('user_id', userId);
-    //         formData.append('rent_address', rentAddress);
-    //         formData.append('latitude', rentLatitude);
-    //         formData.append('longitude', rentLongitude);
-    //         formData.append('uni_identifier', uni_identifier);
-    //         formData.append('prefered_occupants', preferredOccupants);
-    //         formData.append('type_of_house', buildingType);
-    //         formData.append('description', description);
-    //         formData.append('rent_fee', monthlyRent);
-    //         formData.append('number_of_rooms', numberOfRooms);
-    //         formData.append('amenities', amenities);
-    //         formData.append('num_bedrooms', numBedrooms);
-    //         formData.append('num_toilets', numToilets);
-    //         formData.append('available', available);
-    //         formData.append('contract_status', contract_status);
+        
+    //     const uni_identifier_heh = ethers.randomBytes(6);
+    //     const uni_identifier = ethers.hexlify(uni_identifier_heh);
     
-    //         for (let i = 0; i < images.length; i++) {
-    //             formData.append('images[]', images[i]);
-    //         }
-
-    // const latitudeInt = Math.round(rentLatitude * 1e6); // Convert to integer with 6 decimal places
-    // const longitudeInt = Math.round(rentLongitude * 1e6); // Convert to integer with 6 decimal places
-
-
-
+    //     const formData = new FormData();
+    //     formData.append('user_id', userId);
+    //     formData.append('rent_address', rentAddress);
+    //     formData.append('latitude', rentLatitude);
+    //     formData.append('longitude', rentLongitude);
+    //     formData.append('uni_identifier', uni_identifier);
+    //     formData.append('prefered_occupants', preferredOccupants);
+    //     formData.append('type_of_house', buildingType);
+    //     formData.append('description', description);
+    //     formData.append('rent_fee', monthlyRent);
+    //     formData.append('number_of_rooms', numberOfRooms);
+    //     formData.append('amenities', amenities);
+    //     formData.append('num_bedrooms', numBedrooms);
+    //     formData.append('num_toilets', numToilets);
+    //     formData.append('available', available);
+    //     formData.append('contract_status', contract_status);
+    
+    //     for (let i = 0; i < images.length; i++) {
+    //         formData.append('images[]', images[i]);
+    //     }
+    
+    //     const latitudeInt = Math.round(rentLatitude * 1e6); // Convert to integer with 6 decimal places
+    //     const longitudeInt = Math.round(rentLongitude * 1e6); // Convert to integer with 6 decimal places
+    
     //     try {
     //         const provider = new ethers.BrowserProvider(window.ethereum);
+    //         // const provider = new ethers.JsonRpcProvider("http://172.24.211.6:8545")
     //         const signer = await provider.getSigner();
     //         const contract = new ethers.Contract(contractAddress, contractAbi, signer);
     //         const depositInWei = ethers.parseUnits(ethDeposit.toString(), "ether");
@@ -219,11 +221,9 @@ const customIcon = L.icon({
     //             latitude: latitudeInt,
     //             longitude: longitudeInt
     //         };
-
-
+    
     //         const tx = await contract.createContract(
-            
-    //            uni_identifier,
+    //             uni_identifier,
     //             {
     //                 name: landlord,
     //                 identificationNumber: identificationNumber,
@@ -243,41 +243,36 @@ const customIcon = L.icon({
     //             tenantSignature,
     //             fixedPassword
     //         );
-
+    
     //         await tx.wait();
     //         setIsLoading(false);
     //         setSuccessMessage("Contract created successfully!");
-
     //         alert(`Contract created successfully! Contract Address: ${contractAddress}, uni_identifier: ${uni_identifier}`);
-      
-    //         // Get the created contract details using getContract function
+    
     //         const createdContract = await contract.getContract(uni_identifier, fixedPassword);
-               
-
-    //     // Log the contract details to the console
-    //    //console.log("Created Contract Details:", createdContract);
-  
-    //     const response = await fetch("http://127.0.0.1:8000/api/house-details",
-    //     //  requestOptions
-    //     {
-    //         method: 'POST',
-    //         body: formData,
-    //     }
-    //     );
-    //     if (!response.ok) {
-    //         throw new Error('Network response was not ok');
-    //     }
-    //     const data = await response.json();
-    //   //  console.log(data); // Log the response data
-
+    
+    //         const response = await fetch("http://127.0.0.1:8000/api/house-details", {
+    //             method: 'POST',
+    //             body: formData,
+    //         });
+    
+    //         // Log the full response for debugging
+    //         const responseText = await response.text();
+    //         // console.log('Full response:', responseText);
+    
+    //         if (!response.ok) {
+    //             throw new Error(`Network response was not ok: ${responseText}`);
+    //         }
+    
+    //         // Parse JSON only if the response is valid JSON
+    //         const data = JSON.parse(responseText);
+    //         console.log(data); // Log the response data
+    
     //     } catch (error) {
     //         console.error("Error creating contract:", error);
-    //      //   alert('There was a problem with the fetch operation. Please try again.');
-        
     //         setIsLoading(false);
     //         setErrorMessage("An error occurred while creating the contract. Please try again.");
     //     }
-
     // };
 
     const handleSubmit = async (event) => {
@@ -285,7 +280,7 @@ const customIcon = L.icon({
         setIsLoading(true);
         setSuccessMessage("");
         setErrorMessage("");
-        
+    
         const uni_identifier_heh = ethers.randomBytes(6);
         const uni_identifier = ethers.hexlify(uni_identifier_heh);
     
@@ -315,6 +310,7 @@ const customIcon = L.icon({
     
         try {
             const provider = new ethers.BrowserProvider(window.ethereum);
+            // const provider = new ethers.JsonRpcProvider("http://172.24.211.6:8545")
             const signer = await provider.getSigner();
             const contract = new ethers.Contract(contractAddress, contractAbi, signer);
             const depositInWei = ethers.parseUnits(ethDeposit.toString(), "ether");
@@ -323,7 +319,7 @@ const customIcon = L.icon({
                 buildingType: buildingType,
                 rentPeriod: rentPeriod,
                 effectiveStartDate: new Date(effectiveStartDate).getTime() / 1000,
-                effectiveEndDate: new Date(effectiveEndDate).getTime() / 1000, 
+                effectiveEndDate: new Date(effectiveEndDate).getTime() / 1000,
                 monthlyRent: monthlyRent,
                 paymentMethod: paymentMethod,
                 maxOverduePeriod: maxOverduePeriod,
@@ -366,17 +362,14 @@ const customIcon = L.icon({
                 body: formData,
             });
     
-            // Log the full response for debugging
-            const responseText = await response.text();
-            // console.log('Full response:', responseText);
-    
             if (!response.ok) {
-                throw new Error(`Network response was not ok: ${responseText}`);
+                const errorText = await response.text();
+                console.error('Server response was not OK:', errorText);
+                throw new Error(`Network response was not ok: ${errorText}`);
             }
     
-            // Parse JSON only if the response is valid JSON
-            const data = JSON.parse(responseText);
-            // console.log(data); // Log the response data
+            const data = await response.json(); // Parse JSON only if the response is valid JSON
+            console.log(data); // Log the response data
     
         } catch (error) {
             console.error("Error creating contract:", error);
@@ -385,7 +378,6 @@ const customIcon = L.icon({
         }
     };
     
-
 
     const tenantAgreementOptions = [
         'Agree to pay the rent amount as specified in the rental agreement document.',
@@ -430,7 +422,6 @@ const customIcon = L.icon({
 
 const [selectedLocation, setSelectedLocation] = useState({lat: 4.2105, lng: 101.9758 });
 
-
 const handleClick = (event) => {
     setSelectedLocation(event.latlng);
   };
@@ -464,29 +455,29 @@ const handleClick = (event) => {
   
     return (
        
-        <div className="container">
+<div className="contract-container">
   
-            <div className="title-container">
-            <h2>RENTAL CONTRACT FORM</h2>
-            </div>
+    <div className="title-container">
+    <h2 className="contract-title">RENTAL CONTRACT FORM</h2>
+    </div>
 
-<form onSubmit={handleSubmit} className="container mt-4">
+    <form onSubmit={handleSubmit} className="container mt-4">
     {/* Landlord Details */}
-    <div className="form-container">
-        <h2 className="mb-3">Landlord Details</h2>
-        <div className="form-group row">
+    <div className="form-container-contract">
+        <h2 className="mb-3 section-title">Landlord Details</h2>
+        <div className="form-group-contract row">
             <label className="col-sm-3 col-form-label">Landlord Name:</label>
             <div className="col-sm-9">
                 <input type="text" className="form-control" value={landlord} onChange={(e) => setLandlord(e.target.value)} required />
             </div>
         </div>
-        <div className="form-group row">
+        <div className="form-group-contract row">
             <label className="col-sm-3 col-form-label">Landlord Identification Number:</label>
             <div className="col-sm-9">
                 <input type="text" className="form-control" value={identificationNumber} onChange={(e) => setIdentificationNumber(e.target.value)} required />
             </div>
         </div>
-        <div className="form-group row">
+        <div className="form-group-contract row">
             <label className="col-sm-3 col-form-label">Landlord House Address:</label>
             <div className="col-sm-9">
                 <input type="text" className="form-control" value={houseAddress} onChange={(e) => setHouseAddress(e.target.value)} required />
@@ -495,8 +486,8 @@ const handleClick = (event) => {
     </div>
 
     {/* Is there a tenant */}
-    <div className="form-container mt-4">
-        <div className="form-group row">
+    <div className="form-container-contract">
+        <div className="form-group-contract row">
             <label className="col-sm-3 col-form-label">Is there a tenant?</label>
             <div className="col-sm-9">
                 <input type="checkbox" checked={hasTenant} onChange={(e) => handleCheckboxChange(e, setHasTenant, setTenantName, setTenantIdNumber, setTenantHouseAddress, setTenantSignature)} />
@@ -504,31 +495,31 @@ const handleClick = (event) => {
         </div>
         {hasTenant && (
             <>
-                <div className="form-group row">
+                <div className="form-group-contract row">
                     <label className="col-sm-3 col-form-label">Tenant Name:</label>
                     <div className="col-sm-9">
                         <input type="text" className="form-control" value={tenantName} onChange={(e) => setTenantName(e.target.value)} required />
                     </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group-contract row">
                     <label className="col-sm-3 col-form-label">Tenant Identification Number:</label>
                     <div className="col-sm-9">
                         <input type="text" className="form-control" value={tenantIdNumber} onChange={(e) => setTenantIdNumber(e.target.value )} required />
                     </div>
                 </div>
-                <div className="form-group row">
+                <div className="form-group-contract row">
                     <label className="col-sm-3 col-form-label">Tenant House Address:</label>
                     <div className="col-sm-9">
                         <input type="text" className="form-control" value={tenantHouseAddress} onChange={(e) => setTenantHouseAddress(e.target.value )} required />
                     </div>
                 </div>
-                {/* <div className="form-group row">
+                {/* <div className="form-group-contract row">
             <label className="col-sm-3 col-form-label">Effective Start Date:</label>
             <div className="col-sm-9">
                 <input type="date" className="form-control" placeholder="DD-MM-YYYY" value={effectiveStartDate} onChange={(e) => setEffectiveStartDate(e.target.value || "")}  />
             </div>
         </div>
-        <div className="form-group row">
+        <div className="form-group-contract row">
             <label className="col-sm-3 col-form-label">Effective End Date:</label>
             <div className="col-sm-9">
                 <input type="date" className="form-control" placeholder="DD-MM-YYYY" value={effectiveEndDate} onChange={(e) => setEffectiveEndDate(e.target.value || "")}  />
@@ -539,9 +530,9 @@ const handleClick = (event) => {
     </div>
 
     {/* Rental Details */}
-    <div className="form-container mt-4">
-        <h3 className="mb-3">Rental Details</h3>
-        <div className="form-group row">
+    <div className="form-container-contract">
+    <h3 className="section-title">Rental Details</h3>
+        <div className="form-group-contract row">
             <label className="col-sm-3 col-form-label">Rent Address:</label>
             <div className="col-sm-9">
                 <input type="text" className="form-control" value={rentAddress} onChange={(e) => setRentAddress(e.target.value)} required />
@@ -600,7 +591,7 @@ const handleClick = (event) => {
                 </button>
             </div>
         </div>
-        <div className="form-group row">
+        <div className="form-group-contract row">
             <label className="col-sm-3 col-form-label">Latitude:</label>
             <div className="col-sm-9">
                 <input type="text" className="form-control mb-2" value={rentLatitude || ""} readOnly />
@@ -610,7 +601,7 @@ const handleClick = (event) => {
                 </button>
             </div>
         </div>
-        <div className="form-group row">
+        <div className="form-group-contract row">
             <label className="col-sm-3 col-form-label">Building Type:</label>
             <div className="col-sm-9">
                 <select className="form-control" value={buildingType} onChange={handleBuildingTypeChange} required>
@@ -621,7 +612,7 @@ const handleClick = (event) => {
                 </select>
             </div>
         </div>
-        <div className="form-group row">
+        <div className="form-group-contract row">
             <label className="col-sm-3 col-form-label">Rent Period (in months):</label>
             <div className="col-sm-9">
                 <select className="form-control" value={rentPeriod} onChange={(e) => handleRentPeriodChange(e)} required>
@@ -638,19 +629,19 @@ const handleClick = (event) => {
                 )}
             </div>
         </div>
-        <div className="form-group row">
+        <div className="form-group-contract row">
             <label className="col-sm-3 col-form-label">Effective Start Date:</label>
             <div className="col-sm-9">
                 <input type="date" className="form-control" placeholder="DD-MM-YYYY" value={effectiveStartDate} onChange={(e) => setEffectiveStartDate(e.target.value)} required />
             </div>
         </div>
-        <div className="form-group row">
+        <div className="form-group-contract row">
             <label className="col-sm-3 col-form-label">Effective End Date:</label>
             <div className="col-sm-9">
                 <input type="date" className="form-control" placeholder="DD-MM-YYYY" value={effectiveEndDate} onChange={(e) => setEffectiveEndDate(e.target.value)} required />
             </div>
         </div>
-        <div className="form-group row">
+        <div className="form-group-contract row">
             <label className="col-sm-3 col-form-label">Monthly Rent (RM):</label>
             <div className="col-sm-9">
                 <input type="number" className="form-control" value={monthlyRent} onChange={(e) => setMonthlyRent(parseInt(e.target.value))} required />
@@ -658,7 +649,7 @@ const handleClick = (event) => {
         </div>
      {/* Add Payment Method */}
    
-     <div className="form-group row">
+     <div className="form-group-contract row">
     <label className="col-sm-3 col-form-label">Payment Method:</label>
     <div className="col-sm-9">
         <select className="form-control" value={paymentMethod} onChange={handlePaymentMethodChange} required>
@@ -670,7 +661,7 @@ const handleClick = (event) => {
         </select>
     </div>
 </div>
-<div className="form-group row">
+<div className="form-group-contract row">
     <label className="col-sm-3 col-form-label">Max Overdue Period (in days):</label>
     <div className="col-sm-9">
         <select className="form-control" value={maxOverduePeriod} onChange={(e) => handleMaxOverduePeriodChange(e)} required>
@@ -687,27 +678,7 @@ const handleClick = (event) => {
     </div>
 </div>
 
-
-{/* <div className="form-group row">
-    <label className="col-sm-3 col-form-label">Deposit:</label>
-    <div className="col-sm-9">
-        <input type="number" className="form-control" value={deposit} onChange={(e) => setDeposit(parseInt(e.target.value))} required />
-    </div>
-</div> */}
-
-{/* <div className="form-group row">
-    <label className="col-sm-3 col-form-label">Utility Deposit:</label>
-    <div className="col-sm-9">
-        <input type="number" className="form-control" value={utilityDeposit} onChange={(e) => setUtilityDeposit(parseInt(e.target.value))} required />
-    </div>
-</div>
-<div className="form-group row">
-    <label className="col-sm-3 col-form-label">Advance Rental:</label>
-    <div className="col-sm-9">
-        <input type="number" className="form-control" value={advanceRental} onChange={(e) => setAdvanceRental(parseInt(e.target.value))} required />
-    </div>
-</div> */}
-            <div className="form-group row">
+            <div className="form-group-contract row">
                 <label className="col-sm-3 col-form-label">Deposit:</label>
                 <div className="col-sm-6">
                     <input
@@ -729,7 +700,7 @@ const handleClick = (event) => {
                     </select>
                 </div>
             </div>
-            <div className="form-group row">
+            <div className="form-group-contract row">
                 <label className="col-sm-3 col-form-label">Equivalent Deposit in Ether:</label>
                 <div className="col-sm-9">
                     <input
@@ -741,11 +712,11 @@ const handleClick = (event) => {
                 </div>
             </div>
 
-
-
-<div className="form-group">
-    <h3>Contract Terms</h3>
-    <div className="form-row">
+                </div>
+                <div className="form-container-contract">
+                <div className="form-group-contract row">
+    <h3 className="section-title">Contract Terms</h3>
+        <div className="form-row-contract">
                     <div className="form-group col-12">
                         <label htmlFor="agreementDetails">Agreement Details:</label>
                         <textarea
@@ -756,71 +727,73 @@ const handleClick = (event) => {
                             required
                         ></textarea>
                     </div>
-                </div>
+        </div>
 
 
-    <div className="form-row">
-        <div className="form-group col-12">
-            <label>Tenant Agreements:</label>
+    <div className="form-row-contract">
+        <div className="form-group-contract col-12">
+            <label className="label-contract">Tenant Agreements:</label>
             {tenantAgreement.map((agreement, index) => (
                 <div key={index} className="d-flex align-items-center mb-2">
-                    <textarea className="form-control" value={agreement} readOnly />
-                    <button type="button" className="btn btn-danger ml-2" onClick={() => handleRemoveTenantAgreement(index)}>Remove</button>
+                    <textarea className="form-control-contract" value={agreement} readOnly  />
+                    <button type="button" className="btn-remove-contract ml-2" onClick={() => handleRemoveTenantAgreement(index)}><i className="fas fa-trash"></i></button>
                 </div>
             ))}
-            <select className="form-control mt-2" value={newTenantAgreement} onChange={(e) => setNewTenantAgreement(e.target.value)}>
+            <select className="form-control-contract mt-2" value={newTenantAgreement} onChange={(e) => setNewTenantAgreement(e.target.value)}>
                 <option value="">Select an option...</option>
                 {tenantAgreementOptions.map((option, index) => (
                     <option key={index} value={option}>{option}</option>
                 ))}
             </select>
-            <button type="button" className="btn btn-primary mt-2" onClick={handleAddTenantAgreement}>Add Tenant Agreement</button>
+            <button type="button" className="btn-add-contract mt-2" onClick={handleAddTenantAgreement}>Add Tenant Agreement</button>
         </div>
     </div>
 
 
-    <div className="form-row">
-        <div className="form-group col-12">
-            <label>Landlord Responsibilities:</label>
+    <div className="form-row-contract">
+        <div className="form-group-contract col-12">
+        <label className="label-contract">Landlord Responsibilities:</label>
             {landlordResponsibilities.map((responsibility, index) => (
                 <div key={index} className="d-flex align-items-center mb-2">
-                    <textarea className="form-control" value={responsibility} readOnly />
-                    <button type="button" className="btn btn-danger ml-2" onClick={() => handleRemoveLandlordResponsibility(index)}>Remove</button>
+                    <textarea className="form-control-contract" value={responsibility} readOnly />
+                    {/* <button type="button" className="btn-remove-contract ml-2" onClick={() => handleRemoveLandlordResponsibility(index)}>Remove</button> */}
+                    <button type="button" className="btn-remove-contract ml-2" onClick={() => handleRemoveLandlordResponsibility(index)}>
+  <i className="fas fa-trash"></i>
+</button>
+
                 </div>
             ))}
-            <select className="form-control mt-2" value={newLandlordResponsibilites} onChange={(e) => setNewLandlordResponsibilities(e.target.value)}>
+            <select className="form-control-contract mt-2" value={newLandlordResponsibilites} onChange={(e) => setNewLandlordResponsibilities(e.target.value)}>
                 <option value="">Select an option...</option>
                 {landlordAgreementOptions.map((option, index) => (
                     <option key={index} value={option}>{option}</option>
                 ))}
             </select>
-            <button type="button" className="btn btn-primary mt-2" onClick={handleAddLandlordResponsibility}>Add Landlord Responsibility</button>
+            <button type="button" className="btn-add-contract mt-2" onClick={handleAddLandlordResponsibility}>Add Landlord Responsibility</button>
         </div>
     </div>
 
   
-    <div className="form-row">
-        <div className="form-group col-12">
-            <label>Agreements Between Landlord:</label>
+    <div className="form-row-contract">
+        <div className="form-group-contract col-12">
+            <label className="label-contract">Agreements Between Landlord:</label>
             {agreementBetweenLandlord.map((agreement, index) => (
                 <div key={index} className="d-flex align-items-center mb-2">
-                    <textarea className="form-control" value={agreement} readOnly />
-                    <button type="button" className="btn btn-danger ml-2" onClick={() => handleRemoveAgreementBetweenLandlord(index)}>Remove</button>
+                    <textarea className="form-control-contract" value={agreement} readOnly />
+                    <button type="button" className="btn-remove-contract ml-2" onClick={() => handleRemoveAgreementBetweenLandlord(index)}><i className="fas fa-trash"></i></button>
                 </div>
             ))}
-            <select className="form-control mt-2" value={newAgreementBetweenLandlord} onChange={(e) => setNewAgreementBetweenLandlord(e.target.value)}>
+            <select className="form-control-contract mt-2" value={newAgreementBetweenLandlord} onChange={(e) => setNewAgreementBetweenLandlord(e.target.value)}>
                 <option value="">Select an option...</option>
                 {agreementBetweenLandlordOptions.map((option, index) => (
                     <option key={index} value={option}>{option}</option>
                 ))}
             </select>
-            <button type="button" className="btn btn-primary mt-2" onClick={handleAddAgreementBetweenLandlord}>Add Agreement Between Landlord</button>
+            <button type="button" className="btn-add-contract mt-2" onClick={handleAddAgreementBetweenLandlord}>Add Agreement Between Landlord</button>
         </div>
     </div>
 </div>
-
-
-<div className="form-group row">
+<div className="form-group-contract row">
     <label className="col-sm-3 col-form-label">Preferred Occupants:</label>
     <div className="col-sm-9">
         <select className="form-control" value={preferredOccupants} onChange={(e) => setPreferredOccupants(e.target.value)}>
@@ -830,7 +803,7 @@ const handleClick = (event) => {
         </select>
     </div>
 </div>
-<div className="form-group row">
+<div className="form-group-contract row">
     <label className="col-sm-3 col-form-label">Number of Rooms:</label>
     <div className="col-sm-9">
         <select className="form-control" value={numberOfRooms} onChange={(e) => setnumberOfRooms(e.target.value)}>
@@ -844,38 +817,36 @@ const handleClick = (event) => {
         </select>
     </div>
 </div>
-<div className="form-group row">
+<div className="form-group-contract row">
     <label className="col-sm-3 col-form-label">House Description:</label>
     <div className="col-sm-9">
         <input type="text" className="form-control" value={description} onChange={(e) => setDescription(e.target.value)} required />
     </div>
 </div>
-<div className="form-group row">
+<div className="form-group-contract row">
     <label className="col-sm-3 col-form-label">Amenities Offered by Landlord:</label>
     <div className="col-sm-9">
         <input type="text" className="form-control" value={amenities} onChange={(e) => setAmenities(e.target.value)} />
     </div>
 </div>
-<div className="form-group row">
+<div className="form-group-contract row">
     <label className="col-sm-3 col-form-label">Number of Bedrooms:</label>
     <div className="col-sm-9">
         <input type="number" className="form-control" value={numBedrooms} onChange={(e) => setNumBedrooms(e.target.value)} />
     </div>
 </div>
-<div className="form-group row">
+<div className="form-group-contract row">
     <label className="col-sm-3 col-form-label">Number of Toilets:</label>
     <div className="col-sm-9">
         <input type="number" className="form-control" value={numToilets} onChange={(e) => setNumToilets(e.target.value)} />
     </div>
 </div>
-<div className="form-group row">
+<div className="form-group-contract row">
     <label className="col-sm-3 col-form-label">Upload Pictures:</label>
     <div className="col-sm-9">
         <input type="file" accept="image/*" multiple onChange={handleImageUpload} />
     </div>
 </div>
-
-
                 </div>
 
                 {/* Add Loading and Success/Error Messages */}
@@ -895,7 +866,8 @@ const handleClick = (event) => {
                 {/* </div> */}
             </form>
 
-        </div>
+
+</div>
 
 
    

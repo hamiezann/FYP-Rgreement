@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ethers, keccak256 } from 'ethers';
 import { Container, Row, Col, Form, Button, Spinner, Alert, Modal } from 'react-bootstrap';
-import HouseRentalContract from '../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json';
+// import HouseRentalContract from '../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json';
+import HouseRentalContract from "../../HostedAbi/HouseRentalContract.json";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';

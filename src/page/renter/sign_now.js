@@ -99,15 +99,13 @@ const SignContractForm = () => {
   };
 
   return (
-    <div className="container-sign-now">
+    // <div className="container-sign-now">
+    <div className="contract-container">
     <div className="form-container-sign-now">
-      <h2 className="text-center mb-4">Sign Contract Form</h2>
-      {/* {depositAmount !== null && (
-        <Alert variant="info" className="text-center">
-          Deposit to be paid: {depositAmount} ETH
-        </Alert>
-        
-      )} */}
+  
+      <div className="title-container">
+                <h2 className="title-container-contract">SIGN CONTRACT FORM</h2>
+            </div>
       {depositAmount !== null && (
   <Alert variant="info" className="eth-alert">
     <img src='https://i.postimg.cc/T1F1K0bW/Ethereum.png' alt="ETH Icon" className="eth-icon" />

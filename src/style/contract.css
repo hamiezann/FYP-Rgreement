@@ -1,4 +1,4 @@
-* {
+/* * {
   box-sizing: border-box;
 }
 
@@ -9,11 +9,7 @@
   margin-bottom: 30px;
 }
 
-/* .update-form-container {
-  background-color: antiquewhite;
- 
-} */
-
+.contract-container 
 input[type=text], select, textarea {
   width: 100%;
   padding: 12px;
@@ -58,12 +54,11 @@ input[type=submit]:hover {
   padding-top: 30vh !important;
   height: 100vh;
   padding: 20px;
-  /* margin-bottom: 20vh; */
-
+ 
 }
 
 .form-container {
-  background: linear-gradient(to bottom, #a6d8ff, #c1e1ff);
+
   padding: 20px;
   margin: 10px;
   border-radius: 10px;
@@ -132,4 +127,161 @@ input[type=submit]:hover {
 }
 
 .map-container {
+} */
+/* General Container Styles */
+.contract-container {
+  padding: 20px;
+  margin-top: 17vh;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title-container,
+.title-container-contract {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.container-contract {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contract-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Form Styles */
+.generate-contract-form {
+  width: 100%;
+}
+
+.form-container-contract {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.section-title,
+.section-title-contract {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.form-group-contract {
+  margin-bottom: 15px;
+}
+
+.form-group-contract label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #444;
+}
+
+.form-control {
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+textarea.form-control {
+  resize: vertical;
+  /* width: 90%; */
+}
+
+/* Button Styles */
+.btn {
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+/* Custom Button Styles */
+.btn-remove-contract {
+  background-color: #dc3545;
+  border: none;
+  border-radius: 50%;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px !important;
+}
+
+.btn-remove-contract i {
+  font-size: 1em;
+}
+
+.btn-remove-contract:hover {
+  background-color: #c82333;
+}
+
+.btn-add-contract {
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.btn-add-contract:hover {
+  background-color: #0069d9;
+}
+
+.label-contract {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .form-group-contract.row {
+    flex-direction: column;
+  }
+
+  .col-sm-3,
+  .col-sm-9 {
+    width: 100%;
+  }
+
+  .form-container-contract,
+  .form-control-contract,
+  .btn-add-contract {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .btn-remove-contract {
+    width: auto;
+  }
+}
+/* Wider Textarea on Larger Screens */
+@media (min-width: 768px) {
+  textarea.form-control {
+    width: 90%;
+  }
 }

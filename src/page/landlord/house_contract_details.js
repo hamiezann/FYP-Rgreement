@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { ethers } from 'ethers';
-import HouseRentalContract from "../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
+// import HouseRentalContract from "../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
+import HouseRentalContract from "../../HostedAbi/HouseRentalContract.json";
 import "../../style/landlord/house_contract_details.css";
 
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
@@ -30,7 +31,8 @@ const HouseContractDetails = () => {
   useEffect(() => {
     const fetchContractDetails = async () => {
       try {
-        const provider = new ethers.JsonRpcProvider('http://localhost:8545');
+        // const provider = new ethers.JsonRpcProvider('http://localhost:8545');
+        const provider = new ethers.JsonRpcProvider('http://172.24.211.6:8545');
         const contract = new ethers.Contract(
           contractAddress,
           HouseRentalContract.abi,

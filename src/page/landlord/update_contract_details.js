@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import {  useLocation, useNavigate } from "react-router-dom";
 import { ethers } from "ethers";
 import "../../style/contract.css"
-import HouseRentalContract from "../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
+// import HouseRentalContract from "../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
+import HouseRentalContract from "../../HostedAbi/HouseRentalContract.json";
 import { useGlobalContractState } from "../globally_use_variable.js/variable";
 import { computeAddress } from 'ethers';
 
@@ -218,12 +219,12 @@ const UpdateHouseContractForm = () => {
     };
 
     return (
-        <div className="container">
+        <div className="contract-container">
             <div className="title-container">
-                <h2>UPDATE CONTRACT FORM</h2>
+                <h2 className="title-container-contract">UPDATE CONTRACT FORM</h2>
             </div>
             <form onSubmit={handleSubmit}>
-                <div className="form-container">
+                <div className="form-container-contract">
                     {/* <div className="row">
                         <div className="col-25">
                             <label>Contract ID:</label>
@@ -276,7 +277,7 @@ const UpdateHouseContractForm = () => {
               /> */}
               {agreement}
               {agreement && (
-              <button type="button" onClick={() => handleRemoveTenantAgreement(index)}>Remove</button>
+              <button type="button" className="btn-remove-contract" onClick={() => handleRemoveTenantAgreement(index)}><i className="fas fa-trash"></i></button>
               )}
               </div>
           ))}
@@ -287,7 +288,7 @@ const UpdateHouseContractForm = () => {
                 <option key={index} value={option}>{option}</option>
               ))}
             </select>
-            <button type="button" onClick={handleAddTenantAgreement}>Add Tenant Agreement</button>
+            <button type="button" className="btn-add-contract" onClick={handleAddTenantAgreement}>Add Tenant Agreement</button>
           </div>
         </div>
       </div>
@@ -307,7 +308,7 @@ const UpdateHouseContractForm = () => {
                                 /> */}
                                 {responsibility}
                                 {responsibility && (
-                                <button type="button" onClick={() => handleRemoveLandlordResponsibility(index)}>Remove</button>
+                                <button type="button" className="btn-remove-contract" onClick={() => handleRemoveLandlordResponsibility(index)}><i className="fas fa-trash"></i></button>
                                 )}
                             </div>
                         ))}
@@ -318,7 +319,7 @@ const UpdateHouseContractForm = () => {
                                     <option key={index} value={option}>{option}</option>
                                 ))}
                             </select>
-                            <button type="button" onClick={handleAddLandlordResponsibility}>Add Landlord Responsibility</button>
+                            <button type="button" className="btn-add-contract"  onClick={handleAddLandlordResponsibility}>Add Landlord Responsibility</button>
 
                         </div>
                     </div>
@@ -340,7 +341,7 @@ const UpdateHouseContractForm = () => {
                                 /> */}
                                 {agreement}
                                 {agreement && (
-                                <button type="button" onClick={() => handleRemoveAgreementBetweenLandlord(index)}>Remove</button>
+                                <button type="button" className="btn-remove-contract" onClick={() => handleRemoveAgreementBetweenLandlord(index)}><i className="fas fa-trash"></i></button>
 
                                 )}
                             </div>
@@ -352,7 +353,7 @@ const UpdateHouseContractForm = () => {
                                     <option key={index} value={option}>{option}</option>
                                 ))}
                             </select>
-                            <button type="button" onClick={handleAddAgreementBetweenLandlord}>Add Agreement Between Landlord</button>
+                            <button type="button" className="btn-add-contract"  onClick={handleAddAgreementBetweenLandlord}>Add Agreement Between Landlord</button>
 
                         </div>
                     </div>
@@ -363,7 +364,7 @@ const UpdateHouseContractForm = () => {
                         </div>
                         <div className="col-75">
                             <input type="text" value={landlordSignature} readOnly />
-                            <button onClick={generateLandlordSignature}>Generate Signature</button>
+                            <button onClick={generateLandlordSignature} className="btn-add-contract" >Generate Signature</button>
                         </div>
                     </div>
                     {/* <div className="row">

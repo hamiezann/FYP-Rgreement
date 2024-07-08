@@ -1,19 +1,34 @@
 /* authentication.css */
 
-.login-container,
-.registration-container {
-  max-width: 400px;
-  margin: 0 auto;
+.main-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
   padding: 20px;
-  border: 1px solid #ccc;
+  background: linear-gradient(to bottom, #FFC0CB, #FFFFFF, #ADD8E6) !important;
+}
+
+.authentication-container {
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+  /* border: 1px solid #ccc; */
   border-radius: 5px;
+  /* background-color: #fff; */
+}
+
+.card-body-authentication {
+  border-radius: 10px !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  /* background-color: transparent; */
   background-color: #fff;
 }
 
-.login-form,
-.registration-form {
-  display: flex;
-  flex-direction: column;
+.card-title {
+  margin-bottom: 20px;
 }
 
 .form-group {
@@ -49,21 +64,35 @@ select {
   color: #fff;
 }
 
-/* Additional styles for the card */
-.card {
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .authentication-container {
+    max-width: 90%;
+    padding: 15px;
+  }
 }
 
-.card-title {
-  margin-bottom: 20px;
+@media (max-width: 576px) {
+  .authentication-container {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .card-body-authentication {
+    padding: 20px;
+  }
+
+  .custom-btn {
+    font-size: medium;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
 }
 
-.card-body-authentication {
-  /* justify-content: center;
-  display: flex; */
-  border-radius: 10px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  margin-bottom: 30px;
+/* Additional styles for better mobile view */
+@media (max-width: 768px) {
+  .main-container {
+    padding: 10px;
+    height: auto;
+  }
 }

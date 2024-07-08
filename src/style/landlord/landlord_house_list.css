@@ -9,6 +9,15 @@
   padding-top: 20vh;
   padding-left: 20px;
   padding-right: 20px;
+  padding-bottom: 20px;
+  background: linear-gradient(to bottom, #FFC0CB, #FFFFFF, #ADD8E6) !important;
+}
+
+.property-list-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 17vh 20px 20px 20px;
   background: linear-gradient(to bottom, #FFC0CB, #FFFFFF, #ADD8E6) !important;
 }
 
@@ -19,6 +28,7 @@
   font-size: 2rem;
   color: #333;
   font-weight: bold;
+  display: flex;
 }
 
 /* Rent house list styling */
@@ -32,13 +42,26 @@
   margin-bottom: 10px;
   border-radius: 5px;
   padding: 20px;
-  background-color: #fff;
+  background-color: #8fd5ed;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
 }
+
+/* .rent-house-list li {
+  flex-basis: 100%;
+  border: 1px solid #dee2e6;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+} */
+
 
 .house-details {
   flex-grow: 1;
@@ -68,25 +91,76 @@
   display: none;
 }
 
+/* landlord_house_list.css */
+
+/* Adjustments for smaller screens */
 @media (max-width: 768px) {
+  .property-list-container {
+    padding: 10vh 10px 10px 10px;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .rent-house-list li {
+    flex-direction: column;
+    padding: 10px !important;
+  }
+
   .image-container {
     margin-left: 0;
     margin-bottom: 10px;
+    justify-content: center;
   }
 
   .property-image {
-    display: none;
+    max-width: 100%;
+    max-height: auto;
   }
 
   .image-icon {
     display: flex;
   }
+
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .button-group button {
+    margin: 5px 0;
+    width: 90%;
+  }
+
+  .uni-identifier {
+    max-height: 100px;
+    opacity: 1;
+  }
 }
+
+/* Adjustments for even smaller screens if needed */
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.2rem;
+  }
+
+  .rent-house-list li {
+    padding: 15px;
+  }
+
+  .house-details div {
+    font-size: 0.9rem;
+  }
+}
+
 
 .button-group {
   display: flex;
   justify-content: flex-end;
   width: 100%;
+  align-self: flex-end;
 }
 
 .button-group button {
@@ -98,7 +172,8 @@
   max-width: 800px;
   margin: 2em auto;
   /* background-color: var(--var-card-dark); */
-  background-color: hsl(216, 50%, 16%) !important;
+  /* background-color: hsl(216, 50%, 16%) !important; */
+  background-color: #15282f !important;
   border-radius: 15px !important;
   margin-bottom: 1rem;
   padding: 2rem;
@@ -117,7 +192,7 @@
 
 .back-button {
   display: block;
-  background-color: #e7638f;
+  background-color: #e7638f !important;
   color: #fff;
   border: none;
   padding: 15px 30px;

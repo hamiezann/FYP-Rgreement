@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { ethers } from 'ethers';
 import { Container, Row, Col, Form, Button, Card, Spinner } from 'react-bootstrap';
-import HouseRentalContract from '../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json';
+// import HouseRentalContract from '../../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json';
+import HouseRentalContract from "../../HostedAbi/HouseRentalContract.json";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";

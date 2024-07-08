@@ -139,7 +139,8 @@ const RentHouseList = () => {
   }
 
   return (
-    <div className="main-container">
+    // <div className="main-container">
+      <div className="property-list-container">
       <h2 className="page-title">Rent House List</h2>
       {rentHouses.length === 0 ? (
         <Alert variant="warning" className="text-center">
@@ -223,6 +224,7 @@ const RentHouseList = () => {
       <div className='btn-container-back'>
         <button className="btn-my-property-sign-now" type="button" onClick={() => navigate(-1)}>Back</button>
       </div>
+
       {/* Delete Confirmation Modal */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>
