@@ -13,13 +13,15 @@ const HouseDetailPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const apiURL = process.env.REACT_APP_XANN_API;
   
   useDocumentTitle('Product Details - Rgreement');
 
   useEffect(() => {
     const fetchHouseDetails = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/house-details/${houseId}`);
+        // const response = await axios.get(`http://127.0.0.1:8000/api/house-details/${houseId}`);
+        const response = await axios.get(`${apiURL}/api/house-details/${houseId}`);
         console.log('Response data:', response.data);
         setHouseDetails(response.data[0]); // Accessing the first element
         setIsLoading(false);
