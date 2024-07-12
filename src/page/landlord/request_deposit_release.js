@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAbi = HouseRentalContract.abi;
+const apiURL = process.env.REACT_APP_XANN_API;
 
 const RequestDepositRelease = () => {
   const [contractId, setContractId] = useState('');
@@ -53,8 +54,10 @@ const RequestDepositRelease = () => {
     const fetchHouseDetails = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://127.0.0.1:8000/api/house-details/${houseId}`);
-        const tenantResponse = await axios.get(`http://127.0.0.1:8000/api/tenant-by-house/${houseId}`);
+        // const response = await axios.get(`http://127.0.0.1:8000/api/house-details/${houseId}`);
+        // const tenantResponse = await axios.get(`http://127.0.0.1:8000/api/tenant-by-house/${houseId}`);
+        const response = await axios.get(`${apiURL}/api/house-details/${houseId}`);
+        const tenantResponse = await axios.get(`${apiURL}/api/tenant-by-house/${houseId}`);
         setContractId(response.data[0].uni_identifier || '');
         setTenantId(tenantResponse.data.tenant_id);
         setLoading(false);
@@ -123,7 +126,8 @@ const RequestDepositRelease = () => {
       formData.append('status', 'pending');
       formData.append('issue_id', newIssueId); // Use the new issue ID
   
-      await axios.post('http://127.0.0.1:8000/api/issues/create', formData);
+      // await axios.post('http://127.0.0.1:8000/api/issues/create', formData);
+      await axios.post(`${apiURL}/api/issues/create`, formData);
   
       setMessage('Deposit release requested successfully.');
     } catch (error) {
@@ -137,7 +141,7 @@ const RequestDepositRelease = () => {
 
   const fetchIssueHistory = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/houses/${houseId}/issues`);
+      const response = await axios.get(`${apiURL}/api/houses/${houseId}/issues`);
       setIssues(response.data);
       setShowModal(true);
     } catch (error) {

@@ -8,6 +8,8 @@ import { useGlobalContractState } from "./globally_use_variable.js/variable";
 const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 const contractAbi = HouseRentalContract.abi;
 const fixedPassword = "123456";
+// const apiURL = process.env.REACT_APP_XANN_API;
+
 const UpdateContractForm = () => {
 
     const [contractId, setContractId] = useState("");

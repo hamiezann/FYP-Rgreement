@@ -8,12 +8,15 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const apiURL = process.env.REACT_APP_XANN_API;
   useDocumentTitle('Auth - Login');
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await fetch('http://127.0.0.1:8000/api/login', {
+    // const response = await fetch('http://127.0.0.1:8000/api/login', {
+      const response = await fetch(`${apiURL}/api/login`, {
+      // const response = await fetch(`/api/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -33,6 +36,7 @@ const LoginForm = () => {
       navigate('/home');
     } else {
       alert('Login Unsuccessful. Please check your email and password.');
+      // console.log('API URL:', apiURL);
     }
   };
 

@@ -7,14 +7,15 @@ import './message.css';
 const ConversationsPage = () => {
     const [conversations, setConversations] = useState([]);
     const userId = localStorage.getItem('userId');
-
+    const apiURL = process.env.REACT_APP_XANN_API;
     useEffect(() => {
         fetchConversations();
     }, []);
 
     const fetchConversations = async () => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/conversations?user_id=${userId}`);
+            // const response = await axios.get(`http://127.0.0.1:8000/api/conversations?user_id=${userId}`);
+            const response = await axios.get(`${apiURL}/api/conversations?user_id=${userId}`);
             console.log('Data',response.data);
             setConversations(response.data);
         } catch (error) {

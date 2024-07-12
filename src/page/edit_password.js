@@ -12,6 +12,8 @@ const ChangePasswordPage = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const userId = localStorage.getItem('userId');
   const navigate = useNavigate();
+  const apiURL = process.env.REACT_APP_XANN_API;
+
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
@@ -26,7 +28,8 @@ const ChangePasswordPage = () => {
     }
 
     try {
-      await axios.post(`http://127.0.0.1:8000/api/users/${userId}/change-password`, {
+      // await axios.post(`http://127.0.0.1:8000/api/users/${userId}/change-password`, {
+      await axios.post(`${apiURL}/api/users/${userId}/change-password`, {
         current_password: currentPassword,
         new_password: newPassword,
         new_password_confirmation: confirmNewPassword,

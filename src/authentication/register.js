@@ -10,12 +10,14 @@ const RegistrationForm = () => {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('renter'); // Default to 'renter'
   const navigate = useNavigate();
+  const apiURL = process.env.REACT_APP_XANN_API;
   useDocumentTitle('Auth - Register');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await fetch('http://127.0.0.1:8000/api/register', {
+    // const response = await fetch('http://127.0.0.1:8000/api/register', {
+    const response = await fetch(`${apiURL}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password, role }),

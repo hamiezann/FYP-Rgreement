@@ -20,11 +20,14 @@ const RentNearby = () => {
   // const [userLocation, setUserLocation] = useState(null);
   const navigate = useNavigate();
   useDocumentTitle('Rentby - Rgreement');
+  const apiURL = process.env.REACT_APP_XANN_API;
+
 
   useEffect(() => {
     const fetchRentHouses = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/nearby-house-list`);
+        // const response = await axios.get(`http://127.0.0.1:8000/api/nearby-house-list`);
+        const response = await axios.get(`${apiURL}/api/nearby-house-list`);
         setRentHouses(response.data);
         console.log('Response data:', response.data);
       } catch (error) {

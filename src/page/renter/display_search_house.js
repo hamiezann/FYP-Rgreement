@@ -5,6 +5,8 @@ const DisplaySearchHouse = ({ houseId }) => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const apiURL = process.env.REACT_APP_XANN_API;
+
 
   useEffect(() => {
     const fetchHouseDetails = async () => {
@@ -12,7 +14,8 @@ const DisplaySearchHouse = ({ houseId }) => {
         if (!houseId) {
           return; // Exit early if houseId is empty
         }
-        const response = await axios.get(`http://127.0.0.1:8000/api/find-house/${houseId}`);
+        // const response = await axios.get(`http://127.0.0.1:8000/api/find-house/${houseId}`);
+        const response = await axios.get(`${apiURL}/api/find-house/${houseId}`);
         setMessages(response.data); // Access response.data instead of response
         setIsLoading(false);
       } catch (error) {

@@ -10,11 +10,14 @@ const ProfilePage = () => {
   const userId = localStorage.getItem('userId');
   const location = useLocation();
   const navigate = useNavigate();
+  const apiURL = process.env.REACT_APP_XANN_API;
+
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId}/profile`);
+        // const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId}/profile`);
+        const response = await axios.get(`${apiURL}/api/users/${userId}/profile`);
         setUserData(response.data.user); // Assuming API returns user data in 'user' key
         setLoading(false);
       } catch (error) {

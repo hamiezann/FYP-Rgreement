@@ -16,12 +16,14 @@ const ConfirmationPage = ({ onSubmit }) => {
   const { houseId } = useParams();
   const userId = localStorage.getItem('userId');
   const [applyStatus, setApplyStatus] = useState('');
+  const apiURL = process.env.REACT_APP_XANN_API;
 
   const handleConfirm = async (e) => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const response = await axios.post('http://127.0.0.1:8000/api/compare-identifier', {
+      // const response = await axios.post('http://127.0.0.1:8000/api/compare-identifier', {
+      const response = await axios.post(`${apiURL}/api/compare-identifier`, {
         uniIdentifier: uniIdentifier,
         houseId: houseId,
       });
@@ -45,7 +47,8 @@ const ConfirmationPage = ({ onSubmit }) => {
     e.preventDefault();
     // onSubmit(uniIdentifier);
     try {
-      const response = await axios.post(`http://127.0.0.1:8000/api/apply-rent-house`,
+      // const response = await axios.post(`http://127.0.0.1:8000/api/apply-rent-house`,
+      const response = await axios.post(`${apiURL}/api/apply-rent-house`,
         {
           tenant_id: userId,
           tenant_status: 'Pending',

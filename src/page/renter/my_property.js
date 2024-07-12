@@ -30,10 +30,13 @@ const RenterDashboard = () => {
   const [modalConfig, setModalConfig] = useState({});
   const userId = localStorage.getItem('userId');
   const navigate = useNavigate();
+  const apiURL = process.env.REACT_APP_XANN_API;
+
 
   const handleContractDetails = async (houseId) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
+      // const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
+      const response = await axios.get(`${apiURL}/api/get-UniIdentifier/${houseId}`);
       const uniIdentifier = response.data.uni_identifier;
       navigate(`/house-contract-details`, { state: { uniIdentifier } });
     } catch (error) {
@@ -49,7 +52,8 @@ const RenterDashboard = () => {
 
   const handleIssue = async (houseId) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
+      // const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
+      const response = await axios.get(`${apiURL}/api/get-UniIdentifier/${houseId}`);
       const uniIdentifier = response.data.uni_identifier;
       navigate(`/approve-deposit`, { state: { uniIdentifier } });
     } catch (error) {
@@ -64,7 +68,8 @@ const RenterDashboard = () => {
   };
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/applied-houses/${userId}`)
+    // axios.get(`http://127.0.0.1:8000/api/applied-houses/${userId}`)
+    axios.get(`${apiURL}/api/applied-houses/${userId}`)
       .then(response => {
         setAppliedHouses(response.data);
         console.log('response:', response);
@@ -85,8 +90,10 @@ const RenterDashboard = () => {
       'Are you sure you want to cancel the application?',
       async () => {
         try {
-          await axios.put(`http://127.0.0.1:8000/api/tenants/${houseId}`, { tenant_status: 'cancelled' });
-          const response = await axios.get(`http://127.0.0.1:8000/api/applied-houses/${userId}`);
+          // await axios.put(`http://127.0.0.1:8000/api/tenants/${houseId}`, { tenant_status: 'cancelled' });
+          // const response = await axios.get(`http://127.0.0.1:8000/api/applied-houses/${userId}`);
+          await axios.put(`${apiURL}/api/tenants/${houseId}`, { tenant_status: 'cancelled' });
+          const response = await axios.get(`${apiURL}/api/applied-houses/${userId}`);
           setAppliedHouses(response.data);
           setShowModal(false);
           console.log('Application cancelled successfully');
@@ -103,7 +110,8 @@ const RenterDashboard = () => {
       'Are you sure you want to sign the contract now?',
       async () => {
         try {
-          const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
+          // const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
+          const response = await axios.get(`${apiURL}/api/get-UniIdentifier/${houseId}`);
           const uniqueIdentifier = response.data.uni_identifier;
           navigate(`/sign-now`, { state: { uniqueIdentifier, houseId } });
           setShowModal(false);

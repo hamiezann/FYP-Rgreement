@@ -21,6 +21,7 @@ const ManageHouse = () => {
   const houseId = location.state?.houseId; 
   const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   const contractAbi = HouseRentalContract.abi;
+  const apiURL = process.env.REACT_APP_XANN_API;
 
   useEffect(() => {
     const init = async () => {
@@ -31,7 +32,8 @@ const ManageHouse = () => {
         setContract(rentalContract);
 
         // Fetch the contractId from the server
-        const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
+        const response = await axios.get(`${apiURL}/api/get-UniIdentifier/${houseId}`);
+        // const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
         setContractId(response.data.uni_identifier);
       } else {
         setError('Please install MetaMask!');
@@ -60,7 +62,8 @@ const ManageHouse = () => {
   const handleReportIssue = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://127.0.0.1:8000/api/report-issue', { description });
+      // await axios.post('http://127.0.0.1:8000/api/report-issue', { description });
+      await axios.post(`${apiURL}/api/report-issue`, { description });
       alert('Issue reported successfully');
       setDescription('');
     } catch (error) {
@@ -79,7 +82,7 @@ const ManageHouse = () => {
     e.preventDefault();
     if (window.confirm('Are you sure you want to end this contract?')) {
       try {
-        await axios.put(`http://127.0.0.1:8000/api/update-rent-house/${houseId}`, { contract_status: 'Contract Ended' });
+        await axios.put(`${apiURL}/api/update-rent-house/${houseId}`, { contract_status: 'Contract Ended' });
 
         if (contract && contractId) {
           const tx = await contract.endContract(contractId);

@@ -11,7 +11,7 @@ const UpdateRentHouse = (props) => {
   const [prefered_occupants, setPreferredOccupants] = useState("");
   const [type_of_house, setTypeOfHouse] = useState("");
   const [number_of_rooms, setNumberOfRooms] = useState("");
-
+  const apiURL = process.env.REACT_APP_XANN_API;
   const navigate = useNavigate(); // Initialize useHistory
   const { houseId } = useParams();
 
@@ -24,7 +24,7 @@ const UpdateRentHouse = (props) => {
     e.preventDefault();
     try {
       // Make an HTTP PUT request to update the rent house details
-      await axios.put(`http://127.0.0.1:8000/api/update-rent-house/${houseId}`, {
+      await axios.put(`${apiURL}/api/update-rent-house/${houseId}`, {
         description,
         rent_fee,
         prefered_occupants,

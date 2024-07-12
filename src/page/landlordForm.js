@@ -10,8 +10,11 @@ import "leaflet/dist/leaflet.css";
 // import customMarkerIcon from './marker.png'; 
 import L from 'leaflet';
 
-const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+// const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 const contractAbi = HouseRentalContract.abi;
+const apiURL = process.env.REACT_APP_XANN_API;
+
 
 const HouseRentalForm = () => {
 
@@ -357,7 +360,8 @@ const customIcon = L.icon({
     
             const createdContract = await contract.getContract(uni_identifier, fixedPassword);
     
-            const response = await fetch("http://127.0.0.1:8000/api/house-details", {
+            // const response = await fetch("http://127.0.0.1:8000/api/house-details", {
+                const response = await fetch(`${apiURL}/api/house-details`, {
                 method: 'POST',
                 body: formData,
             });

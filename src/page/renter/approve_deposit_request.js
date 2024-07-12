@@ -223,6 +223,7 @@ const DepositReleaseRequests = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [issueDetails, setIssueDetails] = useState(null);
+  const apiURL = process.env.REACT_APP_XANN_API;
 
   const location = useLocation();
   const contractId = location.state.uniIdentifier;
@@ -275,7 +276,8 @@ const DepositReleaseRequests = () => {
         const tx = await contract.approveDepositRelease(contractId, index);
         await tx.wait();
 
-        await axios.put(`http://127.0.0.1:8000/api/issues/update-status/${issueId}`, { status: 'accepted' });
+        // await axios.put(`http://127.0.0.1:8000/api/issues/update-status/${issueId}`, { status: 'accepted' });
+        await axios.put(`${apiURL}/api/issues/update-status/${issueId}`, { status: 'accepted' });
         console.log('Status updated successfully');
 
         setLoading(false);
@@ -296,7 +298,8 @@ const DepositReleaseRequests = () => {
         const tx = await contract.rejectDepositRelease(contractId, index);
         await tx.wait();
 
-        await axios.put(`http://127.0.0.1:8000/api/issues/update-status/${issueId}`, { status: 'rejected' });
+        // await axios.put(`http://127.0.0.1:8000/api/issues/update-status/${issueId}`, { status: 'rejected' });
+        await axios.put(`${apiURL}/api/issues/update-status/${issueId}`, { status: 'rejected' });
         console.log('Status updated successfully');
 
         setLoading(false);
@@ -311,7 +314,8 @@ const DepositReleaseRequests = () => {
 
   const fetchIssueDetails = async (issueId) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/issues/${issueId}`);
+      // const response = await axios.get(`http://127.0.0.1:8000/api/issues/${issueId}`);
+      const response = await axios.get(`${apiURL}/api/issues/${issueId}`);
       // console.log(response.data);
       console.log('Issue details', response.data);
       setIssueDetails(response.data);
@@ -396,7 +400,8 @@ const DepositReleaseRequests = () => {
               <p><strong>Status:</strong> {issueDetails.status}</p>
               {issueDetails.image ? (
                 <div className="mt-3">
-                  <img src={`http://127.0.0.1:8000/storage/${issueDetails.image}`} alt="Property" className="img-fluid" />
+                  {/* <img src={`http://127.0.0.1:8000/storage/${issueDetails.image}`} alt="Property" className="img-fluid" /> */}
+                  <img src={`${apiURL}/storage/${issueDetails.image}`} alt="Property" className="img-fluid" />
                 </div>
               ) : (
                 <p>No image available</p>

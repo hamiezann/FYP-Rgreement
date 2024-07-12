@@ -146,53 +146,53 @@ contract HouseRentalContract {
         emit ContractUpdated(contractId, block.timestamp);
     }
 
-    // function signContract(
-    //     bytes6 contractId,
-    //     string memory _password,
-    //     string memory _name,
-    //     string memory _identificationNumber,
-    //     string memory _houseAddress,
-    //     string memory _tenantSignature
-    // ) public payable onlyTenant(contractId) {
-    //     require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked(_password)), "Incorrect password");
-    //     require(msg.value == contracts[contractId].houseDetails.deposit, "Incorrect deposit amount");
-
-    //     ContractTerms storage contractToUpdate = contracts[contractId];
-    //     contractToUpdate.tenant.name = _name;
-    //     contractToUpdate.tenant.identificationNumber = _identificationNumber;
-    //     contractToUpdate.tenant.house_address = _houseAddress;
-    //     contractToUpdate.tenantSignature = _tenantSignature;
-    //     contractToUpdate.depositPaid = true;
-    //     contractToUpdate.contractActive = true;
-
-    //     emit ContractSigned(contractId, block.timestamp);
-    //     emit DepositPaid(contractId, msg.value, block.timestamp);
-    // }
-
     function signContract(
-    bytes6 contractId,
-    string memory _password,
-    string memory _name,
-    string memory _identificationNumber,
-    string memory _houseAddress,
-    string memory _tenantSignature
-) public payable {
-    require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked(_password)), "Incorrect password");
-    require(msg.value == contracts[contractId].houseDetails.deposit, "Incorrect deposit amount");
-    require(contracts[contractId].tenantAddress == address(0), "Contract already signed");
+        bytes6 contractId,
+        string memory _password,
+        string memory _name,
+        string memory _identificationNumber,
+        string memory _houseAddress,
+        string memory _tenantSignature
+    ) public payable onlyTenant(contractId) {
+        require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked(_password)), "Incorrect password");
+        require(msg.value == contracts[contractId].houseDetails.deposit, "Incorrect deposit amount");
 
-    ContractTerms storage contractToUpdate = contracts[contractId];
-    contractToUpdate.tenant.name = _name;
-    contractToUpdate.tenant.identificationNumber = _identificationNumber;
-    contractToUpdate.tenant.house_address = _houseAddress;
-    contractToUpdate.tenantSignature = _tenantSignature;
-    contractToUpdate.tenantAddress = msg.sender;
-    contractToUpdate.depositPaid = true;
-    contractToUpdate.contractActive = true;
+        ContractTerms storage contractToUpdate = contracts[contractId];
+        contractToUpdate.tenant.name = _name;
+        contractToUpdate.tenant.identificationNumber = _identificationNumber;
+        contractToUpdate.tenant.house_address = _houseAddress;
+        contractToUpdate.tenantSignature = _tenantSignature;
+        contractToUpdate.depositPaid = true;
+        contractToUpdate.contractActive = true;
 
-    emit ContractSigned(contractId, block.timestamp);
-    emit DepositPaid(contractId, msg.value, block.timestamp);
-}
+        emit ContractSigned(contractId, block.timestamp);
+        emit DepositPaid(contractId, msg.value, block.timestamp);
+    }
+
+//     function signContract(
+//     bytes6 contractId,
+//     string memory _password,
+//     string memory _name,
+//     string memory _identificationNumber,
+//     string memory _houseAddress,
+//     string memory _tenantSignature
+// ) public payable {
+//     require(keccak256(abi.encodePacked(contracts[contractId].password)) == keccak256(abi.encodePacked(_password)), "Incorrect password");
+//     require(msg.value == contracts[contractId].houseDetails.deposit, "Incorrect deposit amount");
+//     require(contracts[contractId].tenantAddress == address(0), "Contract already signed");
+
+//     ContractTerms storage contractToUpdate = contracts[contractId];
+//     contractToUpdate.tenant.name = _name;
+//     contractToUpdate.tenant.identificationNumber = _identificationNumber;
+//     contractToUpdate.tenant.house_address = _houseAddress;
+//     contractToUpdate.tenantSignature = _tenantSignature;
+//     contractToUpdate.tenantAddress = msg.sender;
+//     contractToUpdate.depositPaid = true;
+//     contractToUpdate.contractActive = true;
+
+//     emit ContractSigned(contractId, block.timestamp);
+//     emit DepositPaid(contractId, msg.value, block.timestamp);
+// }
 
     function requestDepositRelease(bytes6 contractId, uint amount, uint issueId) public onlyLandlord(contractId) {
         require(contracts[contractId].depositPaid, "Deposit not paid");

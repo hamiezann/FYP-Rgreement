@@ -55,6 +55,7 @@ const RentHouseList = () => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
   const navigate = useNavigate();
+  const apiURL = process.env.REACT_APP_XANN_API;
 
   const handleContractDetails = (uniIdentifier) => {
     navigate(`/house-contract-details`, { state: { uniIdentifier } });
@@ -65,7 +66,7 @@ const RentHouseList = () => {
 
     const fetchRentHouses = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/list/${userId}/rent-houses`);
+        const response = await axios.get(`${apiURL}/api/list/${userId}/rent-houses`);
         setRentHouses(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -85,7 +86,7 @@ const RentHouseList = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/delete-rent-houses/${houseToDelete}`);
+      await axios.delete(`${apiURL}/api/delete-rent-houses/${houseToDelete}`);
       setRentHouses(rentHouses.filter((house) => house.id !== houseToDelete));
       setShowDeleteModal(false);
       setHouseToDelete(null);

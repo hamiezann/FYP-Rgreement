@@ -4,6 +4,7 @@ const { expect, assert } = require("chai");
 describe("HouseRentalContract", function () {
   let HouseRentalContract, houseRentalContract, landlord, tenant;
   let contractId, landlordInfo, tenantInfo, houseDetails;
+  let walletAddress = "0x70997970C51812dc3A010C7d01b50e0d17dc79C8";
 
   beforeEach(async function () {
     [landlord, tenant] = await ethers.getSigners();
@@ -24,6 +25,7 @@ describe("HouseRentalContract", function () {
       identificationNumber: "67890",
       house_address: "Tenant House Address",
       walletAddress: tenant.address // Hardcoded tenant address
+      // walletAddress:"0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
     };
 
     houseDetails = {
@@ -198,10 +200,10 @@ it("Should sign the contract and hold the deposit", async function () {
     const contract = await houseRentalContract.getContract(contractId, "password123");
 
     // Display the signer address
-    console.log("Signer Address:", await tenant.getAddress());
+    // console.log("Signer Address:", await tenant.getAddress());
 
     // expect(contract.tenantSignature).to.equal("Tenant Signature");
-    // expect(contract.tenantAddress).to.equal("Tenant Signature");
+    expect(contract.tenantAddress).to.equal("Tenant Signature");
     expect(contract.depositPaid).to.be.true;
 });
 

@@ -11,6 +11,9 @@ const ConversationPage = () => {
     const [messages, setMessages] = useState([]);
     const { state } = useLocation();
     const ownerId = state?.ownerId;
+    
+const apiURL = process.env.REACT_APP_XANN_API;
+
 
     // useEffect(() => {
     //     fetchMessages();
@@ -27,7 +30,8 @@ const ConversationPage = () => {
 
     const handleSubmitMessage = async (content) => {
         try {
-            await axios.post(`http://127.0.0.1:8000/api/messages`, {
+            // await axios.post(`http://127.0.0.1:8000/api/messages`, {
+            await axios.post(`${apiURL}/api/messages`, {
                 sender_id: senderId,
                 recipient_id: recipientId,
                 content: content

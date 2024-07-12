@@ -93,7 +93,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './message.css';
-import echo from '../../echo'; 
+// import echo from '../../echo'; 
+const apiURL = process.env.REACT_APP_XANN_API;
+
 
 const RenterComponent = ({ ownerId, user_id }) => {
     const [messages, setMessages] = useState([]);
@@ -102,7 +104,8 @@ const RenterComponent = ({ ownerId, user_id }) => {
 
     const fetchMessages = async () => {
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/api/messages`, {
+            // const response = await axios.get(`http://127.0.0.1:8000/api/messages`, {
+            const response = await axios.get(`${apiURL}/api/messages`, {
                 params: {
                     sender_id: user_id,
                     recipient_id: ownerId
@@ -142,7 +145,8 @@ const RenterComponent = ({ ownerId, user_id }) => {
 
     const handleSubmitMessage = async (content) => {
         try {
-            await axios.post(`http://127.0.0.1:8000/api/messages`, {
+            // await axios.post(`http://127.0.0.1:8000/api/messages`, {
+            await axios.post(`${apiURL}/api/messages`, {
                 sender_id: user_id,
                 recipient_id: ownerId,
                 content: content

@@ -25,6 +25,8 @@ const SignContractForm = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const apiURL = process.env.REACT_APP_XANN_API;
+
 
   useEffect(() => {
     const fetchDepositAmount = async () => {
@@ -89,7 +91,8 @@ const SignContractForm = () => {
       setIsLoading(false);
       setSuccessMessage("Contract signed successfully!");
 
-      const response = await axios.put(`http://127.0.0.1:8000/api/sign-now/${houseId}`, { sign_contract_status: 'Signed' , contract_status: 'Active'});
+      // const response = await axios.put(`http://127.0.0.1:8000/api/sign-now/${houseId}`, { sign_contract_status: 'Signed' , contract_status: 'Active'});
+      const response = await axios.put(`${apiURL}/api/sign-now/${houseId}`, { sign_contract_status: 'Signed' , contract_status: 'Active'});
       console.log(response.data); 
     } catch (error) {
       console.error("Error signing contract:", error);

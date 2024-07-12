@@ -184,6 +184,7 @@ const TenantListPage = () => {
   const [depositBalance, setDepositBalance] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState('');
+  const apiURL = process.env.REACT_APP_XANN_API;
 
   const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
   const contractAbi = HouseRentalContract.abi;
@@ -193,7 +194,7 @@ const TenantListPage = () => {
   }
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/tenants?user_id=${userId}`)
+    axios.get(`${apiURL}/api/tenants?user_id=${userId}`)
       .then(response => {
         setPendingTenants(response.data.pending_tenants);
         setVerifiedTenants(response.data.verified_tenants);
@@ -221,10 +222,14 @@ const TenantListPage = () => {
   const handleApprove = async (tenantId, houseId) => {
     if (window.confirm('Are you sure you want to approve this application?')) {
       try {
-        await axios.put(`http://127.0.0.1:8000/api/tenants/${tenantId}`, { tenant_status: 'Approved' });
-        await axios.put(`http://127.0.0.1:8000/api/update-rent-house/${houseId}`, { available: false });
+        await axios.put(`${apiURL}/api/tenants/${tenantId}`, { tenant_status: 'Approved' });
+        await axios.put(`${apiURL}/api/update-rent-house/${houseId}`, { available: false });
 
-        const response = await axios.get(`http://127.0.0.1:8000/api/tenants?user_id=${userId}`);
+        const response = await axios.get(`${apiURL}/api/tenants?user_id=${userId}`);
+        // await axios.put(`http://127.0.0.1:8000/api/tenants/${tenantId}`, { tenant_status: 'Approved' });
+        // await axios.put(`http://127.0.0.1:8000/api/update-rent-house/${houseId}`, { available: false });
+
+        // const response = await axios.get(`http://127.0.0.1:8000/api/tenants?user_id=${userId}`);
         setPendingTenants(response.data.pending_tenants);
         setVerifiedTenants(response.data.verified_tenants);
 
@@ -238,9 +243,9 @@ const TenantListPage = () => {
   const handleReject = async (tenantId) => {
     if (window.confirm('Are you sure you want to reject this application?')) {
       try {
-        await axios.put(`http://127.0.0.1:8000/api/tenants/${tenantId}`, { tenant_status: 'Rejected' });
+        await axios.put(`${apiURL}/api/tenants/${tenantId}`, { tenant_status: 'Rejected' });
 
-        const response = await axios.get(`http://127.0.0.1:8000/api/tenants?user_id=${userId}`);
+        const response = await axios.get(`${apiURL}/api/tenants?user_id=${userId}`);
         setPendingTenants(response.data.pending_tenants);
         setVerifiedTenants(response.data.verified_tenants);
 
@@ -266,7 +271,7 @@ const TenantListPage = () => {
   const handleEndContract = async (houseId, contractId) => {
     if (window.confirm('Are you sure you want to end this contract?')) {
       try {
-        await axios.put(`http://127.0.0.1:8000/api/update-rent-house/${houseId}`, { contract_status: 'Contract Ended' });
+        await axios.put(`${apiURL}/api/update-rent-house/${houseId}`, { contract_status: 'Contract Ended' });
 
         if (contract && contractId) {
           const tx = await contract.endContract(contractId);
@@ -275,7 +280,7 @@ const TenantListPage = () => {
         }
 
         // Refresh tenants list after ending contract
-        const response = await axios.get(`http://127.0.0.1:8000/api/tenants?user_id=${userId}`);
+        const response = await axios.get(`${apiURL}/api/tenants?user_id=${userId}`);
         setPendingTenants(response.data.pending_tenants);
         setVerifiedTenants(response.data.verified_tenants);
       } catch (error) {

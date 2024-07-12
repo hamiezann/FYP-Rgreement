@@ -13,8 +13,10 @@ const EndContract = () => {
     const [depositBalance, setDepositBalance] = useState(0);
     const [contract, setContract] = useState(null);
     const [error, setError] = useState('');
+    const apiURL = process.env.REACT_APP_XANN_API;
 
-    const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+    // const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+    const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
     const contractAbi = HouseRentalContract.abi;
 
     useEffect(() => {
@@ -26,7 +28,8 @@ const EndContract = () => {
                 setContract(rentalContract);
 
                 // Fetch the contractId from the server
-                const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
+                // const response = await axios.get(`http://127.0.0.1:8000/api/get-UniIdentifier/${houseId}`);
+                const response = await axios.get(`${apiURL}/api/get-UniIdentifier/${houseId}`);
                 setContractId(response.data.uni_identifier);
             } else {
                 setError('Please install MetaMask!');
@@ -69,7 +72,8 @@ const EndContract = () => {
     const handleEndContract = async () => {
         if (window.confirm('Are you sure you want to end this contract?')) {
             try {
-                await axios.put(`http://127.0.0.1:8000/api/update-rent-house/${houseId}`, { contract_status: 'Contract Ended' });
+                // await axios.put(`http://127.0.0.1:8000/api/update-rent-house/${houseId}`, { contract_status: 'Contract Ended' });
+                await axios.put(`${apiURL}/api/update-rent-house/${houseId}`, { contract_status: 'Contract Ended' });
 
                 if (contract && contractId) {
                     const tx = await contract.endContract(contractId);

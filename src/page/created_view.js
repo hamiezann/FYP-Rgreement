@@ -11,11 +11,14 @@ function ContractDetails() {
   //const [contractPassword, setContractPassword] = useState('');
   const [contractDetails, setContractDetails] = useState(null);
   const [auditTrails, setAuditTrails] = useState([]);
+  const apiBN = process.env.REACT_APP_BLOCKCHAIN_NODE;
+
 
   const fetchContractDetails = async () => {
     try {
 
-      const provider = new ethers.JsonRpcProvider('http://localhost:8545');
+      // const provider = new ethers.JsonRpcProvider('http://localhost:8545');
+      const provider = new ethers.JsonRpcProvider(`${apiBN}`);
       const contract = new ethers.Contract(
         contractAddress,
         HouseRentalContract.abi,
