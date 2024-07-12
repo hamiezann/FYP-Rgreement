@@ -68,9 +68,10 @@ const ConfirmationPage = ({ onSubmit }) => {
 // console.log("Uni Id:", uniIdentifier);
 //   console.log("House Id:", houseId);
   return (
-    <div className='apply-container'>
+    <div className='contract-container'>
     <div className="form-container">
       <h2>Confirm Rental Applicant</h2>
+ 
        {!isConfirmed && ( 
         <div>
           <p>Insert the special identifier for the rental property.</p>

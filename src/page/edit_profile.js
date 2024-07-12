@@ -20,6 +20,8 @@ const EditProfilePage = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const userId = localStorage.getItem('userId');
   const navigate = useNavigate();
+  const apiURL = process.env.REACT_APP_XANN_API;
+
 
   useEffect(() => {
     if (!userId) {
@@ -29,7 +31,8 @@ const EditProfilePage = () => {
 
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId}/profile`);
+        // const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId}/profile`);
+        const response = await axios.get(`${apiURL}/api/users/${userId}/profile`);
         setUserData(response.data.user); // Assuming API returns user data in 'user' key
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -67,7 +70,8 @@ const EditProfilePage = () => {
     }
 
     try {
-      await axios.post(`http://127.0.0.1:8000/api/users/${userId}/edit-profile`, formData, {
+      // await axios.post(`http://127.0.0.1:8000/api/users/${userId}/edit-profile`, formData, {
+      await axios.post(`${apiURL}/api/users/${userId}/edit-profile`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

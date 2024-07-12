@@ -257,8 +257,10 @@ const DepositReleaseRequests = () => {
             timestamp: new Date(Number(request.timestamp) * 1000).toLocaleString(),
             index,
             active: request.active,
+            issueId: request.issueId.toString(),
           }));
           setRequests(formattedRequests);
+          console.log('Fetched contract details:', formattedRequests);
         } catch (err) {
           console.error(err);
           setError('Error fetching contract details');
