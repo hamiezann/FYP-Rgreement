@@ -30,6 +30,10 @@
   border: none;
 }
 
+.navbar-toggler.active {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .navbar-nav-custom {
   justify-content: center !important;
   display: flex;
@@ -76,7 +80,9 @@
 
 /* Additional styles for smaller navbar on scroll */
 .navbar-small {
-  background-color: #F3F7EC !important;
+  /* background-color: #FFC0CB !important; */
+  background: linear-gradient(to bottom, #ADD8E6, #ffffff);
+
   padding: 0.5rem 1rem;
  
   /* border-radius: 10px; */
@@ -151,13 +157,17 @@ body {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5) !important; /* Translucent gray */
   z-index: 999 !important; /* Ensure it's above the navbar */
-  display: none; /* Initially hidden */
+  display: none; 
 }
 
 /* Show the overlay when navbar is active */
 .navbar-overlay.active {
   display: block !important;
 
+}
+
+.mobile-active .navbar {
+  background-color: #fff;
 }
 
 .App-header.mobile-active {

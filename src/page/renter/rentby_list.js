@@ -171,6 +171,7 @@ const RentNearby = () => {
 
   const handleChatOwner = (houseId, ownerId) => {
     navigate(`/chat/${houseId}`, { state: { ownerId: ownerId } });
+    // navigate(`/stream-chat/${houseId}`, { state: { ownerId: ownerId } });
   };
 
   const handleHouseDetails = (houseId) => {    

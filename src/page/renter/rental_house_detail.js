@@ -6,6 +6,7 @@ import L from 'leaflet';
 import "../../style/renter/rental_house_detail.css";
 import "leaflet/dist/leaflet.css";
 import useDocumentTitle from '../../utils/useDocumentTitles';
+const apiURL = process.env.REACT_APP_XANN_API;
 
 const HouseDetailPage = () => {
   const { houseId } = useParams();
@@ -14,12 +15,13 @@ const HouseDetailPage = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   
-  useDocumentTitle('Product Details - Rgreement');
+  useDocumentTitle('House Details - Rgreement');
 
   useEffect(() => {
     const fetchHouseDetails = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/house-details/${houseId}`);
+        // const response = await axios.get(`http://127.0.0.1:8000/api/house-details/${houseId}`);
+        const response = await axios.get(`${apiURL}/api/house-details/${houseId}`);
         console.log('Response data:', response.data);
         setHouseDetails(response.data[0]); // Accessing the first element
         setIsLoading(false);

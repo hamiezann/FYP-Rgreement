@@ -1,12 +1,15 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/about.css'; // Import your custom CSS file
+import useDocumentTitle from '../utils/useDocumentTitles';
 
 const AboutPage = () => {
+
+  useDocumentTitle('About Us - RGreement');
   return (
-    <div className="about-container ">
+    <div className="about-container">
       <div className="row justify-content-center">
-        <div className="col-md-8">
+        <div className="col-md-10 col-lg-8">
           <div className="card shadow-lg border-0">
             <div className="card-body p-5">
               <h1 className="card-title text-center mb-4">About Us</h1>

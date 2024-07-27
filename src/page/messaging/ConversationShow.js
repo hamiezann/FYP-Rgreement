@@ -15,25 +15,12 @@ const ConversationPage = () => {
 const apiURL = process.env.REACT_APP_XANN_API;
 
 
-    // useEffect(() => {
-    //     fetchMessages();
-    // }, []);
-
-    // const fetchMessages = async () => {
-    //     try {
-    //         const response = await axios.get(`http://127.0.0.1:8000/api/conversations/${senderId}/${recipientId}`);
-    //         setMessages(response.data);
-    //     } catch (error) {
-    //         console.error('Error fetching messages:', error);
-    //     }
-    // };
-
     const handleSubmitMessage = async (content) => {
         try {
             // await axios.post(`http://127.0.0.1:8000/api/messages`, {
             await axios.post(`${apiURL}/api/messages`, {
-                sender_id: senderId,
-                recipient_id: recipientId,
+                sender_id: recipientId,
+                recipient_id: senderId,
                 content: content
             });
         } catch (error) {

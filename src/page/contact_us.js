@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import '../style/contact_us.css';
 // import contactImage from './path/to/your/image.png'; 
-
+import useDocumentTitle from '../utils/useDocumentTitles';
 const ContactUs = () => {
+    useDocumentTitle('Contact Us - RGreement');
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',

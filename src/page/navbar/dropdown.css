@@ -7,5 +7,9 @@
     right: 0 !important;
     left: auto !important;
   }
+
+  .dropdown-toggle-custom.active {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
   
   

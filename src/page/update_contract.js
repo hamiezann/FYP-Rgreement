@@ -4,13 +4,14 @@ import "../style/contract.css";
 // import HouseRentalContract from "../artifacts/contracts/UpdatedRentalContract.sol/HouseRentalContract.json";
 import HouseRentalContract from "../HostedAbi/HouseRentalContract.json";
 import { useGlobalContractState } from "./globally_use_variable.js/variable";
+import useDocumentTitle from "../utils/useDocumentTitles";
 
 const contractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
 const contractAbi = HouseRentalContract.abi;
 const fixedPassword = "123456";
 // const apiURL = process.env.REACT_APP_XANN_API;
-
 const UpdateContractForm = () => {
+    useDocumentTitle('Update Contract - RGreement');
 
     const [contractId, setContractId] = useState("");
     const {

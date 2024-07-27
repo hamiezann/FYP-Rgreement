@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../style/profile.css';
 import { useLocation, useNavigate } from 'react-router-dom';
+import useDocumentTitle from '../utils/useDocumentTitles';
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
@@ -11,7 +12,7 @@ const ProfilePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const apiURL = process.env.REACT_APP_XANN_API;
-
+  useDocumentTitle('My Profile - RGreement');
 
   useEffect(() => {
     const fetchUserData = async () => {

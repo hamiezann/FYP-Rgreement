@@ -4,7 +4,7 @@ import useDocumentTitle from '../utils/useDocumentTitles';
 import '../style/home.css'; // Import the CSS file for other styles
 
 function Home() {
-  useDocumentTitle('Home - Rgreement');
+  useDocumentTitle('Home - RGreement');
 
   const heroSectionStyle = {
     background: 'url("/rmbg.png") no-repeat center center',

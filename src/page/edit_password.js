@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../style/profile.css';
 import { useNavigate } from 'react-router-dom';
+import useDocumentTitle from '../utils/useDocumentTitles';
 
 const ChangePasswordPage = () => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -13,7 +14,7 @@ const ChangePasswordPage = () => {
   const userId = localStorage.getItem('userId');
   const navigate = useNavigate();
   const apiURL = process.env.REACT_APP_XANN_API;
-
+useDocumentTitle('Change Password - RGreement');
 
   const handleChangePassword = async (e) => {
     e.preventDefault();

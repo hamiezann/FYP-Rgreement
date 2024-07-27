@@ -17,7 +17,7 @@ const RegistrationForm = () => {
     event.preventDefault();
 
     // const response = await fetch('http://127.0.0.1:8000/api/register', {
-    const response = await fetch(`${apiURL}/register`, {
+    const response = await fetch(`${apiURL}/api/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password, role }),

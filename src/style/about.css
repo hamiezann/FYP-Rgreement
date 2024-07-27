@@ -1,50 +1,115 @@
 /* about.css */
 .about-container {
-    background-color: #f8f9fa;
-    padding: 20vh;
-    border-radius: 10px;
-  }
-  
-  .card {
-    background: linear-gradient(135deg, #f8f9fa 50%, #e9ecef 50%);
-  }
-  
+  background-color: #f8f9fa;
+  padding: 5vh 20px; /* Adjusted padding for better responsiveness */
+  border-radius: 10px;
+  margin: 0 auto; /* Center the container */
+}
+
+.card {
+  background: linear-gradient(135deg, #f8f9fa 50%, #e9ecef 50%);
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; /* Adjusted for responsiveness */
+  color: #333;
+}
+
+.card-subtitle {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5rem; /* Adjusted for responsiveness */
+  color: #0e4075;
+}
+
+.card-text {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem; /* Adjusted for responsiveness */
+  color: #555;
+}
+
+.list-group-item {
+  background-color: transparent;
+  border: none;
+  font-size: 1rem;
+  color: #e3d4d4; /* Adjusted color for readability */
+}
+
+.custom-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 1rem; /* Adjusted for responsiveness */
+  transition: background-color 0.3s ease;
+}
+
+.custom-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Media Queries for Responsiveness */
+@media (min-width: 400px) {
   .card-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    color: #333;
+    font-size: 2.2rem;
   }
-  
+
   .card-subtitle {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1.75rem;
-    color: #0e4075;
-    /* border-bottom: 3px solid #0056b3; */
+    font-size: 1.6rem;
   }
-  
+
   .card-text {
-    font-family: 'Roboto', sans-serif;
     font-size: 1.1rem;
-    color: #555;
   }
-  
-  .list-group-item {
-    background-color: transparent;
-    border: none;
-    font-size: 1rem;
-    color: #e5d5d5;
-  }
-  
+
   .custom-btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 25px;
+    font-size: 1.1rem;
+  }
+  .about-container {
+    padding: 10vh 20px;
+  }
+  /* padding: 5vh 20px; */
+}
+
+@media (min-width: 768px) {
+  .about-container {
+    padding: 10vh 20px;
+  }
+
+  .card-title {
+    font-size: 2.5rem;
+  }
+
+  .card-subtitle {
+    font-size: 1.75rem;
+  }
+
+  .card-text {
     font-size: 1.2rem;
-    transition: background-color 0.3s ease;
   }
-  
-  .custom-btn:hover {
-    background-color: #0056b3;
+
+  .custom-btn {
+    font-size: 1.2rem;
   }
-  
+}
+
+@media (min-width: 992px) {
+  .about-container {
+    padding: 15vh 20px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .about-container {
+    padding: 20vh 20px;
+  }
+}
+
+.apply-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to bottom, #ffffff,  #ADD8E6);
+  /* justify-content: center;
+  padding: 0; */
+}

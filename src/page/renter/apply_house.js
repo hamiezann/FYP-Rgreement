@@ -69,7 +69,7 @@ const ConfirmationPage = ({ onSubmit }) => {
 //   console.log("House Id:", houseId);
   return (
     <div className='apply-container'>
-    <div className="form-container">
+    <div className="contract-container">
       <h2>Confirm Rental Applicant</h2>
        {!isConfirmed && ( 
         <div>

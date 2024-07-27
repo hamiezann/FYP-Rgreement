@@ -24,7 +24,7 @@ const ConversationsPage = () => {
     };
 
     return (
-        <div className="main-container">
+        <div className="message-main-container">
             <div className='message-list-header-wrapper'>
             <h3>Messages</h3>
             <i className='fas fa-search'></i>
@@ -37,17 +37,13 @@ const ConversationsPage = () => {
                         key={conversation.id}
                     >
                         <div className="conversation-icon">
-                            {/* {conversation.profile_pic ? (
-                                <img src={conversation.profile_pic} alt={`${conversation.name}'s Profile Pic`} />
-                            ) : (
-                                <span>{conversation.name.charAt(0)}</span>
-                            )} */}
+                        
                             <span>{conversation.name.charAt(0)}</span>
                         </div>
                         <div className="conversation-info">
                             <div className="conversation-header">
                                 <p>{conversation.name}</p>
-                                {/* Add timestamp if available */}
+                            
                                 {conversation.timestamp && (
                                     <small className="timestamp">{conversation.timestamp}</small>
                                 )}

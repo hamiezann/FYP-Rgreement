@@ -7,8 +7,8 @@ import HouseRentalContract from "../HostedAbi/HouseRentalContract.json";
 import { useGlobalContractState } from "./globally_use_variable.js/variable";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-// import customMarkerIcon from './marker.png'; 
 import L from 'leaflet';
+import useDocumentTitle from "../utils/useDocumentTitles";
 
 // const contractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
@@ -17,7 +17,7 @@ const apiURL = process.env.REACT_APP_XANN_API;
 
 
 const HouseRentalForm = () => {
-
+    useDocumentTitle('Generate Contract - RGreement');
     const {
     landlord,setLandlord,
     identificationNumber,setIdentificationNumber,

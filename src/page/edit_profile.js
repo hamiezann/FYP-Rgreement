@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../style/profile.css';
 import { useNavigate } from 'react-router-dom';
-
+import useDocumentTitle from '../utils/useDocumentTitles';
 const EditProfilePage = () => {
+  useDocumentTitle('Edit Profile - RGreement');
   const [userData, setUserData] = useState({
     name: '',
     address: '',

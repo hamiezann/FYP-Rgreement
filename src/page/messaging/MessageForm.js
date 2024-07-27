@@ -36,8 +36,9 @@ const MessageForm = ({ownerId, senderId, onSubmitMessage}) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='chat-form' onSubmit={handleSubmit}>
             <textarea
+            className='chat-input-form'
                 value={content}
                 onChange={event => setContent(event.target.value)}
                 onKeyDown={handleEnterWasPressed}

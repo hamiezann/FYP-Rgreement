@@ -3,7 +3,9 @@ message.css
 .message-main-container {
     display: flex;
     flex-direction: column;
+    /* padding-top: 18vh !important; */
     height: 90vh;
+    padding: 10px !important;
 }
 
 .chat-header {
@@ -189,8 +191,9 @@ button[type="submit"] .fa-paper-plane {
     justify-content: space-between;
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 30px;
     border-radius: 10px;
+    margin-top: 18vh;
     margin-bottom: 10px;
     background-color: #F5F7F8;
 }

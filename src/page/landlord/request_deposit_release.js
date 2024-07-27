@@ -150,7 +150,7 @@ const RequestDepositRelease = () => {
   };
 
   return (
-    <div className="main-container">
+    <div className="contract-container">
       <h2 className="text-center mb-4">Request Deposit Release</h2>
       {error && (
         <Row className="justify-content-center mt-4">

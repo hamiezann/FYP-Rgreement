@@ -28,8 +28,9 @@ const MessageMain = () => {
     return (
         <div className="message-main-container">
             <div className="chat-header">
-                <h2>Chatting with Owner: {ownerId}</h2>
-                <p>House ID: {houseId}</p>
+                <h2>Chat with Owner House: {houseId}</h2>
+                <br></br>
+                {/* <p>House ID: {houseId}</p> */}
             </div>
             <div className="chat-body">
                 {/* <MessageComponent ownerId={ownerId} senderId={sender_id} /> */}

@@ -15,7 +15,8 @@ const DropdownMenu = ({ handleLogout }) => {
 
   return (
     <Dropdown show={isOpen} onToggle={handleOpen} align="end"> {/* align="end" to right-align the menu */}
-      <Dropdown.Toggle variant="transparent" id="dropdown-basic">
+      {/* <Dropdown.Toggle variant="transparent" id="dropdown-basic"> */}
+      <Dropdown.Toggle variant="transparent" id="dropdown-basic" className={`dropdown-toggle-custom ${isOpen ? 'active' : ''}`}>
         <i className="fas fa-ellipsis-v d-none d-md-inline"></i> {/* Font Awesome icon, hidden on small screens */}
         <i className="fas fa-bars d-md-none"></i> {/* Font Awesome icon for menu, visible on small screens */}
       </Dropdown.Toggle>

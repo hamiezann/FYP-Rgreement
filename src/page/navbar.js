@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../authentication/AuthContext';
-import DropdownMenu from './navbar/dropdownmenu';
+import DropdownMenu from './navbar/DropdownMenu';
 import '../navbar.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -15,17 +15,19 @@ function Navbar() {
   const role = localStorage.getItem('role');
   const [showOverlay, setShowOverlay] = useState(false);
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
-  const isTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1024px)' });
-  const isDesktop = useMediaQuery({ query: '(min-width: 1025px)' });
+  // const isTablet = useMediaQuery({ query: '(min-width: 768px) and (max-width: 1024px)' });
+  // const isDesktop = useMediaQuery({ query: '(min-width: 1025px)' });
 
   const toggleActiveClass = () => {
     setIsActive(!isActive);
     setShowOverlay(!showOverlay);
-    console.log("Navbar toggled:", !isActive);
+    // console.log("Navbar toggled:", !isActive);
   };
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('userId');
     setIsAuthenticated(false);
     navigate('/login');
   };
@@ -36,12 +38,23 @@ function Navbar() {
     } else {
       setIsSmall(false);
     }
-  };
-
-  const closeNavbar = () => {
     if (isMobile && isActive) {
       setIsActive(false);
-      console.log("Navbar closed on click/scroll");
+      setShowOverlay(false);
+    }
+  };
+
+  // const closeNavbar = () => {
+  //   if (isMobile && isActive) {
+  //     setIsActive(false);
+  //     console.log("Navbar closed on click/scroll");
+  //   }
+  // };
+  const closeNavbar = (event) => {
+    if (isMobile && isActive && !event.target.closest('.navbar')) {
+      setIsActive(false);
+      setShowOverlay(false);
+      console.log("Navbar closed on click outside");
     }
   };
 

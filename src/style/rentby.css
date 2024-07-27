@@ -3,16 +3,17 @@
   /* max-width: 1200px; */
   margin: 0 auto;
   padding: 20px;
-  background: linear-gradient(to bottom, #FFC0CB, #FFFFFF, #ADD8E6) !important;
+  /* background: linear-gradient(to bottom, #FFC0CB, #FFFFFF, #ADD8E6) !important; */
+  background: linear-gradient(to bottom, #ffffff,  #ADD8E6);
   /* height: 100vh;  */
   /* padding-bottom: 90vh; */
-  min-height: 90vh;
+  min-height: 100vh;
 }
 
 /* Top Padding */
 .custom-block {
   /* padding-top: 80px; */
-  padding-top: 15vh;
+  padding-top: 17vh !important;
 
 }
 

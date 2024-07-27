@@ -132,9 +132,11 @@ input[type=submit]:hover {
 .contract-container {
   padding: 20px;
   margin-top: 17vh;
+  margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
-  background-color: #f9f9f9;
+  /* background-color: #f9f9f9; */
+  background: linear-gradient(to bottom, #ffffff,  #ADD8E6);
   max-width: 900px;
   margin-left: auto;
   margin-right: auto;

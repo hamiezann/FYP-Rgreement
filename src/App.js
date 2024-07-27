@@ -40,11 +40,13 @@ import EditProfilePage from './page/edit_profile';
 import ChangePasswordPage from './page/edit_password';
 import ContactUs from './page/contact_us';
 
+
 const App = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const role = localStorage.getItem('role');
 
   return (
+
     <Router>
       <div className="App">
         <Navbar />
@@ -99,6 +101,7 @@ const App = () => {
                 <Route path="/house-details/:houseId" element={<HouseDetailPage />} />
                 <Route path="/find-house/:houseId" element={<DisplaySearchHouse />} />
                 <Route path="/chat/:houseId" element={<MessageMain />} />
+                {/* <Route path="/stream-chat/:houseId" element={<ChatRoom />} /> */}
                 <Route path="/conversations" element={<ConversationsPage />} />
                 <Route path="/conversations/:senderId/:recipientId" element={<ConversationPage />} />
                 <Route path="/find-house" element={<FindHouse />} />
@@ -122,6 +125,7 @@ const App = () => {
         <Footer />
       </div>
     </Router>
+    
   );
 };
 
